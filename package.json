@@ -4,11 +4,8 @@
   "version": "1.0.0",
   "description": "fengyua5的博客",
   "keywords": [],
-  "dependencies": {
-
-  },
   "scripts": {
-    "start": "cd fe && rm -rf build/.happypack && gulp dev -project",
+    "start": "cd fe && rm -rf build/.happypack && gulp dev -project"
   },
   "main": "app.js",
   "homepage": "https://fengyua5.github.io/fengyua5.github.io",

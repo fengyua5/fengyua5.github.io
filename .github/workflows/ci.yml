@@ -16,4 +16,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.fengyua5 }}
           BRANCH: master
           FOLDER: public
-          BUILD_SCRIPT: npm i -g hexo && npm install && hexo generate
+          BUILD_SCRIPT: npm i -g hexo && hexo generate
