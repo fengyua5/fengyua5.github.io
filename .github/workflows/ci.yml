@@ -14,7 +14,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@master
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BASE_BRANCH: dev
           BRANCH: master
           FOLDER: public
           BUILD_SCRIPT: npm i -g hexo && npm install && hexo generate
