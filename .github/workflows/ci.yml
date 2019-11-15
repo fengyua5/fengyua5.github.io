@@ -13,7 +13,7 @@ jobs:
       - name: Build and Deploy
         uses: JamesIves/github-pages-deploy-action@master
         env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.fengyua5 }}
           BRANCH: master
           FOLDER: public
           BUILD_SCRIPT: npm i -g hexo && npm install && hexo generate
