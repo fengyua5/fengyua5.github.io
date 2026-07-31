@@ -18,16 +18,16 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name Install Dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name Generate Hexo Site
+      - name: Generate Hexo Site
         run: npx hexo generate
 
-      - name Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .//public
+          publish_dir: public
           branch: gh-pages
           force_on_update: true
