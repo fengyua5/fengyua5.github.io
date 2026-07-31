@@ -5,7 +5,7 @@ tags: [pi-agent, architecture, source-code]
 categories: AI
 ---
 
-PI Agent（开源仓库 `badlogic/pi-mono`，本文基于 commit `74caa26`）是目前最成熟的 TS 智能体框架之一。它把「上下文工程」当作第一等公民，核心只做一件事：**让 agent 在有限的上下文窗口里高效地思考、行动、并且永远知道自己下一步该干什么**。
+PI Agent（开源仓库 `badlogic/pi-mono`，本文基于 commit `74caa26`）是目前最成熟的 Typescript Code Agent 智能体框架之一。它把「上下文工程」当作第一等公民，核心只做一件事：**让 agent 在有限的上下文窗口里高效地思考、行动、并且永远知道自己下一步该干什么**。
 
 本文不再泛泛而谈，直接沿着源码拆解它的 **5 个灵魂机制**：
 
