@@ -1,7 +1,7 @@
 <%
 var pageTopImg = flatpaper_page_top_img_info(page);
 var hasPageTopImg = !!pageTopImg.src;
-var categories = site.categories ? site.categories.toArray() : [];
+var categories = flatpaper_sorted_categories();
 %>
 <section class="taxonomy-paper<%= hasPageTopImg ? ' taxonomy-paper--with-top-img article-paper--with-top-img article-paper--page-top-img' : '' %>">
   <% if (hasPageTopImg) { %>

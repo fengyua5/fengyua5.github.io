@@ -1,6 +1,6 @@
 <%
 var allPosts = flatpaper_sorted_posts();
-var categories = site.categories ? site.categories.toArray() : [];
+var categories = flatpaper_sorted_categories();
 var tags = site.tags ? site.tags.toArray() : [];
 var profile = theme.profile || {};
 var socials = profile.social || theme.social || {};
