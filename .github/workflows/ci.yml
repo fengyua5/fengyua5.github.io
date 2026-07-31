@@ -1,13 +1,12 @@
-name: GitHub Actions Build and Deploy Demo
+name: Hexo Build & Deploy
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - master
+    branches: [master]
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,14 +21,13 @@ jobs:
       - name Install Dependencies
         run: npm ci
 
-      - name Build Hexo
+      - name Generate Hexo Site
         run: npx hexo generate
 
       - name Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v6
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: public
-          REPOSITORY: fengyua5/fengyua5.github.io
-          CONISTRY: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .//public
+          branch: gh-pages
+          force_on_update: true
