@@ -1,0 +1,112 @@
+/* ============== ARTICLE NAV ============== */
+.article-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 -64px;
+  border-top: 1px dashed var(--line);
+  border-radius: 0 0 4px 4px;
+}
+
+.article-action--next {
+  border-left: 1px dashed var(--line);
+}
+
+.article-action {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  min-height: 70px;
+  padding: 14px 24px;
+  color: var(--ink-soft);
+  background: var(--paper);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.article-action .lucide {
+  grid-row: 1 / 3;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.article-action .action-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.article-action .action-title {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-action--prev {
+  text-align: left;
+  border-bottom-left-radius: 4px;
+}
+
+.article-action--next {
+  text-align: right;
+  grid-template-columns: 1fr auto;
+  border-bottom-right-radius: 4px;
+}
+
+.article-action--next .lucide {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.article-action--next .action-label,
+.article-action--next .action-title {
+  grid-column: 1;
+}
+
+a.article-action:hover {
+  background: var(--paper-warm);
+}
+
+a.article-action:hover .action-title {
+  color: var(--color-accent-strong);
+}
+
+a.article-action--prev:hover .lucide {
+  color: var(--color-accent-strong);
+  transform: translateX(-3px);
+}
+
+a.article-action--next:hover .lucide {
+  color: var(--color-accent-strong);
+  transform: translateX(3px);
+}
+
+.article-action.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.article-action.is-disabled .action-title,
+.article-action.is-disabled .action-label {
+  color: var(--muted);
+}
+
+.article-action.is-disabled .lucide {
+  opacity: 0.6;
+}
+
+.dark-mode a.article-action:hover .action-title,
+.dark-mode a.article-action:hover .lucide {
+  color: var(--color-accent-muted);
+}

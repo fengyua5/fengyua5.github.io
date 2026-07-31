@@ -1,0 +1,117 @@
+/* ============== CODE BLOCK - LIGHT THEME ============== */
+body[data-code-theme="light"] .article-content .highlight {
+  background: #ffffff;
+  color: #24292f;
+  box-shadow: var(--small-shadow);
+}
+
+body[data-code-theme="light"] .article-content > pre {
+  background: #ffffff;
+  color: #24292f;
+}
+
+body[data-code-theme="light"] .article-content .highlight::before {
+  background: #f6f8fa;
+  border-bottom: 1px solid #d8dee4;
+}
+
+body[data-code-theme="light"] .article-content .highlight .code-lang {
+  background: #eaeef2;
+  color: #57606a;
+}
+
+body[data-code-theme="light"] .article-content .highlight .code-action {
+  color: #57606a;
+  background: #f6f8fa;
+  border-color: #d8dee4;
+}
+
+body[data-code-theme="light"] .article-content .highlight .code-action:hover {
+  color: #24292f;
+  background: #eef2f6;
+  border-color: #afb8c1;
+}
+
+body[data-code-theme="light"] .article-content .highlight .code-copy.is-copied {
+  color: #1a7f37;
+  border-color: rgba(26, 127, 55, 0.35);
+  background: rgba(26, 127, 55, 0.1);
+}
+
+body[data-code-theme="light"] .article-content .highlight td.gutter {
+  background: #f6f8fa;
+  border-right-color: #d8dee4;
+}
+
+body[data-code-theme="light"] .article-content .highlight td.gutter pre {
+  color: #8c959f;
+}
+
+/* Line-number interaction states (consumed by code-dark.styl's .line rules).
+   The light theme keeps light code blocks even in dark mode, so a single set
+   covers both modes. */
+body[data-code-theme="light"] {
+  --code-gutter-hover-bg: rgba(31, 35, 40, 0.06);
+  --code-gutter-hover-ink: #57606a;
+  --code-gutter-hl-bg: rgba(212, 167, 44, 0.25);
+  --code-gutter-hl-ink: #9a6700;
+  --code-gutter-copied-ink: #1a7f37;
+  --code-line-hl-bg: rgba(212, 167, 44, 0.12);
+}
+
+/* Token colors - white paper palette */
+body[data-code-theme="light"] .article-content .highlight .comment,
+body[data-code-theme="light"] .article-content .highlight .quote { color: #6e7781; font-style: italic; }
+body[data-code-theme="light"] .article-content .highlight .keyword,
+body[data-code-theme="light"] .article-content .highlight .selector-tag,
+body[data-code-theme="light"] .article-content .highlight .literal,
+body[data-code-theme="light"] .article-content .highlight .built_in { color: #cf222e; }
+body[data-code-theme="light"] .article-content .highlight .string,
+body[data-code-theme="light"] .article-content .highlight .regexp,
+body[data-code-theme="light"] .article-content .highlight .meta-string { color: #0a3069; }
+body[data-code-theme="light"] .article-content .highlight .number,
+body[data-code-theme="light"] .article-content .highlight .symbol,
+body[data-code-theme="light"] .article-content .highlight .bullet { color: #0550ae; }
+body[data-code-theme="light"] .article-content .highlight .title,
+body[data-code-theme="light"] .article-content .highlight .name,
+body[data-code-theme="light"] .article-content .highlight .selector-id,
+body[data-code-theme="light"] .article-content .highlight .selector-class { color: #8250df; }
+body[data-code-theme="light"] .article-content .highlight .attr,
+body[data-code-theme="light"] .article-content .highlight .variable,
+body[data-code-theme="light"] .article-content .highlight .template-variable { color: #953800; }
+body[data-code-theme="light"] .article-content .highlight .params { color: #24292f; }
+body[data-code-theme="light"] .article-content .highlight .tag,
+body[data-code-theme="light"] .article-content .highlight .doctag { color: #116329; }
+body[data-code-theme="light"] .article-content .highlight .property,
+body[data-code-theme="light"] .article-content .highlight .attribute { color: #0550ae; }
+body[data-code-theme="light"] .article-content .highlight .type,
+body[data-code-theme="light"] .article-content .highlight .class { color: #8250df; }
+body[data-code-theme="light"] .article-content .highlight .deletion { color: #cf222e; }
+body[data-code-theme="light"] .article-content .highlight .addition { color: #116329; }
+
+/* Scrollbar */
+body[data-code-theme="light"] .article-content .highlight td.code pre::-webkit-scrollbar-thumb,
+body[data-code-theme="light"] .article-content > pre::-webkit-scrollbar-thumb {
+  background: rgba(84, 96, 108, 0.24);
+}
+
+/* In dark site mode, keep the light theme explicitly white. */
+.dark-mode body[data-code-theme="light"] .article-content .highlight,
+.dark-mode body[data-code-theme="light"] .article-content > pre {
+  background: #f7f9fb;
+  color: #24292f;
+}
+
+.dark-mode body[data-code-theme="light"] .article-content .highlight::before {
+  background: #eef2f6;
+  border-bottom-color: #d0d7de;
+}
+
+.dark-mode body[data-code-theme="light"] .article-content .highlight td.gutter {
+  background: #eef2f6;
+  border-right-color: #d0d7de;
+}
+
+.dark-mode body[data-code-theme="light"] .article-content .highlight td.gutter pre {
+  color: #8c959f;
+}

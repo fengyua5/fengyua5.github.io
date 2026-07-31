@@ -1,0 +1,84 @@
+# Hexo Configuration
+## https://hexo.io/docs/configuration.html
+
+# Site
+title: fengyua5
+subtitle: "Writing code is keep my heart beating only reason"
+description: "生命不息，奋斗不止"
+author: fengyua5
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+url: https://fengyua5.github.io/fengyua5.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link: true
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+
+# Home page setting
+index_generator:
+  path: ""
+  per_page: 10
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+theme: flatpaper
+
+# Deployment
+deploy:
+  type: git
+  repo: https://github.com/fengyua5/fengyua5.github.io.git
+  branch: master
+
+# hexo-generator-json-content (Yilia theme search)
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: true
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true

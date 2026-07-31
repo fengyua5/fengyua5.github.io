@@ -1,0 +1,7 @@
+<%
+  // Compatibility wrapper. The actual registry lives in scripts/icon-registry.js.
+  var iconName = typeof icon !== 'undefined' ? icon : '';
+  var iconSize = typeof size !== 'undefined' ? size : '1em';
+  var iconClass = typeof cls !== 'undefined' ? cls : '';
+%>
+<%- flatpaper_icon(iconName, { size: iconSize, cls: iconClass }) %>

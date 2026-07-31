@@ -5,13 +5,33 @@
   "description": "fengyua5的博客",
   "keywords": [],
   "scripts": {
-    "start": "cd fe && rm -rf build/.happypack && gulp dev -project"
+    "start": "hexo server",
+    "build": "hexo generate",
+    "clean": "hexo clean",
+    "deploy": "hexo deploy",
+    "new": "hexo new"
   },
-  "main": "app.js",
   "homepage": "https://fengyua5.github.io/fengyua5.github.io",
   "repository": {
     "type": "git"
   },
   "author": "fengyua5",
-  "license": ""
+  "license": "",
+  "hexo": {
+    "version": "7.3.0"
+  },
+  "dependencies": {
+    "hexo": "^7.3.0",
+    "hexo-cli": "^4.3.1",
+    "hexo-deployer-git": "^4.0.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-index": "^4.0.0",
+    "hexo-generator-json-content": "^4.1.6",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^7.0.1",
+    "hexo-renderer-stylus": "^3.0.1",
+    "hexo-server": "^3.0.0"
+  }
 }

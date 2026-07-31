@@ -1,0 +1,54 @@
+<%
+var posts = page.posts ? page.posts.toArray() : flatpaper_sorted_posts();
+var pageTopImg = flatpaper_page_top_img_info(page);
+var hasPageTopImg = !!pageTopImg.src;
+%>
+<section class="archive-paper<%= hasPageTopImg ? ' archive-paper--with-top-img article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <% if (hasPageTopImg) { %>
+    <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: title }) %>
+    <header class="article-header">
+      <h1><%= title %></h1>
+    </header>
+  <% } else { %>
+    <h1><%= title %></h1>
+  <% } %>
+  <div class="archive-list">
+    <% posts.forEach(function(post, index) { %>
+      <a class="archive-item" href="<%- url_for(post.path) %>">
+        <span><%= date(post.date, 'YYYY-MM-DD') %></span>
+        <strong><%= post.title %></strong>
+        <em></em>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<% if (page.total && page.total > 1) { %>
+  <nav class="pager" aria-label="<%= flatpaper_i18n('pagination.archive_pager') %>">
+    <% if (page.prev) { %>
+      <a class="pager-link pager-link--prev" href="<%- url_for(page.prev_link) %>">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span><%= flatpaper_i18n('pagination.prev') %></span>
+      </a>
+    <% } else { %>
+      <span class="pager-link pager-link--prev is-disabled" aria-disabled="true">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span><%= flatpaper_i18n('pagination.prev') %></span>
+      </span>
+    <% } %>
+
+    <span class="pager-pages"><%= page.current %> / <%= page.total %></span>
+
+    <% if (page.next) { %>
+      <a class="pager-link pager-link--next" href="<%- url_for(page.next_link) %>">
+        <span><%= flatpaper_i18n('pagination.next') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    <% } else { %>
+      <span class="pager-link pager-link--next is-disabled" aria-disabled="true">
+        <span><%= flatpaper_i18n('pagination.next') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </span>
+    <% } %>
+  </nav>
+<% } %>

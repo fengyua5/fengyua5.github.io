@@ -1,0 +1,59 @@
+<%
+// Comment section router. Renders the chosen comment system's mount point and
+// init script on posts / standalone pages, when:
+//   1. theme.comments is set to a supported value (twikoo | artalk),
+//   2. the system's required config (envId / server) is filled in,
+//   3. the page itself didn't opt out via front-matter `comments: false`.
+// The SDK <script>/<link> tags are loaded once globally by _partial/comments-sdk.ejs.
+var sys = theme.comments ? String(theme.comments).toLowerCase() : '';
+var pageTypeKey = String(page.type || '').toLowerCase();
+var isNotFoundPage = page.layout === '404' || pageTypeKey === '404';
+var isContentPage = (is_post() || page.layout === 'page') && !isNotFoundPage;
+var canRender = isContentPage && page.comments !== false;
+
+var tk = theme.twikoo || {};
+var ak = theme.artalk || {};
+var renderTwikoo = canRender && sys === 'twikoo' && tk.envId;
+var renderArtalk = canRender && sys === 'artalk' && ak.server;
+// JSON.stringify alone leaves "</script>" intact, which would terminate the
+// inline init script early if a page title/config value contains it.
+function jsonForScript(value) {
+  return JSON.stringify(value).replace(/<\//g, '<\\/');
+}
+%>
+<% if (renderTwikoo) { %>
+<section class="comments-section" aria-label="<%= flatpaper_i18n('common.comments') %>">
+  <header class="comments-section__head">
+    <h2><%- partial('_partial/icons', { icon: 'message-circle' }) %><%= flatpaper_i18n('common.comments') %></h2>
+  </header>
+  <div id="tcomment"></div>
+</section>
+<script>
+window.addEventListener('load', function () {
+  if (typeof twikoo === 'undefined') return;
+  twikoo.init({
+    envId: <%- jsonForScript(tk.envId) %>,
+    el: '#tcomment'
+  });
+});
+</script>
+<% } else if (renderArtalk) { %>
+<section class="comments-section" aria-label="<%= flatpaper_i18n('common.comments') %>">
+  <header class="comments-section__head">
+    <h2><%- partial('_partial/icons', { icon: 'message-circle' }) %><%= flatpaper_i18n('common.comments') %></h2>
+  </header>
+  <div id="artalk-comments"></div>
+</section>
+<script>
+window.addEventListener('load', function () {
+  if (typeof Artalk === 'undefined' || typeof Artalk.init !== 'function') return;
+  Artalk.init({
+    el: '#artalk-comments',
+    pageKey: <%- jsonForScript(page.permalink || url_for(page.path || '')) %>,
+    pageTitle: <%- jsonForScript(page.title || '') %>,
+    server: <%- jsonForScript(ak.server) %>,
+    site: <%- jsonForScript(ak.site || '') %>
+  });
+});
+</script>
+<% } %>

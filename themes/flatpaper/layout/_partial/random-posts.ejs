@@ -1,0 +1,27 @@
+<%
+var randomLimit = theme.random_posts != null ? parseInt(theme.random_posts, 10) : 5;
+if (isNaN(randomLimit)) randomLimit = 5;
+var randomPoolLimit = parseInt(theme.random_posts_pool, 10);
+if (isNaN(randomPoolLimit)) randomPoolLimit = 0; // 0 / unset = unlimited pool (documented)
+var randomPool = flatpaper_sorted_posts()
+  .filter(function (p) { return !page.path || p.path !== page.path; });
+if (randomPoolLimit > 0) {
+  randomPool = randomPool.slice(0, randomPoolLimit);
+}
+var randomPosts = randomLimit > 0 ? randomPool.slice(0, randomLimit) : [];
+%>
+<% if (randomPosts.length) { %>
+  <section class="side-card recent-card" data-random-posts-limit="<%= randomLimit %>" data-random-posts-url="<%- url_for('flatpaper-random-posts.json') %>" data-random-posts-current="<%- page.path ? url_for(page.path) : '' %>">
+    <h2><%- partial('_partial/icons', { icon: 'shuffle' }) %><%= flatpaper_i18n('common.random_posts') %></h2>
+    <ul class="recent-list js-random-posts">
+      <% randomPosts.forEach(function (post) { %>
+        <li>
+          <a class="recent-item" href="<%- url_for(post.path) %>">
+            <strong><%= post.title %></strong>
+            <em><%= date(post.date, 'YYYY-MM-DD') %></em>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+<% } %>

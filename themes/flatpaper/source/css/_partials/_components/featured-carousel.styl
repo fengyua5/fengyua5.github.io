@@ -1,0 +1,115 @@
+/* ============== FEATURED CAROUSEL ============== */
+.featured-carousel {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.featured-carousel.has-multiple {
+  margin-bottom: 28px;
+}
+
+.featured-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Slides, arrows and dots all live on row 1 (the card row).
+   Any ad injected by Google (.google-auto-placed) auto-flows to row 2,
+   so it never inflates the card row or shifts the arrows. */
+.featured-track > .featured-paper,
+.featured-track > .carousel-arrow,
+.featured-track > .carousel-dots {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.featured-track > .google-auto-placed {
+  grid-row: 2;
+  grid-column: 1;
+  margin-top: 16px;
+}
+
+.featured-track > .featured-paper {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.3, 1), visibility 0s linear 0.4s;
+  pointer-events: none;
+}
+
+.featured-track > .featured-paper.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.3, 1), visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+/* Carousel arrows — grid items centered on the card row, pulled out
+   over the carousel edges with negative margins. */
+.featured-carousel .carousel-arrow {
+  align-self: center;
+  z-index: 5;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: 1px dashed var(--dash);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  background: var(--paper);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--soft-shadow);
+}
+
+.featured-carousel .carousel-arrow:hover {
+  color: var(--color-accent-strong);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  transform: scale(1.05);
+}
+
+.featured-carousel .carousel-prev { justify-self: start; margin-left: -16px; }
+.featured-carousel .carousel-next { justify-self: end; margin-right: -16px; }
+
+.featured-carousel .carousel-arrow .lucide {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dots — grid item on the card row, anchored to its bottom edge and
+   pushed just below it so the ad on row 2 never moves them. */
+.featured-carousel .carousel-dots {
+  align-self: end;
+  justify-self: center;
+  margin-bottom: -22px;
+  display: inline-flex;
+  gap: 8px;
+  z-index: 4;
+}
+
+.featured-carousel .carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--dash);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, width 0.3s ease;
+}
+
+.featured-carousel .carousel-dot:hover {
+  background: var(--color-accent);
+}
+
+.featured-carousel .carousel-dot.is-active {
+  width: 22px;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+

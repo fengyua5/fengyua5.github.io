@@ -1,0 +1,159 @@
+/* ============== CODE BLOCK - SIMPLE THEME ============== */
+body[data-code-theme="simple"] .article-content .highlight,
+body[data-code-theme="simple"] .article-content > pre {
+  background: var(--paper-warm) !important;
+  color: var(--ink);
+  border: 2px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body[data-code-theme="simple"] .article-content .highlight::before,
+body[data-code-theme="simple"] .article-content .highlight::after {
+  /* Hide the macOS traffic lights */
+  display: none !important;
+}
+
+body[data-code-theme="simple"] .article-content .highlight .code-bar {
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  height: 38px;
+  border-bottom: 2px solid var(--ink);
+}
+
+body[data-code-theme="simple"] .article-content .highlight .code-lang {
+  background: transparent !important;
+  color: var(--ink) !important;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  padding: 0;
+  margin-right: auto;
+}
+
+body[data-code-theme="simple"] .article-content .highlight .code-action {
+  color: var(--ink-soft);
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+body[data-code-theme="simple"] .article-content .highlight .code-action:hover {
+  color: var(--ink);
+  transform: none !important;
+}
+
+body[data-code-theme="simple"] .article-content .highlight .code-copy.is-copied {
+  color: var(--color-accent);
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line {
+  padding-top: 0;
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line::before,
+body[data-code-theme="simple"] .article-content .highlight.is-single-line::after,
+body[data-code-theme="simple"] .article-content .highlight.is-single-line figcaption,
+body[data-code-theme="simple"] .article-content .highlight.is-single-line td.gutter {
+  display: none;
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line .code-bar {
+  left: auto;
+  right: 8px;
+  top: 50%;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-bottom: 0;
+  transform: translateY(-50%);
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line .code-copy {
+  border: none !important;
+  background: var(--paper-warm) !important;
+  box-shadow: -6px 0 0 var(--paper-warm);
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line .code-copy:hover {
+  background: var(--paper-solid) !important;
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line td.code {
+  width: 100%;
+  padding: 0;
+}
+
+body[data-code-theme="simple"] .article-content .highlight.is-single-line td.code pre {
+  padding: 12px 48px 12px 16px;
+}
+
+body[data-code-theme="simple"] .article-content .highlight td.gutter {
+  background: transparent;
+  border-right: 1px dashed var(--dash);
+}
+
+body[data-code-theme="simple"] .article-content .highlight td.gutter pre {
+  color: var(--muted);
+}
+
+/* Line-number interaction states (consumed by code-dark.styl's .line rules).
+   Built from theme tokens, which already flip in dark mode. */
+body[data-code-theme="simple"] {
+  --code-gutter-hover-bg: unquote('color-mix(in srgb, var(--ink) 7%, transparent)');
+  --code-gutter-hover-ink: var(--ink-soft);
+  --code-gutter-hl-bg: unquote('color-mix(in srgb, var(--yellow) 26%, transparent)');
+  --code-gutter-hl-ink: var(--ink);
+  --code-gutter-copied-ink: var(--color-accent-strong);
+  --code-line-hl-bg: unquote('color-mix(in srgb, var(--yellow) 14%, transparent)');
+}
+
+/* Syntax highlighting mapped to theme variables: without these overrides the
+   unscoped code-dark.styl token colors would apply, which are unreadable on
+   the simple theme's light background. */
+body[data-code-theme="simple"] .article-content .highlight .comment,
+body[data-code-theme="simple"] .article-content .highlight .quote { color: var(--muted); font-style: italic; }
+
+body[data-code-theme="simple"] .article-content .highlight .keyword,
+body[data-code-theme="simple"] .article-content .highlight .selector-tag,
+body[data-code-theme="simple"] .article-content .highlight .literal,
+body[data-code-theme="simple"] .article-content .highlight .built_in { color: var(--color-accent); font-weight: 600; }
+
+body[data-code-theme="simple"] .article-content .highlight .string,
+body[data-code-theme="simple"] .article-content .highlight .regexp,
+body[data-code-theme="simple"] .article-content .highlight .meta-string { color: var(--color-accent); }
+
+body[data-code-theme="simple"] .article-content .highlight .number,
+body[data-code-theme="simple"] .article-content .highlight .symbol,
+body[data-code-theme="simple"] .article-content .highlight .bullet { color: var(--orange); }
+
+body[data-code-theme="simple"] .article-content .highlight .title,
+body[data-code-theme="simple"] .article-content .highlight .name,
+body[data-code-theme="simple"] .article-content .highlight .selector-id,
+body[data-code-theme="simple"] .article-content .highlight .selector-class { color: var(--blue); font-weight: 600; }
+
+body[data-code-theme="simple"] .article-content .highlight .attr,
+body[data-code-theme="simple"] .article-content .highlight .variable,
+body[data-code-theme="simple"] .article-content .highlight .template-variable { color: var(--orange); }
+
+body[data-code-theme="simple"] .article-content .highlight .params { color: var(--ink); }
+
+body[data-code-theme="simple"] .article-content .highlight .tag,
+body[data-code-theme="simple"] .article-content .highlight .doctag { color: var(--color-accent); }
+
+body[data-code-theme="simple"] .article-content .highlight .property,
+body[data-code-theme="simple"] .article-content .highlight .attribute { color: var(--blue); }
+
+body[data-code-theme="simple"] .article-content .highlight .type,
+body[data-code-theme="simple"] .article-content .highlight .class { color: var(--orange); font-weight: 600; }
+
+body[data-code-theme="simple"] .article-content .highlight .deletion { color: #cf222e; background: rgba(255,0,0,0.1); }
+body[data-code-theme="simple"] .article-content .highlight .addition { color: var(--color-accent); background: rgba(0,255,0,0.1); }
+
+/* Scrollbar styling for simple theme */
+body[data-code-theme="simple"] .article-content .highlight td.code pre::-webkit-scrollbar-thumb,
+body[data-code-theme="simple"] .article-content > pre::-webkit-scrollbar-thumb {
+  background: var(--dash);
+  border-radius: 0;
+}

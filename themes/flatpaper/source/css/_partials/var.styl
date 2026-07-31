@@ -1,0 +1,173 @@
+// Design tokens for FlatPaper.
+// Light is the default; .dark-mode swaps the same variable names.
+
+:root {
+  --bg: #f7f3e9;
+  --paper: #fffdf6;
+  --paper-solid: #ffffff;
+  --paper-warm: #f8f2e2;
+  --ink: #2c3531;
+  --ink-soft: #4a5751;
+  --muted: #8a8678;
+  --muted-rgb: 138, 134, 120;
+  --line: #ece3d0;
+  --dash: #ddd0b5;
+  --color-accent: #6fa67c;
+  --color-accent-strong: #4f8862;
+  --color-accent-soft: #d8e8d2;
+  --color-accent-muted: #8ab98d;
+  --yellow: #f0bd4d;
+  --yellow-rgb: 240, 189, 77;
+  --orange: #ec9b5b;
+  --blue: #6fa9d9;
+  --blue-rgb: 111, 169, 217;
+  --violet: #9c8feb;
+  --violet-rgb: 156, 143, 235;
+  --green: #6fa67c;
+  --green-rgb: 111, 166, 124;
+  --red: #d4716c;
+  --red-rgb: 212, 113, 108;
+  --tape-yellow: rgba(238, 201, 110, 0.72);
+  --tape-pink: rgba(232, 168, 158, 0.62);
+  --tape-green: rgba(143, 192, 152, 0.62);
+  --tape-blue: rgba(111, 169, 217, 0.58);
+  --tape-brown: rgba(202, 169, 134, 0.75);
+  --tape-stripes: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.25) 0 2px, transparent 2px 7px);
+  --nav-tape-stripes: unquote("repeating-linear-gradient(45deg, color-mix(in srgb, var(--color-accent) 25%, transparent) 0 2px, transparent 2px 7px)");
+  --paper-shadow-rgb: 82, 64, 38;
+  --radius-handdrawn: 255px 15px 225px 15px/15px 225px 15px 255px;
+  --radius-handdrawn-wide: 255px 18px 225px 18px/18px 225px 18px 255px;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Cascadia Code", monospace;
+  --shadow: 0 18px 38px unquote('rgba(var(--paper-shadow-rgb), 0.13)');
+  --small-shadow: 0 10px 22px unquote('rgba(var(--paper-shadow-rgb), 0.1)');
+  --soft-shadow: 0 4px 14px unquote('rgba(var(--paper-shadow-rgb), 0.08)');
+  --paper-shadow: 0 2px 6px unquote('rgba(var(--paper-shadow-rgb), 0.14)');
+  color-scheme: light;
+}
+
+html[data-accent="pink"] {
+  --color-accent: #df7f9b;
+  --color-accent-strong: #bf5f7d;
+  --color-accent-soft: #f5d6e0;
+  --color-accent-muted: #e994ac;
+}
+
+html[data-accent="purple"] {
+  --color-accent: #7b5fb4;
+  --color-accent-strong: #5b438f;
+  --color-accent-soft: #e5dcf5;
+  --color-accent-muted: #a58bd3;
+}
+
+html[data-accent="sakura"] {
+  --color-accent: #ffc0cb;
+  --color-accent-strong: #d8748c;
+  --color-accent-soft: #ffe4e9;
+  --color-accent-muted: #ffccd5;
+}
+
+html[data-accent="blue"] {
+  --color-accent: #6fa9d9;
+  --color-accent-strong: #4f84bd;
+  --color-accent-soft: #d6e9f7;
+  --color-accent-muted: #88bde4;
+}
+
+html[data-accent="orange"] {
+  --color-accent: #ec9b5b;
+  --color-accent-strong: #c9773d;
+  --color-accent-soft: #f7dfc8;
+  --color-accent-muted: #f0ad76;
+}
+
+html[data-accent="black"] {
+  --color-accent: #111111;
+  --color-accent-strong: #111111;
+  --color-accent-soft: #e4e4e4;
+  --color-accent-muted: #111111;
+}
+
+.dark-mode {
+  --bg: #15171c;
+  --paper: #1d2027;
+  --paper-solid: #232732;
+  --paper-warm: #272b34;
+  --ink: #e6e8ee;
+  --ink-soft: #aab0bd;
+  --muted: #797f8c;
+  --muted-rgb: 121, 127, 140;
+  --line: rgba(225, 230, 245, 0.12);
+  --dash: rgba(225, 230, 245, 0.22);
+  --color-accent: #82bf90;
+  --color-accent-strong: #6ba87c;
+  --color-accent-soft: #354a3a;
+  --color-accent-muted: #94c89a;
+  --yellow: #e8c065;
+  --yellow-rgb: 232, 192, 101;
+  --orange: #e09b66;
+  --blue: #7db4dd;
+  --blue-rgb: 125, 180, 221;
+  --violet: #a89bef;
+  --violet-rgb: 168, 155, 239;
+  --green: #82bf90;
+  --green-rgb: 130, 191, 144;
+  --red: #df8580;
+  --red-rgb: 223, 133, 128;
+  --tape-yellow: rgba(214, 168, 80, 0.5);
+  --tape-pink: rgba(196, 130, 118, 0.45);
+  --tape-green: rgba(120, 168, 130, 0.5);
+  --tape-blue: rgba(111, 169, 217, 0.42);
+  --tape-brown: rgba(182, 149, 114, 0.6);
+  --tape-stripes: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.15) 0 2px, transparent 2px 7px);
+  --nav-tape-stripes: unquote("repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.15) 0 2px, transparent 2px 7px)");
+  --paper-shadow-rgb: 0, 0, 0;
+  --shadow: 0 18px 45px unquote('rgba(var(--paper-shadow-rgb), 0.35)');
+  --small-shadow: 0 10px 22px unquote('rgba(var(--paper-shadow-rgb), 0.26)');
+  --soft-shadow: 0 4px 14px unquote('rgba(var(--paper-shadow-rgb), 0.2)');
+  --paper-shadow: 0 2px 6px unquote('rgba(var(--paper-shadow-rgb), 0.35)');
+  color-scheme: dark;
+}
+
+.dark-mode[data-accent="pink"] {
+  --color-accent: #e38aa5;
+  --color-accent-strong: #cf7290;
+  --color-accent-soft: #4d333d;
+  --color-accent-muted: #ee9fb5;
+}
+
+.dark-mode[data-accent="purple"] {
+  --color-accent: #9d82d7;
+  --color-accent-strong: #c0a9f0;
+  --color-accent-soft: #3c3150;
+  --color-accent-muted: #b397e4;
+}
+
+.dark-mode[data-accent="sakura"] {
+  --color-accent: #e8a5b6;
+  --color-accent-strong: #d6899d;
+  --color-accent-soft: #4a2c35;
+  --color-accent-muted: #f4bacb;
+}
+
+.dark-mode[data-accent="blue"] {
+  --color-accent: #79b2e0;
+  --color-accent-strong: #5c9bcc;
+  --color-accent-soft: #314557;
+  --color-accent-muted: #91c3ea;
+}
+
+.dark-mode[data-accent="orange"] {
+  --color-accent: #eda264;
+  --color-accent-strong: #d8874d;
+  --color-accent-soft: #503d2d;
+  --color-accent-muted: #f2b47e;
+}
+
+.dark-mode[data-accent="black"] {
+  --color-accent: #f5f5f5;
+  --color-accent-strong: #e0e0e0;
+  --color-accent-soft: #333333;
+  --color-accent-muted: #f5f5f5;
+  --label-text: #161616;
+}

@@ -1,0 +1,31 @@
+<%
+// Umami analytics tracker.
+// Renders nothing unless enable + host + website_id are all set.
+// host should be just the domain (e.g. analytics.example.com), no scheme, no path.
+// We normalize defensively (strip scheme / trailing slash) and reject anything that
+// contains characters outside a domain charset, so a misconfigured value can't
+// inject markup or break out of the src attribute.
+var u = theme.umami;
+if (u && u.enable && u.host && u.website_id) {
+  var host = String(u.host).trim()
+    .replace(/^https?:\/\//i, '')
+    .replace(/\/+$/, '');
+  if (/^[a-zA-Z0-9.\-:]+$/.test(host)) {
+    var src = flatpaper_safe_url('https://' + host + '/script.js', 'href');
+    if (src && src !== '#') {
+      // data-domains: comma-separated allowlist of hostnames where the tracker
+      // is allowed to report. Accept either a YAML list or a comma-joined string.
+      // Whitelist domain charset so a typo can't break out of the attribute.
+      var domainsRaw = '';
+      if (Array.isArray(u.domains)) domainsRaw = u.domains.join(',');
+      else if (u.domains) domainsRaw = String(u.domains);
+      var domains = domainsRaw
+        .split(',')
+        .map(function (d) { return d.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, ''); })
+        .filter(function (d) { return d && /^[a-zA-Z0-9.\-:]+$/.test(d); })
+        .join(',');
+%>
+<script defer src="<%= src %>" data-website-id="<%= u.website_id %>"<% if (domains) { %> data-domains="<%= domains %>"<% } %>></script>
+<% }
+  }
+} %>

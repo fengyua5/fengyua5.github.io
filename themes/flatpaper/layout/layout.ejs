@@ -1,0 +1,92 @@
+<!doctype html>
+<%
+var pageTypeKey = String(page.type || '').toLowerCase();
+var isNotFoundPage = page.layout === '404' || pageTypeKey === '404';
+var isStandalonePage = page.layout === 'page' || isNotFoundPage;
+var fbEnabled = theme.fancybox && theme.fancybox.enable && (is_post() || (page.layout === 'page' && !isNotFoundPage));
+var htmlLang = flatpaper_i18n_language();
+%>
+<html lang="<%= htmlLang %>"<% if (fbEnabled) { %> data-fancybox-enabled="1"<% } %>>
+<head>
+  <%- partial('_partial/head') %>
+  <%- partial('_partial/google-analytics') %>
+  <%- partial('_partial/umami') %>
+  <%- partial('_partial/adsense') %>
+  <%- partial('_partial/comments-sdk') %>
+  <%- partial('_partial/fancybox') %>
+  <% (theme.inject && Array.isArray(theme.inject.head) ? theme.inject.head : []).forEach(function(snippet) { if (snippet) { %>
+  <%- snippet %>
+  <% } }) %>
+</head>
+<%
+var tapeDisabled = theme.tape === false || (theme.tape && theme.tape.enable === false);
+var tagStyle = theme.tags && theme.tags.style === 'pill' ? 'pill' : 'tape';
+var accentColor = theme.color || theme.accent_color || theme.theme_color || 'green';
+accentColor = String(accentColor).toLowerCase();
+if (['orange', 'purple', 'sakura', 'blue', 'pink', 'green', 'black'].indexOf(accentColor) === -1) accentColor = 'green';
+var codeTheme = theme.code && theme.code.theme ? String(theme.code.theme).toLowerCase() : 'dark';
+if (['dark', 'sand', 'light', 'simple'].indexOf(codeTheme) === -1) codeTheme = 'dark';
+var noteStyle = theme.note && theme.note.style ? String(theme.note.style).toLowerCase() : 'flat';
+if (['flat', 'simple', 'modern', 'sticky', 'disabled'].indexOf(noteStyle) === -1) noteStyle = 'flat';
+var noteIcons = !(theme.note && theme.note.icons === false);
+var buttonStyle = theme.buttons && theme.buttons.style ? String(theme.buttons.style).toLowerCase() : 'circle';
+if (['circle', 'tape'].indexOf(buttonStyle) === -1) buttonStyle = 'circle';
+var strongAccent = !(theme.article && theme.article.strong_accent === false);
+var homeHero = theme.home_hero || {};
+var homeHeroEnabled = is_home() && (!page.current || page.current === 1) && homeHero.enable === true;
+var backgroundStyle = theme.background && theme.background.style ? String(theme.background.style).toLowerCase() : 'default';
+if (['default', 'grid', 'line', 'cross', 'dotted'].indexOf(backgroundStyle) === -1) backgroundStyle = 'default';
+%>
+<body
+  class="<%= is_post() ? 'is-post' : (isNotFoundPage ? 'is-404' : (is_home() ? 'is-home' : 'is-list')) %><%= tapeDisabled ? ' tape-disabled' : '' %><%= homeHeroEnabled ? ' has-home-hero is-hero-active' : '' %> tag-style-<%= tagStyle %> bg-style-<%= backgroundStyle %>"
+  data-default-accent="<%= accentColor %>"
+  data-code-theme="<%= codeTheme %>"
+  data-note-style="<%= noteStyle %>"
+  data-note-icons="<%= noteIcons ? 'on' : 'off' %>"
+  data-button-style="<%= buttonStyle %>"
+  data-strong-accent="<%= strongAccent ? 'on' : 'off' %>"
+>
+  <% if (backgroundStyle === 'default') { %>
+    <div class="page-grain"></div>
+  <% } %>
+  <svg width="0" height="0" style="position:absolute;z-index:-1;" aria-hidden="true">
+    <defs>
+      <filter id="paper-edge" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+  <% if (homeHeroEnabled) { %>
+    <%- partial('_partial/home-hero') %>
+  <% } %>
+  <%- partial('_partial/header') %>
+
+  <%
+  // Two-column layout: posts and standalone pages (about / friends / etc.) drop the random-posts rail.
+  var isTwoColumn = is_post() || isStandalonePage;
+  %>
+  <main<% if (homeHeroEnabled) { %> id="flatpaper-home-content"<% } %> class="paper-shell <%= isTwoColumn ? 'paper-shell--article' : '' %>">
+    <%- partial('_partial/sidebar-right') %>
+    <section class="paper-main">
+      <%- body %>
+      <%- partial('_partial/comments') %>
+    </section>
+    <% if (!isTwoColumn) { %>
+      <%- partial('_partial/sidebar-left') %>
+    <% } %>
+  </main>
+
+  <div class="sidebar-backdrop js-sidebar-close" aria-hidden="true"></div>
+
+  <%- partial('_partial/footer') %>
+  <%- partial('_partial/search') %>
+  <script>
+  window.FLATPAPER_I18N = <%- flatpaper_i18n_json() %>;
+  </script>
+  <%- js('js/main') %>
+  <% (theme.inject && Array.isArray(theme.inject.bottom) ? theme.inject.bottom : []).forEach(function(snippet) { if (snippet) { %>
+  <%- snippet %>
+  <% } }) %>
+</body>
+</html>

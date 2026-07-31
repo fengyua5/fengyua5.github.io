@@ -1,0 +1,101 @@
+<%
+var f = theme.footer || {};
+var year = new Date().getFullYear();
+var defaultThemeName = 'FlatPaper';
+var defaultThemeLink = 'https://github.com/Homulilly/hexo-theme-flatpaper';
+// theme.footer.left intentionally allows raw HTML; the author name does not —
+// escape it, and substitute via callbacks so "$&"-style sequences in config
+// values can't trigger String.replace's special replacement patterns.
+function escapeHTML(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+var name = escapeHTML(config.author || 'FlatPaper');
+function isAbsoluteUrl(value) {
+  return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(String(value || ''));
+}
+function shouldOpenInNewTab(value) {
+  return /^(?:https?:)?\/\//i.test(String(value || ''));
+}
+function resolveHref(raw) {
+  var value = String(raw == null ? '' : raw).trim();
+  if (!value) return '';
+  var href = (isAbsoluteUrl(value) || value.charAt(0) === '#') ? value : url_for(value);
+  return flatpaper_safe_url(href, 'href');
+}
+function renderAnchor(item) {
+  if (!item || typeof item !== 'object') return '';
+  var label = item.name || item.text || item.title;
+  if (label == null) return '';
+  var safeLabel = escapeHTML(label);
+  var href = resolveHref(item.link || item.url || item.href);
+  if (!href) return '<span class="site-footer__text">' + safeLabel + '</span>';
+  var target = item.target === false ? '' : (item.target || (shouldOpenInNewTab(href) ? '_blank' : ''));
+  var rel = item.rel === false ? '' : (item.rel || (target === '_blank' ? 'noopener' : ''));
+  return '<a href="' + escapeHTML(href) + '"' +
+    (target ? ' target="' + escapeHTML(target) + '"' : '') +
+    (rel ? ' rel="' + escapeHTML(rel) + '"' : '') +
+    '>' + safeLabel + '</a>';
+}
+var themeLink = renderAnchor({ name: defaultThemeName, link: defaultThemeLink });
+function fill(tpl, fallback) {
+  var s = (tpl == null) ? fallback : String(tpl);
+  return s.replace(/\{year\}/g, year)
+    .replace(/\{name\}/g, function () { return name; })
+    .replace(/\{theme\}/g, function () { return themeLink; });
+}
+function renderPowered(powered) {
+  if (powered === false) return '';
+  var p = (powered && typeof powered === 'object') ? powered : {};
+  if (p.enable === false) return '';
+  var prefix = p.prefix == null ? 'Powered by Theme' : String(p.prefix);
+  var anchor = renderAnchor({
+    name: p.name || defaultThemeName,
+    link: p.link || p.url || p.href || defaultThemeLink,
+    target: p.target,
+    rel: p.rel
+  });
+  if (!anchor) return '';
+  return (prefix ? '<span class="site-footer__powered-prefix">' + escapeHTML(prefix) + '</span> ' : '') + anchor;
+}
+function normalizeLinkRows(value) {
+  if (!Array.isArray(value)) return [];
+  var hasRowConfig = value.some(function (item) {
+    return Array.isArray(item) || (item && typeof item === 'object' && Array.isArray(item.items));
+  });
+  if (!hasRowConfig) return [{ items: value }];
+  return value.map(function (row) {
+    if (Array.isArray(row)) return { items: row };
+    if (row && typeof row === 'object' && Array.isArray(row.items)) return row;
+    return { items: [row] };
+  });
+}
+function renderFooterLink(item) {
+  if (!item) return '';
+  if (typeof item === 'string') return '<span class="site-footer__text">' + escapeHTML(item) + '</span>';
+  return renderAnchor(item);
+}
+function renderLinkRow(row) {
+  var items = Array.isArray(row.items) ? row.items : [];
+  var rendered = items.map(renderFooterLink).filter(Boolean);
+  var separator = row.separator == null ? ' · ' : String(row.separator);
+  if (!rendered.length) return '';
+  return rendered.join('<span class="site-footer__separator">' + escapeHTML(separator) + '</span>');
+}
+var left = fill(f.left, '© ' + year + ' ' + name);
+var rightRows = [];
+var powered = renderPowered(f.powered);
+if (powered) rightRows.push(powered);
+normalizeLinkRows(f.links).map(renderLinkRow).filter(Boolean).forEach(function (row) {
+  rightRows.push(row);
+});
+%>
+<footer class="site-footer">
+  <span class="site-footer__left"><%- left %></span>
+  <% if (rightRows.length) { %>
+    <span class="site-footer__right">
+      <% rightRows.forEach(function (row) { %>
+        <span class="site-footer__row"><%- row %></span>
+      <% }); %>
+    </span>
+  <% } %>
+</footer>

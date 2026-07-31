@@ -1,0 +1,134 @@
+/* ============== ARCHIVE / TAXONOMY ============== */
+.archive-paper {
+  --article-top-img-pad-top: 32px;
+  --article-top-img-pad-x: 36px;
+  padding: 32px 36px;
+}
+
+.taxonomy-paper,
+.empty-paper {
+  --article-top-img-pad-top: 24px;
+  --article-top-img-pad-x: 28px;
+  padding: 24px 28px;
+}
+
+.archive-paper--with-top-img,
+.taxonomy-paper--with-top-img {
+  overflow-x: clip;
+}
+
+.archive-paper--with-top-img .article-header h1,
+.taxonomy-paper--with-top-img .article-header h1 {
+  margin: 4px 0 0;
+}
+
+.archive-paper h1,
+.taxonomy-paper h1,
+.empty-paper h1 {
+  margin: 0 0 18px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.archive-list {
+  display: grid;
+  gap: 0;
+}
+
+.archive-item {
+  display: grid;
+  grid-template-columns: 110px 1fr 16px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 14px;
+  transition: color 0.22s ease;
+}
+
+.archive-item:last-child {
+  border-bottom: 0;
+}
+
+.archive-item strong {
+  font-size: 15px;
+  font-weight: 600;
+  transition: color 0.22s ease;
+}
+
+.archive-item span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.archive-item em {
+  width: 8px;
+  height: 8px;
+  border-top: 1.6px solid var(--muted);
+  border-right: 1.6px solid var(--muted);
+  transform: rotate(45deg);
+  transition: border-color 0.22s ease;
+}
+
+.archive-item:hover strong {
+  color: var(--color-accent-strong);
+}
+
+.archive-item:hover em {
+  border-color: var(--color-accent);
+}
+
+.dark-mode .archive-item:hover strong {
+  color: var(--color-accent-muted);
+}
+
+.taxonomy-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.taxonomy-grid .taxonomy-card {
+  flex: 0 0 auto;
+  min-width: 160px;
+}
+
+.taxonomy-card {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 70px;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--paper-warm);
+  font-size: 14px;
+}
+
+.taxonomy-paper > .tag-cloud {
+  gap: 14px;
+}
+
+.taxonomy-paper > .tag-cloud .tag-chip:nth-child(3n) {
+  transform: rotate(-1.5deg);
+}
+.taxonomy-paper > .tag-cloud .tag-chip:nth-child(3n + 1) {
+  transform: rotate(1deg);
+}
+.taxonomy-paper > .tag-cloud .tag-chip:nth-child(5n) {
+  transform: rotate(-0.5deg);
+}
+
+.taxonomy-paper > .tag-cloud .tag-chip:hover {
+  transform: translateY(-3px) scale(1.05) rotate(0deg);
+}
+
+/* Empty-collection message on the tags / categories pages, matching
+   .search-empty's look. */
+.empty-state {
+  margin: 24px 0 8px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}

@@ -1,0 +1,238 @@
+/* ============== PAPER THUMB (illustration) ============== */
+.paper-thumb {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #d5e7d4 0%, #ecf3d8 100%);
+}
+
+.paper-thumb__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.paper-thumb--cover {
+  background: var(--paper-warm);
+}
+
+.post-card:hover .paper-thumb__img,
+.featured-paper:hover .paper-thumb__img {
+  transform: scale(1.04);
+}
+
+/* hide the corner-fold + scenery extras when showing a real photo */
+.paper-thumb--cover::after { display: none; }
+.paper-thumb--cover .sun,
+.paper-thumb--cover .cloud,
+.paper-thumb--cover .mountain,
+.paper-thumb--cover .screen,
+.paper-thumb--cover .camera { display: none; }
+
+.paper-thumb--large {
+  height: 100%;
+  min-height: 160px;
+  border-radius: 10px;
+}
+
+.paper-thumb--small {
+  width: 76px;
+  min-width: 76px;
+  height: 56px;
+  border-radius: 8px;
+}
+
+.paper-thumb::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0 50%, rgba(219, 201, 176, 0.55) 51% 100%);
+  box-shadow: -3px -3px 8px rgba(75, 60, 42, 0.1);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.paper-thumb--small::after {
+  width: 22px;
+  height: 22px;
+}
+
+.sun {
+  position: absolute;
+  top: 18px;
+  left: 22%;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 2px 0 rgba(180, 130, 40, 0.12);
+}
+
+.paper-thumb--small .sun {
+  top: 10px;
+  width: 16px;
+  height: 16px;
+}
+
+.mountain {
+  position: absolute;
+  bottom: -1px;
+  width: 56%;
+  height: 50%;
+  background: linear-gradient(135deg, rgba(95, 158, 110, 0.95), rgba(125, 188, 132, 0.75));
+  clip-path: polygon(0 100%, 52% 0, 100% 100%);
+}
+
+.mountain-a {
+  left: -8%;
+}
+
+.mountain-b {
+  right: 0;
+  height: 62%;
+}
+
+.mountain-c {
+  left: 26%;
+  bottom: -8%;
+  height: 36%;
+  opacity: 0.65;
+}
+
+.cloud {
+  position: absolute;
+  width: 46px;
+  height: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  width: 20px;
+  height: 20px;
+  left: 8px;
+  bottom: 6px;
+}
+
+.cloud::after {
+  width: 28px;
+  height: 28px;
+  right: 6px;
+  bottom: 4px;
+}
+
+.cloud-a {
+  right: 10%;
+  top: 30px;
+}
+
+.cloud-b {
+  left: 8%;
+  top: 56px;
+  transform: scale(0.7);
+}
+
+/* variants */
+.paper-thumb-1 {
+  background: linear-gradient(180deg, #ffd8af, #f7b276);
+}
+
+.paper-thumb-1 .mountain,
+.paper-thumb-1 .cloud,
+.paper-thumb-1 .sun {
+  display: none;
+}
+
+.screen {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 50px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  background: #273942;
+  transform: translate(-50%, -55%);
+  box-shadow: 0 14px 0 -10px #526e78, 0 18px 0 -14px #263942;
+}
+
+.screen i {
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin-bottom: 5px;
+  border-radius: 99px;
+  background: #efbe64;
+}
+
+.screen i:nth-child(2) {
+  width: 30px;
+  background: #76b986;
+}
+
+.screen i:nth-child(3) {
+  width: 48px;
+  background: #6fb1df;
+}
+
+.paper-thumb-2 {
+  background: linear-gradient(180deg, #d8efd8, #a9d5af);
+}
+
+.paper-thumb-2 .mountain,
+.paper-thumb-2 .cloud,
+.paper-thumb-2 .sun {
+  display: none;
+}
+
+.camera {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 76px;
+  height: 50px;
+  border-radius: 10px;
+  background: #56755f;
+  transform: translate(-50%, -48%);
+  box-shadow: inset 0 -10px 0 rgba(30, 55, 44, 0.22);
+}
+
+.camera::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: -10px;
+  width: 32px;
+  height: 14px;
+  border-radius: 6px 6px 0 0;
+  background: #56755f;
+}
+
+.camera i {
+  position: absolute;
+  left: 24px;
+  top: 10px;
+  width: 28px;
+  height: 28px;
+  border: 6px solid #263a36;
+  border-radius: 50%;
+  background: #8eb99a;
+}
+

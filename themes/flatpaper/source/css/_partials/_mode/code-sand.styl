@@ -1,0 +1,127 @@
+/* ============== CODE BLOCK - SAND THEME ============== */
+body[data-code-theme="sand"] .article-content .highlight {
+  background: #f7efdb;
+  color: #2c3531;
+  box-shadow: var(--small-shadow);
+}
+
+body[data-code-theme="sand"] .article-content > pre {
+  background: #f7efdb;
+  color: #2c3531;
+}
+
+body[data-code-theme="sand"] .article-content .highlight::before {
+  background: rgba(60, 50, 25, 0.06);
+  border-bottom: 1px solid rgba(60, 50, 25, 0.1);
+}
+
+body[data-code-theme="sand"] .article-content .highlight .code-lang {
+  background: rgba(60, 50, 25, 0.08);
+  color: var(--ink-soft);
+}
+
+body[data-code-theme="sand"] .article-content .highlight .code-action {
+  color: var(--muted);
+  background: rgba(60, 50, 25, 0.04);
+  border-color: rgba(60, 50, 25, 0.12);
+}
+
+body[data-code-theme="sand"] .article-content .highlight .code-action:hover {
+  color: var(--ink);
+  background: rgba(60, 50, 25, 0.1);
+  border-color: rgba(60, 50, 25, 0.2);
+}
+
+body[data-code-theme="sand"] .article-content .highlight .code-copy.is-copied {
+  color: var(--color-accent-strong);
+  border-color: unquote('color-mix(in srgb, var(--color-accent-strong) 45%, transparent)');
+  background: unquote('color-mix(in srgb, var(--color-accent-soft) 72%, transparent)');
+}
+
+body[data-code-theme="sand"] .article-content .highlight td.gutter {
+  background: rgba(60, 50, 25, 0.04);
+  border-right-color: rgba(60, 50, 25, 0.08);
+}
+
+body[data-code-theme="sand"] .article-content .highlight td.gutter pre {
+  color: rgba(60, 50, 25, 0.4);
+}
+
+/* Line-number interaction states (consumed by code-dark.styl's .line rules).
+   Sand flips to a dark surface in dark mode, hence the .dark-mode reset below. */
+body[data-code-theme="sand"] {
+  --code-gutter-hover-bg: rgba(60, 50, 25, 0.07);
+  --code-gutter-hover-ink: rgba(60, 50, 25, 0.7);
+  --code-gutter-hl-bg: rgba(176, 137, 38, 0.24);
+  --code-gutter-hl-ink: #8a6a14;
+  --code-gutter-copied-ink: var(--color-accent-strong);
+  --code-line-hl-bg: rgba(176, 137, 38, 0.12);
+}
+
+/* Token colors - soft palette tuned for cream paper */
+body[data-code-theme="sand"] .article-content .highlight .comment,
+body[data-code-theme="sand"] .article-content .highlight .quote { color: #8a8678; font-style: italic; }
+body[data-code-theme="sand"] .article-content .highlight .keyword,
+body[data-code-theme="sand"] .article-content .highlight .selector-tag,
+body[data-code-theme="sand"] .article-content .highlight .literal,
+body[data-code-theme="sand"] .article-content .highlight .built_in { color: #8a6cb8; }
+body[data-code-theme="sand"] .article-content .highlight .string,
+body[data-code-theme="sand"] .article-content .highlight .regexp,
+body[data-code-theme="sand"] .article-content .highlight .meta-string { color: #4f8862; }
+body[data-code-theme="sand"] .article-content .highlight .number,
+body[data-code-theme="sand"] .article-content .highlight .symbol,
+body[data-code-theme="sand"] .article-content .highlight .bullet { color: #b68528; }
+body[data-code-theme="sand"] .article-content .highlight .title,
+body[data-code-theme="sand"] .article-content .highlight .name,
+body[data-code-theme="sand"] .article-content .highlight .selector-id,
+body[data-code-theme="sand"] .article-content .highlight .selector-class { color: #4d7eb0; }
+body[data-code-theme="sand"] .article-content .highlight .attr,
+body[data-code-theme="sand"] .article-content .highlight .variable,
+body[data-code-theme="sand"] .article-content .highlight .template-variable { color: #c47438; }
+body[data-code-theme="sand"] .article-content .highlight .params { color: #4a5751; }
+body[data-code-theme="sand"] .article-content .highlight .tag,
+body[data-code-theme="sand"] .article-content .highlight .doctag { color: #8a6cb8; }
+body[data-code-theme="sand"] .article-content .highlight .property,
+body[data-code-theme="sand"] .article-content .highlight .attribute { color: #4d7eb0; }
+body[data-code-theme="sand"] .article-content .highlight .type,
+body[data-code-theme="sand"] .article-content .highlight .class { color: #b68528; }
+body[data-code-theme="sand"] .article-content .highlight .deletion { color: #c4564e; }
+body[data-code-theme="sand"] .article-content .highlight .addition { color: #4f8862; }
+
+/* Scrollbar */
+body[data-code-theme="sand"] .article-content .highlight td.code pre::-webkit-scrollbar-thumb,
+body[data-code-theme="sand"] .article-content > pre::-webkit-scrollbar-thumb {
+  background: rgba(60, 50, 25, 0.16);
+}
+
+/* In dark site mode, keep code block tone closer to surrounding paper */
+.dark-mode body[data-code-theme="sand"] .article-content .highlight,
+.dark-mode body[data-code-theme="sand"] .article-content > pre {
+  background: #3b403c;
+  color: #f1ebde;
+}
+
+.dark-mode body[data-code-theme="sand"] .article-content .highlight::before {
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode body[data-code-theme="sand"] .article-content .highlight td.gutter {
+  background: rgba(255, 255, 255, 0.03);
+  border-right-color: rgba(255, 255, 255, 0.06);
+}
+
+.dark-mode body[data-code-theme="sand"] .article-content .highlight td.gutter pre {
+  color: rgba(241, 235, 222, 0.4);
+}
+
+/* Back to the dark-surface interaction palette (same values as the
+   code-dark.styl defaults). */
+.dark-mode body[data-code-theme="sand"] {
+  --code-gutter-hover-bg: rgba(255, 255, 255, 0.04);
+  --code-gutter-hover-ink: #d8d2c5;
+  --code-gutter-hl-bg: rgba(241, 193, 84, 0.18);
+  --code-gutter-hl-ink: #f0bd4d;
+  --code-gutter-copied-ink: #fff;
+  --code-line-hl-bg: rgba(241, 193, 84, 0.12);
+}

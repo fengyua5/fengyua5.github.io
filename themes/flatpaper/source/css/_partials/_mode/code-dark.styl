@@ -1,0 +1,442 @@
+/* ============== CODE ============== */
+.article-content pre,
+.article-content code,
+.article-content .highlight,
+.article-content .highlight table,
+.article-content .highlight pre {
+  font-family: var(--font-mono);
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+/* inline code */
+.article-content :not(pre) > code {
+  padding: 2px 7px;
+  margin: 0 2px;
+  border-radius: 0;
+  font-size: 0.86em;
+  font-weight: 500;
+  color: var(--color-accent-strong);
+  background: unquote('color-mix(in srgb, var(--color-accent-soft) 58%, var(--paper) 42%)');
+  border: 1px solid unquote('color-mix(in srgb, var(--color-accent) 26%, transparent)');
+  box-shadow: 0 0 0 2px unquote('color-mix(in srgb, var(--color-accent-soft) 42%, transparent)');
+  white-space: break-spaces;
+}
+
+.dark-mode .article-content :not(pre) > code {
+  color: var(--color-accent-muted);
+  background: unquote('color-mix(in srgb, var(--color-accent-soft) 62%, var(--paper) 38%)');
+  border-color: unquote('color-mix(in srgb, var(--color-accent-muted) 30%, transparent)');
+  box-shadow: 0 0 0 2px unquote('color-mix(in srgb, var(--color-accent-soft) 34%, transparent)');
+}
+
+/* plain fenced ```code``` (no highlight wrapper) */
+.article-content > pre {
+  position: relative;
+  overflow: auto;
+  margin: 22px 0;
+  padding: 18px 22px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #e9e3d4;
+  background: #232a2c;
+  box-shadow: var(--small-shadow);
+}
+
+.article-content > pre code {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Hexo highlight.js wrapper */
+.article-content .highlight {
+  position: relative;
+  margin: 22px 0;
+  padding-top: 38px;
+  border-radius: 12px;
+  background: #232a2c;
+  color: #e9e3d4;
+  font-size: 13px;
+  line-height: 1.55;
+  box-shadow: var(--small-shadow);
+  overflow: hidden;
+}
+
+/* macOS title bar */
+.article-content .highlight::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 0;
+}
+
+/* traffic lights */
+.article-content .highlight::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ff6058;
+  box-shadow: 18px 0 0 #febc2e, 36px 0 0 #28c840;
+  opacity: 0.92;
+  z-index: 1;
+}
+
+.article-content .highlight figcaption {
+  position: absolute;
+  top: 0;
+  left: 70px;
+  right: 56px;
+  height: 38px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  color: #b8b1a0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.article-content .highlight figcaption a {
+  pointer-events: auto;
+}
+
+/* title bar widgets (lang label left, action buttons right) */
+.article-content .highlight .code-bar {
+  position: absolute;
+  top: 0;
+  left: 70px;
+  right: 10px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  z-index: 3;
+}
+
+.article-content .highlight .code-lang {
+  margin-right: auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cfc8b6;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.article-content .highlight .code-action {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: #b8b1a0;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.article-content .highlight .code-action:hover {
+  color: #e9e3d4;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.article-content .highlight .code-copy.is-copied {
+  color: var(--color-accent-muted);
+  border-color: unquote('color-mix(in srgb, var(--color-accent-muted) 45%, transparent)');
+  background: unquote('color-mix(in srgb, var(--color-accent-soft) 72%, transparent)');
+}
+
+.article-content .highlight .code-fold .lucide {
+  transition: transform 0.22s ease;
+}
+
+.article-content .highlight.is-folded .code-fold .lucide {
+  transform: rotate(180deg);
+}
+
+.article-content .highlight.is-folded table {
+  display: none;
+}
+
+.article-content .highlight.is-folded {
+  padding-top: 38px;
+}
+
+.article-content .highlight .code-copy .lucide {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2;
+}
+
+
+.article-content .highlight figcaption a {
+  color: var(--color-accent-muted);
+}
+
+.article-content .highlight figcaption a:hover {
+  text-decoration: underline;
+}
+
+.article-content .highlight table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  border-radius: 0;
+  table-layout: fixed;
+}
+
+.article-content .highlight tr,
+.article-content .highlight td {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+.article-content .highlight td.gutter {
+  width: 48px;
+  padding: 14px 0;
+  text-align: right;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.025);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.article-content .highlight td.gutter pre {
+  margin: 0;
+  padding: 0 14px 0 18px;
+  background: transparent;
+  color: #6f6a5d;
+  font: inherit;
+  line-height: inherit;
+}
+
+.article-content .highlight td.code {
+  width: calc(100% - 48px);
+  padding: 14px 0;
+}
+
+.article-content .highlight td.code pre {
+  margin: 0;
+  padding: 0 20px;
+  overflow-x: auto;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.article-content .highlight .line {
+  padding: 0;
+}
+
+.article-content .highlight pre br {
+  line-height: 0;
+}
+
+/* Line-number interactions: single-click toggles row highlight,
+   double-click copies the matching code line.
+   Each gutter .line is rendered as a full-row block so the entire row is
+   clickable, not just the digits. */
+.article-content .highlight td.gutter .line {
+  display: block;
+  cursor: pointer;
+  margin: 0 -14px 0 -18px;
+  padding: 0 14px 0 18px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.article-content .highlight td.gutter pre br {
+  display: none;
+}
+
+/* Interaction colors go through variables (defaults tuned for this dark
+   default theme) so the light/sand/simple code themes can retune them just by
+   resetting the variables — see the other _mode/*.styl files. */
+.article-content .highlight td.gutter .line:hover:not(.is-highlight):not(.is-copied) {
+  background: var(--code-gutter-hover-bg, rgba(255, 255, 255, 0.04));
+  color: var(--code-gutter-hover-ink, #d8d2c5);
+}
+
+.article-content .highlight td.gutter .line.is-highlight {
+  background: var(--code-gutter-hl-bg, rgba(241, 193, 84, 0.18));
+  color: var(--code-gutter-hl-ink, #f0bd4d);
+}
+
+.article-content .highlight td.gutter .line.is-copied {
+  background: unquote('color-mix(in srgb, var(--color-accent-muted) 40%, transparent)');
+  color: var(--code-gutter-copied-ink, #fff);
+}
+
+.article-content .highlight td.code .line.is-highlight {
+  display: block;
+  height: 1.55em;
+  margin: 0 -20px;
+  padding: 0 20px;
+  background: var(--code-line-hl-bg, rgba(241, 193, 84, 0.12));
+}
+
+.article-content .highlight td.code .line.is-highlight + br {
+  display: none;
+}
+
+.article-content .highlight pre * {
+  vertical-align: baseline;
+}
+
+/* Token colors (highlight.js without hljs prefix uses generic class names) */
+.article-content .highlight .comment,
+.article-content .highlight .quote { color: #7e8a83; font-style: italic; }
+.article-content .highlight .keyword,
+.article-content .highlight .selector-tag,
+.article-content .highlight .literal,
+.article-content .highlight .built_in { color: #c594c5; }
+.article-content .highlight .string,
+.article-content .highlight .regexp,
+.article-content .highlight .meta-string { color: #a3be8c; }
+.article-content .highlight .number,
+.article-content .highlight .symbol,
+.article-content .highlight .bullet { color: #f0bd4d; }
+.article-content .highlight .title,
+.article-content .highlight .name,
+.article-content .highlight .selector-id,
+.article-content .highlight .selector-class { color: #8ab9d8; }
+.article-content .highlight .attr,
+.article-content .highlight .variable,
+.article-content .highlight .template-variable { color: #ec9b5b; }
+.article-content .highlight .params { color: #d8d2c5; }
+.article-content .highlight .tag,
+.article-content .highlight .doctag { color: #c594c5; }
+.article-content .highlight .property,
+.article-content .highlight .attribute { color: #8ab9d8; }
+.article-content .highlight .type,
+.article-content .highlight .class { color: #f0bd4d; }
+.article-content .highlight .deletion { color: #d4716c; }
+.article-content .highlight .addition { color: #8ab98d; }
+
+/* Scrollbar inside code */
+.article-content .highlight td.code pre::-webkit-scrollbar,
+.article-content > pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.article-content .highlight td.code pre::-webkit-scrollbar-thumb,
+.article-content > pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.article-content .highlight td.code pre::-webkit-scrollbar-track,
+.article-content > pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.article-content table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 22px 0;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  font-size: 14px;
+}
+
+.article-content th,
+.article-content td {
+  min-width: 10ch;
+  padding: 10px 12px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.article-content table a:not(.heading-anchor) {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.article-content .highlight th,
+.article-content .highlight td {
+  min-width: 0;
+}
+
+.article-content th[align="center"],
+.article-content td[align="center"] {
+  text-align: center;
+}
+
+.article-content th[align="right"],
+.article-content td[align="right"] {
+  text-align: right;
+}
+
+.article-content th[align="left"],
+.article-content td[align="left"] {
+  text-align: left;
+}
+
+.article-content tr > :last-child {
+  border-right: 0;
+}
+
+.article-content tbody tr:last-child > th,
+.article-content tbody tr:last-child > td,
+.article-content tfoot tr:last-child > th,
+.article-content tfoot tr:last-child > td,
+.article-content table > tr:last-child > th,
+.article-content table > tr:last-child > td,
+.article-content thead:last-child tr:last-child > th {
+  border-bottom: 0;
+}
+
+.article-content th {
+  background: unquote('color-mix(in srgb, var(--color-accent-soft) 25%, var(--paper) 75%)');
+  font-weight: 700;
+}
+
+.article-content img {
+  display: block;
+  margin: 22px auto;
+  border-radius: 0;
+  box-shadow: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.article-content img:hover,
+.article-content img:focus-visible {
+  box-shadow: 5px 5px 0 unquote('rgba(var(--paper-shadow-rgb), 0.1)');
+  transform: translate(-5px, -5px);
+}
+
+.dark-mode .article-content img:hover,
+.dark-mode .article-content img:focus-visible {
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.26);
+}

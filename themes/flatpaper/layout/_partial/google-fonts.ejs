@@ -1,0 +1,130 @@
+<%
+var googleFonts = theme.google_fonts || {};
+var fontsEnabled = googleFonts.enable === true;
+
+function normalizeFontList(value) {
+  if (typeof value === 'string') value = [value];
+  if (!Array.isArray(value)) return [];
+  return value.map(cleanFontName).filter(Boolean);
+}
+
+function normalizeFontBase(value) {
+  var raw = String(value || 'https://fonts.googleapis.com').trim();
+  if (!raw) raw = 'https://fonts.googleapis.com';
+  if (/^\/\//.test(raw)) raw = 'https:' + raw;
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)) raw = 'https://' + raw;
+  try {
+    var parsed = new URL(raw);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '';
+    return (parsed.origin + parsed.pathname).replace(/\/+$/, '').replace(/\/css2$/i, '');
+  } catch (e) {
+    return '';
+  }
+}
+
+function normalizeFontOrigin(value) {
+  try {
+    return new URL(value).origin;
+  } catch (e) {
+    return '';
+  }
+}
+
+function encodeFamily(value) {
+  return encodeURIComponent(value).replace(/%20/g, '+');
+}
+
+function encodeText(value) {
+  return encodeURIComponent(value);
+}
+
+function cleanFontName(value) {
+  var raw = String(value || '').trim();
+  if (!raw || /[<>{}]/.test(raw)) return '';
+  return raw;
+}
+
+function normalizeFontText(value) {
+  if (value === undefined || value === null || value === false) return '';
+  if (Array.isArray(value)) value = value.join('');
+  return String(value).replace(/[\r\n\t]/g, '');
+}
+
+function buildFontHref(families, text) {
+  if (!fontsEnabled || !fontBase || !families.length) return '';
+  var fontParams = uniqueFonts(families).map(function (family) {
+    return 'family=' + encodeFamily(family);
+  });
+  var fontText = normalizeFontText(text);
+  if (fontText) fontParams.push('text=' + encodeText(fontText));
+  fontParams.push('display=swap');
+  return fontBase + '/css2?' + fontParams.join('&');
+}
+
+function uniqueValues(values) {
+  var seen = {};
+  return values.filter(function (value) {
+    if (!value || seen[value]) return false;
+    seen[value] = true;
+    return true;
+  });
+}
+
+function fontStackName(family) {
+  return String(family || '').split(':')[0].trim();
+}
+
+function quoteFontStack(families, fallback) {
+  return families.map(function (family) {
+    var name = fontStackName(family);
+    if (!name) return '';
+    return '"' + name.replace(/"/g, '') + '"';
+  }).filter(Boolean).join(', ') + ', ' + fallback;
+}
+
+function uniqueFonts(families) {
+  var seen = {};
+  return families.filter(function (family) {
+    var key = family.toLowerCase();
+    if (seen[key]) return false;
+    seen[key] = true;
+    return true;
+  });
+}
+
+var fontBase = normalizeFontBase(googleFonts.cdn || googleFonts.host || googleFonts.domain);
+var fontOrigin = normalizeFontOrigin(fontBase);
+var textFamilies = normalizeFontList(googleFonts.text_font || googleFonts.textFont || googleFonts.text_fonts);
+var sansFamilies = normalizeFontList(googleFonts.fonts);
+var monoFamilies = normalizeFontList(googleFonts.mono || googleFonts.monospace);
+var fontText = normalizeFontText(googleFonts.text);
+var hasTextSubset = fontText && textFamilies.length;
+var fontHrefs = uniqueValues([
+  hasTextSubset ? buildFontHref(textFamilies, fontText) : '',
+  buildFontHref(sansFamilies),
+  buildFontHref(monoFamilies)
+]);
+var sansStackFamilies = hasTextSubset ? textFamilies.concat(sansFamilies) : sansFamilies;
+
+var fontVars = [];
+if (fontsEnabled && sansStackFamilies.length) {
+  fontVars.push('--font-sans: ' + quoteFontStack(sansStackFamilies, '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif') + ';');
+}
+if (fontsEnabled && monoFamilies.length) {
+  fontVars.push('--font-mono: ' + quoteFontStack(monoFamilies, '"JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", "Cascadia Code", monospace') + ';');
+}
+%>
+<% if (fontsEnabled && fontHrefs.length) { %>
+<% if (googleFonts.preconnect !== false && fontOrigin) { %>
+<link rel="preconnect" href="<%= fontOrigin %>">
+<% if (fontOrigin === 'https://fonts.googleapis.com') { %>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<% } %>
+<% } %>
+<% fontHrefs.forEach(function (fontHref) { %>
+<link rel="stylesheet" href="<%= flatpaper_safe_url(fontHref, 'href') %>">
+<% }); %>
+<% } %>
+<% if (fontsEnabled && fontVars.length) { %>
+<style>:root { <%- fontVars.join(' ') %> }</style>
+<% } %>

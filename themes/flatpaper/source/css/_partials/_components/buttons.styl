@@ -1,0 +1,64 @@
+/* ============== ICON BUTTON STYLE: tape ==============
+   Optional scrapbook treatment for every circular icon button in the theme,
+   toggled via `buttons.style: tape` (body[data-button-style="tape"]).
+   Default (no attribute / "circle") keeps each button's own circular style
+   defined in its component file. Covered buttons:
+     - header: brand mark, sidebar toggle, search, palette, theme toggle
+     - profile social links
+     - post reaction buttons
+     - toc expand/collapse toggle
+     - search dialog close
+     - narrow-screen drawer close
+   Look: ink-blob corners + 2px hand-drawn dashed border + a slight
+   hand-placed tilt at rest; on hover they straighten, lift, and fill with
+   washi-tape stripes to match the nav links and tags. */
+
+body[data-button-style="tape"] .brand-mark,
+body[data-button-style="tape"] .icon-button,
+body[data-button-style="tape"] .theme-toggle,
+body[data-button-style="tape"] .socials a,
+body[data-button-style="tape"] .reaction,
+body[data-button-style="tape"] .toc-toggle-all {
+  border: 2px dashed var(--dash);
+  border-radius: var(--radius-handdrawn);
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.22s ease, box-shadow 0.2s ease;
+}
+
+/* Hand-placed tilt at rest — varied per button so the row looks scattered. */
+body[data-button-style="tape"] .brand-mark { transform: rotate(-3deg); }
+body[data-button-style="tape"] .js-sidebar-toggle { transform: rotate(3deg); }
+body[data-button-style="tape"] .js-search-open { transform: rotate(-3deg); }
+body[data-button-style="tape"] .accent-toggle { transform: rotate(2deg); }
+body[data-button-style="tape"] .theme-toggle { transform: rotate(-2deg); }
+body[data-button-style="tape"] .socials a:nth-child(odd) { transform: rotate(-3deg); }
+body[data-button-style="tape"] .socials a:nth-child(even) { transform: rotate(3deg); }
+body[data-button-style="tape"] .reaction { transform: rotate(-2deg); }
+body[data-button-style="tape"] .toc-toggle-all { transform: rotate(-3deg); }
+body[data-button-style="tape"] .search-dialog .icon-button { transform: rotate(3deg); }
+body[data-button-style="tape"] .icon-button.drawer-close { transform: rotate(-3deg); }
+
+/* Unified hover — straighten, lift, washi-tape fill. */
+body[data-button-style="tape"] .brand-mark-wrapper:hover .brand-mark,
+body[data-button-style="tape"] .brand-mark:hover,
+body[data-button-style="tape"] .icon-button:hover,
+body[data-button-style="tape"] .theme-toggle:hover,
+body[data-button-style="tape"] .socials a:hover,
+body[data-button-style="tape"] .reaction:hover,
+body[data-button-style="tape"] .toc-toggle-all:hover {
+  color: var(--color-accent-strong);
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-soft);
+  background-image: var(--nav-tape-stripes);
+  transform: rotate(0deg) translateY(-2px) scale(1.06);
+  box-shadow: var(--soft-shadow);
+}
+
+.dark-mode body[data-button-style="tape"] .brand-mark-wrapper:hover .brand-mark,
+.dark-mode body[data-button-style="tape"] .brand-mark:hover,
+.dark-mode body[data-button-style="tape"] .icon-button:hover,
+.dark-mode body[data-button-style="tape"] .theme-toggle:hover,
+.dark-mode body[data-button-style="tape"] .socials a:hover,
+.dark-mode body[data-button-style="tape"] .reaction:hover,
+.dark-mode body[data-button-style="tape"] .toc-toggle-all:hover {
+  color: var(--color-accent-muted);
+}

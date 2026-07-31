@@ -1,0 +1,9 @@
+<%
+var pageTopImgData = topImg || {};
+var pageTopImgLabel = label || '';
+%>
+<% if (pageTopImgData.src) { %>
+  <figure class="article-top-img article-top-img--page"<% if (pageTopImgLabel) { %> aria-label="<%= pageTopImgLabel %>"<% } %>>
+    <img src="<%= pageTopImgData.src %>" alt="" loading="eager" fetchpriority="high" referrerpolicy="no-referrer" draggable="false">
+  </figure>
+<% } %>

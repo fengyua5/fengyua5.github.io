@@ -1,0 +1,276 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f3e9" data-flatpaper-theme-color>
+<%
+var siteTitle = config.title || 'FlatPaper';
+var titleParts = [];
+if (is_tag()) titleParts.push(flatpaper_i18n('head.tag', page.tag));
+else if (is_category()) titleParts.push(flatpaper_i18n('head.category', page.category));
+else if (is_archive()) {
+  var archiveDate = page.year ? page.year + (page.month ? '/' + (page.month < 10 ? '0' : '') + page.month : '') : '';
+  titleParts.push(archiveDate ? flatpaper_i18n('head.archive_with_date', archiveDate) : flatpaper_i18n('head.archive'));
+}
+else if (page.title && !is_home()) titleParts.push(page.title);
+if (page.current && page.current > 1) titleParts.push(flatpaper_i18n('head.page_number', page.current));
+var fullTitle = titleParts.length ? titleParts.join(' · ') + ' | ' + siteTitle : siteTitle;
+// First string-valued cover-ish front-matter field, for og:image; open_graph
+// falls back to page.photos / first content image on its own.
+var ogImage = ['cover', 'thumbnail', 'image', 'banner'].map(function (k) { return page[k]; }).filter(function (v) { return typeof v === 'string' && v; })[0];
+var canonicalUrl = (page.permalink || full_url_for(page.path || '')).replace(/index\.html$/, '');
+var siteDescription = config.description || '';
+var htmlLang = flatpaper_i18n_language();
+
+function cleanText(value) {
+  return strip_html(String(value || '')).replace(/\s+/g, ' ').trim();
+}
+
+function truncateText(value, max) {
+  var text = cleanText(value);
+  if (text.length <= max) return text;
+  return text.slice(0, max).replace(/[，。；、,.!?;:\s]+$/g, '') + '...';
+}
+
+function collectionPosts() {
+  if (page.posts && typeof page.posts.toArray === 'function') return page.posts.toArray();
+  if (typeof flatpaper_sorted_posts === 'function') return flatpaper_sorted_posts();
+  return [];
+}
+
+function allPosts() {
+  if (typeof flatpaper_sorted_posts === 'function') return flatpaper_sorted_posts();
+  return [];
+}
+
+function toArray(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  if (typeof value.toArray === 'function') return value.toArray();
+  return [];
+}
+
+function collectionLength(value) {
+  if (!value) return null;
+  if (typeof value.length === 'number') return value.length;
+  if (typeof value.count === 'function') return value.count();
+  if (typeof value.toArray === 'function') return value.toArray().length;
+  return null;
+}
+
+function normalizedPath(value) {
+  return String(value || '')
+    .split(/[?#]/)[0]
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '')
+    .replace(/(^|\/)index\.html$/i, '')
+    .replace(/\/+$/, '')
+    .toLowerCase();
+}
+
+function taxonomyName(value) {
+  if (value && typeof value === 'object') return value.name || value.slug || value.path || value._id || '';
+  return value;
+}
+
+function taxonomyPostCount(collection, name) {
+  var target = String(taxonomyName(name) || '').toLowerCase();
+  var targetPath = normalizedPath(taxonomyName(name));
+  var items = toArray(collection);
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var names = [item.name, item.slug, item._id].map(function (v) { return String(v || '').toLowerCase(); });
+    var paths = [item.path, item.permalink].map(normalizedPath);
+    if (names.indexOf(target) > -1 || paths.indexOf(targetPath) > -1) {
+      var count = collectionLength(item.posts);
+      return count == null ? collectionLength(item) : count;
+    }
+  }
+  return null;
+}
+
+function postYear(post) {
+  var date = post.date;
+  if (!date) return null;
+  if (typeof date.year === 'function') return date.year();
+  var parsed = new Date(date);
+  return isNaN(parsed.getTime()) ? null : parsed.getFullYear();
+}
+
+function postMonth(post) {
+  var date = post.date;
+  if (!date) return null;
+  if (typeof date.month === 'function') return date.month() + 1;
+  var parsed = new Date(date);
+  return isNaN(parsed.getTime()) ? null : parsed.getMonth() + 1;
+}
+
+function archivePostCount() {
+  var posts = allPosts();
+  if (!page.year) return posts.length;
+  var year = Number(page.year);
+  var month = page.month ? Number(page.month) : null;
+  return posts.filter(function (post) {
+    return postYear(post) === year && (!month || postMonth(post) === month);
+  }).length;
+}
+
+function listPostCount(posts) {
+  if (is_tag()) {
+    var tagCount = taxonomyPostCount(site.tags, page.tag);
+    return tagCount == null ? posts.length : tagCount;
+  }
+  if (is_category()) {
+    var categoryCount = taxonomyPostCount(site.categories, page.category);
+    return categoryCount == null ? posts.length : categoryCount;
+  }
+  if (is_archive()) return archivePostCount();
+  if (is_home()) return allPosts().length;
+  return posts.length;
+}
+
+function postTitles(posts, limit) {
+  return posts.slice(0, limit).map(function (post) { return cleanText(post.title); }).filter(Boolean);
+}
+
+function joinTitles(titles) {
+  return htmlLang === 'en' ? titles.join(', ') : titles.join('、');
+}
+
+function countText(count) {
+  return htmlLang === 'en' ? count + (count === 1 ? ' post' : ' posts') : count + ' 篇文章';
+}
+
+function pageNumberSuffix() {
+  return page.current && page.current > 1 ? (htmlLang === 'en' ? ' Page ' + page.current + '.' : ' 第 ' + page.current + ' 页。') : '';
+}
+
+function listDescription(label, posts, totalCount) {
+  var titles = postTitles(posts, 3);
+  var count = countText(typeof totalCount === 'number' ? totalCount : posts.length);
+  if (htmlLang === 'en') {
+    return titles.length
+      ? label + ' includes ' + count + ', including ' + joinTitles(titles) + '.' + pageNumberSuffix()
+      : label + ' includes ' + count + '.' + pageNumberSuffix();
+  }
+  return titles.length
+    ? label + '收录 ' + count + '，包括' + joinTitles(titles) + '。' + pageNumberSuffix()
+    : label + '收录 ' + count + '。' + pageNumberSuffix();
+}
+
+function resolveDescription() {
+  if (page.description) return truncateText(page.description, 180);
+  if (is_post()) return truncateText(page.excerpt || page.content || siteDescription, 180);
+  var posts = collectionPosts();
+  if (is_tag()) {
+    return truncateText(listDescription(htmlLang === 'en' ? 'Tag "' + page.tag + '"' : '标签「' + page.tag + '」', posts, listPostCount(posts)), 180);
+  }
+  if (is_category()) {
+    return truncateText(listDescription(htmlLang === 'en' ? 'Category "' + page.category + '"' : '分类「' + page.category + '」', posts, listPostCount(posts)), 180);
+  }
+  if (is_archive()) {
+    var archiveLabel = titleParts.length ? titleParts[0] : flatpaper_i18n('head.archive');
+    return truncateText(listDescription(archiveLabel, posts, listPostCount(posts)), 180);
+  }
+  if (is_home()) {
+    return truncateText(posts.length ? listDescription(siteTitle, posts, listPostCount(posts)) : siteDescription, 180);
+  }
+  return truncateText(page.excerpt || page.content || siteDescription, 180);
+}
+
+function absoluteUrl(value) {
+  if (!value) return '';
+  var raw = String(value);
+  if (/^https?:\/\//i.test(raw)) return raw;
+  return full_url_for(url_for(raw));
+}
+
+function assetUrl(value) {
+  var raw = String(value || '');
+  if (/^(https?:)?\/\//i.test(raw)) return raw;
+  return url_for(raw);
+}
+
+function faviconType(value) {
+  var path = String(value || '').split(/[?#]/)[0].toLowerCase();
+  if (path.slice(-4) === '.svg') return 'image/svg+xml';
+  if (path.slice(-4) === '.png') return 'image/png';
+  if (path.slice(-4) === '.ico') return 'image/x-icon';
+  return '';
+}
+
+function isoDate(value) {
+  if (!value) return '';
+  var d = new Date(value);
+  return isNaN(d.getTime()) ? '' : d.toISOString();
+}
+
+var seoDescription = resolveDescription();
+var seoImage = absoluteUrl(ogImage);
+var jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': is_post() ? 'BlogPosting' : (is_home() ? 'Blog' : 'CollectionPage'),
+  headline: is_post() ? cleanText(page.title) : fullTitle,
+  name: fullTitle,
+  description: seoDescription,
+  url: canonicalUrl,
+  inLanguage: htmlLang,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: siteTitle,
+    url: full_url_for('/')
+  }
+};
+
+if (seoImage) jsonLd.image = [seoImage];
+if (is_post()) {
+  jsonLd.mainEntityOfPage = canonicalUrl;
+  jsonLd.datePublished = isoDate(page.date);
+  jsonLd.dateModified = isoDate(page.updated || page.date);
+  jsonLd.author = {
+    '@type': 'Person',
+    name: config.author || siteTitle
+  };
+  jsonLd.publisher = {
+    '@type': 'Organization',
+    name: siteTitle
+  };
+  var jsonTags = page.tags && typeof page.tags.toArray === 'function'
+    ? page.tags.toArray().map(function (tag) { return cleanText(tag.name); }).filter(Boolean)
+    : [];
+  if (jsonTags.length) jsonLd.keywords = jsonTags.join(', ');
+} else {
+  jsonLd.about = titleParts.length ? titleParts[0] : siteTitle;
+}
+var favicon = theme.favicon === false ? '' : (theme.favicon || '/images/favicon.png');
+var faviconMime = faviconType(favicon);
+%>
+<title><%= fullTitle %></title>
+<%- open_graph({ title: fullTitle, description: seoDescription, image: ogImage, url: canonicalUrl }) %>
+<link rel="canonical" href="<%= canonicalUrl %>">
+<% if (favicon) { %>
+<link rel="icon" href="<%= flatpaper_safe_url(assetUrl(favicon), 'image') %>"<% if (faviconMime) { %> type="<%= faviconMime %>"<% } %>>
+<% } %>
+<script type="application/ld+json"><%- JSON.stringify(jsonLd).replace(/<\//g, '<\\/') %></script>
+<%
+var accentColor = theme.color || theme.accent_color || theme.theme_color || 'green';
+accentColor = String(accentColor).toLowerCase();
+if (['orange', 'purple', 'sakura', 'blue', 'pink', 'green', 'black'].indexOf(accentColor) === -1) accentColor = 'green';
+%>
+<script>
+  (function () {
+    var accents = { orange: 1, purple: 1, sakura: 1, blue: 1, pink: 1, green: 1, black: 1 };
+    var match = document.cookie.match(/(?:^|;\s*)flatpaper-accent=([^;]+)/);
+    var accent = '<%= accentColor %>';
+    if (match) {
+      try { accent = decodeURIComponent(match[1]); } catch (e) {}
+    }
+    if (!accents[accent]) accent = '<%= accentColor %>';
+    document.documentElement.setAttribute('data-accent', accent);
+    try {
+      if (localStorage.getItem('flatpaper-mode') === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+      }
+    } catch (e) {}
+  })();
+</script>
+<%- css('css/style') %>
+<%- partial('_partial/google-fonts') %>

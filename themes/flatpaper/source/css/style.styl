@@ -1,0 +1,61 @@
+// FlatPaper main stylesheet entry.
+// Each partial is plain CSS (Stylus accepts it as-is); hexo-renderer-stylus
+// inlines them at compile time into a single /css/style.css.
+
+// 1. tokens & base reset
+@import '_partials/var'
+@import '_partials/base'
+
+// 2. layout chrome
+@import '_partials/_layout/header'
+@import '_partials/_layout/tape'
+@import '_partials/_layout/shell'
+@import '_partials/_layout/footer'
+
+// 3. globally reused atoms
+@import '_partials/_global/section-head'
+@import '_partials/_global/thumbnail'
+@import '_partials/_global/pager'
+
+// 4. components
+@import '_partials/_components/welcome'
+@import '_partials/_components/categories-sidebar'
+@import '_partials/_components/toc'
+@import '_partials/_components/home-hero'
+@import '_partials/_components/featured-carousel'
+@import '_partials/_components/featured-paper'
+@import '_partials/_components/post-card'
+@import '_partials/_components/profile'
+@import '_partials/_components/tags'
+@import '_partials/_components/random-posts'
+@import '_partials/_components/reactions'
+@import '_partials/_components/article-nav'
+@import '_partials/_components/related-paper'
+@import '_partials/_components/search'
+@import '_partials/_components/note-blocks'
+@import '_partials/_components/tabs-block'
+@import '_partials/_components/friends'
+@import '_partials/_components/friends-feed'
+@import '_partials/_components/guestbook'
+@import '_partials/_components/comments'
+@import '_partials/_components/ad-slot'
+
+// optional icon-button style variant (default circle; opt-in tape)
+@import '_partials/_components/buttons'
+
+// 5. page-level
+@import '_partials/_page/article'
+@import '_partials/_page/not-found'
+@import '_partials/_page/archive-taxonomy'
+
+// 6. mode variants (code theme; loaded last so they win the cascade)
+@import '_partials/_mode/code-dark'
+@import '_partials/_mode/code-sand'
+@import '_partials/_mode/code-light'
+@import '_partials/_mode/code-simple'
+
+// 7. media queries (must come last so they override everything above)
+@import '_partials/_layout/responsive'
+
+// 8. compatibility fallbacks for older engines
+@import '_partials/_global/compat'

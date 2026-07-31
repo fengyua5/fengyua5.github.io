@@ -1,0 +1,26 @@
+<%
+var latestCfg = theme.latest_posts || {};
+var latestEnabled = !!(latestCfg && latestCfg.enable);
+var latestLimit = latestCfg && latestCfg.limit != null ? parseInt(latestCfg.limit, 10) : 5;
+if (isNaN(latestLimit)) latestLimit = 5;
+var latestPosts = latestEnabled && latestLimit > 0
+  ? flatpaper_sorted_posts()
+    .filter(function (post) { return !page.path || post.path !== page.path; })
+    .slice(0, latestLimit)
+  : [];
+%>
+<% if (latestPosts.length) { %>
+  <section class="side-card recent-card latest-posts-card">
+    <h2><%- partial('_partial/icons', { icon: 'history' }) %><%= flatpaper_i18n('sidebar.latest_posts') %></h2>
+    <ul class="recent-list">
+      <% latestPosts.forEach(function (post) { %>
+        <li>
+          <a class="recent-item" href="<%- url_for(post.path) %>">
+            <strong><%= post.title %></strong>
+            <em><%= date(post.date, 'YYYY-MM-DD') %></em>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+<% } %>

@@ -1,0 +1,36 @@
+<%
+// Comment-system SDK loader. Picks Twikoo or Artalk based on theme.comments
+// and only emits the <script>/<link> tags on pages that actually render the
+// comments section (posts and standalone `page` layouts, when front-matter
+// hasn't opted out via `comments: false`).
+var sys = theme.comments ? String(theme.comments).toLowerCase() : '';
+var pageTypeKey = String(page.type || '').toLowerCase();
+var isNotFoundPage = page.layout === '404' || pageTypeKey === '404';
+var isContentPage = (is_post() || page.layout === 'page') && !isNotFoundPage;
+if (!isContentPage || page.comments === false) { sys = ''; }
+
+if (sys === 'twikoo' && theme.twikoo && theme.twikoo.envId) {
+  var tkCdn = flatpaper_safe_url(
+    theme.twikoo.cdn || 'https://cdn.jsdelivr.net/npm/twikoo@1.7.9/dist/twikoo.all.min.js',
+    'href'
+  );
+  if (tkCdn && tkCdn !== '#') {
+%>
+<script defer src="<%= tkCdn %>"></script>
+<% }
+} else if (sys === 'artalk' && theme.artalk && theme.artalk.server) {
+  var akCss = flatpaper_safe_url(
+    theme.artalk.cdn_css || 'https://cdn.jsdelivr.net/npm/artalk@2.9.1/dist/Artalk.css',
+    'href'
+  );
+  var akJs = flatpaper_safe_url(
+    theme.artalk.cdn_js || 'https://cdn.jsdelivr.net/npm/artalk@2.9.1/dist/Artalk.js',
+    'href'
+  );
+  if (akCss && akCss !== '#') { %>
+<link rel="stylesheet" href="<%= akCss %>">
+<% }
+  if (akJs && akJs !== '#') { %>
+<script defer src="<%= akJs %>"></script>
+<% }
+} %>

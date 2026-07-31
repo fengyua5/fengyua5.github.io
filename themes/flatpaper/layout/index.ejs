@@ -1,0 +1,126 @@
+<%
+var allPosts = flatpaper_sorted_posts();
+var posts = page.posts ? page.posts.toArray() : allPosts;
+
+// Resolve featured posts only on the first page.
+var featured = [];
+var isFirstPage = !page.current || page.current === 1;
+if (isFirstPage && theme.featured && theme.featured.length) {
+  var keys = (Array.isArray(theme.featured) ? theme.featured : [theme.featured])
+    .filter(Boolean).map(function (k) { return String(k).toLowerCase(); });
+  keys.slice(0, 4).forEach(function (key) {
+    var match = allPosts.find(function (p) {
+      var slug = (p.slug || '').toLowerCase();
+      var path = (p.path || '').toLowerCase().replace(/\/$/, '');
+      var title = (p.title || '').toLowerCase();
+      return slug === key || path === key || path.endsWith('/' + key) ||
+             path === key.replace(/^\/+|\/+$/g, '') || title === key;
+    });
+    if (match && featured.indexOf(match) === -1) featured.push(match);
+  });
+}
+var autoplay = (typeof theme.featured_autoplay === 'number') ? theme.featured_autoplay : 5000;
+var featuredImageZigzag = theme.featured_image_zigzag !== false;
+%>
+
+<% if (featured.length) { %>
+  <section
+    class="featured-carousel<%= featured.length > 1 ? ' has-multiple' : '' %>"
+    data-autoplay="<%= autoplay %>"
+    aria-label="<%= flatpaper_i18n('index.featured') %>"
+  >
+    <div class="featured-track">
+      <% featured.forEach(function (post, idx) {
+        var featuredCats = post.categories ? post.categories.toArray() : [];
+      %>
+        <article class="featured-paper<%= idx === 0 ? ' is-active' : '' %>" data-index="<%= idx %>">
+          <span class="tape tape--top-center" aria-hidden="true"></span>
+          <div class="featured-copy">
+            <span class="label-pill"><%= flatpaper_i18n('index.pinned') %></span>
+            <h1><a href="<%- url_for(post.path) %>"><%= post.title %></a></h1>
+            <p><%
+              var raw = strip_html(post.excerpt || post.content || '').replace(/\s+/g, ' ');
+              var featuredMax = theme.excerpt_length || 96;
+            %><%= raw.slice(0, featuredMax) %><%= raw.length > featuredMax ? '...' : '' %></p>
+            <div class="meta-line">
+              <span class="meta-date"><%- partial('_partial/icons', { icon: 'calendar' }) %><%= date(post.date, 'YYYY-MM-DD') %></span>
+              <% if (featuredCats.length) { %>
+                <span class="meta-cat">
+                  <%- partial('_partial/icons', { icon: 'folder' }) %>
+                  <a class="meta-cat-link" href="<%- url_for(featuredCats[0].path) %>"><%= featuredCats[0].name %></a>
+                </span>
+              <% } %>
+              <a class="read-more" href="<%- url_for(post.path) %>"><span><%= flatpaper_i18n('index.read_more') %></span><%- partial('_partial/icons', { icon: 'arrow-right' }) %></a>
+            </div>
+          </div>
+          <div class="featured-thumb<%= featuredImageZigzag ? ' featured-thumb--zigzag' : '' %>">
+            <%- partial('_partial/thumbnail', { index: idx, large: true, post: post }) %>
+          </div>
+        </article>
+      <% }) %>
+
+      <% if (featured.length > 1) { %>
+        <button type="button" class="carousel-arrow carousel-prev" aria-label="<%= flatpaper_i18n('index.previous_slide') %>">
+          <%- partial('_partial/icons', { icon: 'chevron-left' }) %>
+        </button>
+        <button type="button" class="carousel-arrow carousel-next" aria-label="<%= flatpaper_i18n('index.next_slide') %>">
+          <%- partial('_partial/icons', { icon: 'chevron-right' }) %>
+        </button>
+        <div class="carousel-dots" role="group" aria-label="<%= flatpaper_i18n('index.carousel_pagination') %>">
+          <% featured.forEach(function (_, idx) { %>
+            <button type="button" class="carousel-dot<%= idx === 0 ? ' is-active' : '' %>" data-index="<%= idx %>" aria-label="<%= flatpaper_i18n('index.carousel_slide', idx + 1) %>"></button>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+<% } %>
+
+<% if (featured.length) { %>
+  <section class="section-head">
+    <h2><%- partial('_partial/icons', { icon: 'history' }) %><%= flatpaper_i18n('index.latest_posts') %></h2>
+  </section>
+<% } %>
+
+<% if (posts.length) { %>
+  <div class="post-list">
+    <% posts.forEach(function(post, index) { %>
+      <%- partial('_partial/post-card', { post: post, index: index }) %>
+    <% }) %>
+  </div>
+<% } else { %>
+  <section class="empty-paper">
+    <h1>FlatPaper</h1>
+    <p><%= flatpaper_i18n('index.empty_posts') %></p>
+  </section>
+<% } %>
+
+<% if (page.total && page.total > 1) { %>
+  <nav class="pager" aria-label="<%= flatpaper_i18n('pagination.post_pager') %>">
+    <% if (page.prev) { %>
+      <a class="pager-link pager-link--prev" href="<%- url_for(page.prev_link) %>">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span><%= flatpaper_i18n('pagination.prev') %></span>
+      </a>
+    <% } else { %>
+      <span class="pager-link pager-link--prev is-disabled" aria-disabled="true">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span><%= flatpaper_i18n('pagination.prev') %></span>
+      </span>
+    <% } %>
+
+    <span class="pager-pages"><%= page.current %> / <%= page.total %></span>
+
+    <% if (page.next) { %>
+      <a class="pager-link pager-link--next" href="<%- url_for(page.next_link) %>">
+        <span><%= flatpaper_i18n('pagination.next') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    <% } else { %>
+      <span class="pager-link pager-link--next is-disabled" aria-disabled="true">
+        <span><%= flatpaper_i18n('pagination.next') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </span>
+    <% } %>
+  </nav>
+<% } %>

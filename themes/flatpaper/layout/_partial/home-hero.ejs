@@ -1,0 +1,270 @@
+<%
+var hero = theme.home_hero || {};
+var profile = theme.profile || {};
+var socials = profile.social || theme.social || {};
+var rss = profile.rss || theme.rss || {};
+var heroTitle = hero.title || config.title || config.author || 'FlatPaper';
+var heroSubtitle = hero.subtitle || profile.role || '';
+var heroBio = hero.bio || profile.bio || flatpaper_i18n('profile.default_bio');
+var heroAvatar = hero.avatar || profile.avatar;
+var avatarShape = hero.avatar_shape || profile.avatar_shape || 'square';
+var stickers = hero.stickers;
+var stickersEnabled = stickers !== false && !(stickers && stickers.enable === false);
+var stickersDraggable = !(stickers && stickers.draggable === false);
+var stickerConfig = stickers && typeof stickers === 'object' && !Array.isArray(stickers) ? stickers : {};
+var builtinNoteText = stickerConfig.note_text || stickerConfig.note || hero.note || flatpaper_i18n('home_hero.note');
+var configuredCustomStickers = Array.isArray(stickerConfig.items)
+  ? stickerConfig.items
+  : (Array.isArray(stickerConfig.images) ? stickerConfig.images : []);
+
+function heroHref(value) {
+  var raw = String(value || '').trim();
+  if (!raw) return '#flatpaper-home-content';
+  if (raw.charAt(0) === '#') return flatpaper_safe_url(raw, 'href');
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(raw)) return flatpaper_safe_url(raw, 'href');
+  return flatpaper_safe_url(url_for(raw), 'href');
+}
+
+function heroImageUrl(value) {
+  var rawValue = value && typeof value === 'object'
+    ? (value.image || value.src || value.url || value.path || '')
+    : value;
+  var raw = String(rawValue || '').trim();
+  if (!raw) return '';
+  return flatpaper_safe_url(url_for(raw), 'image');
+}
+
+function heroOverlayValue(value, fallback) {
+  var opacity = parseFloat(value);
+  if (!isFinite(opacity)) opacity = fallback;
+  if (opacity < 0) opacity = 0;
+  if (opacity > 1) opacity = 1;
+  return String(Math.round(opacity * 1000) / 1000);
+}
+
+function heroImageOverlay(value) {
+  var top = 0.2;
+  var bottom = 0.2;
+  if (Array.isArray(value)) {
+    top = value[0];
+    bottom = value.length > 1 ? value[1] : value[0];
+  } else if (value && typeof value === 'object') {
+    top = value.top != null ? value.top : (value.start != null ? value.start : top);
+    bottom = value.bottom != null ? value.bottom : (value.end != null ? value.end : bottom);
+  } else if (value != null) {
+    var parts = String(value).split(/[\s,]+/).filter(Boolean);
+    top = parts[0];
+    bottom = parts.length > 1 ? parts[1] : parts[0];
+  }
+  return {
+    top: heroOverlayValue(top, 0.2),
+    bottom: heroOverlayValue(bottom, 0.2)
+  };
+}
+
+var configuredHeroImages = Array.isArray(hero.image) ? hero.image : (hero.image ? [hero.image] : []);
+var heroImages = configuredHeroImages.map(heroImageUrl).filter(Boolean);
+var heroImage = heroImages[0] || '';
+var heroMobileImage = heroImage && hero.mobile_image !== false;
+// Escape backslash/quote before embedding in a CSS url("...") string, mirroring
+// the client-side randomizer. flatpaper_safe_url already strips control chars,
+// so this just closes the CSS-string-breakout gap that the HTML-entity escape
+// on the output tag alone would miss.
+var heroImageCss = heroImage.replace(/[\\"]/g, '\\$&');
+var heroOverlay = heroImageOverlay(hero.image_overlay);
+var ctaHref = heroHref(hero.cta_link || '#flatpaper-home-content');
+var enterLabel = flatpaper_i18n('home_hero.enter');
+var ctaText = hero.cta_text || enterLabel;
+var ctaBackground = hero.cta_background == null ? '01' : String(hero.cta_background).trim();
+var ctaBgImages = [];
+function ctaBuiltinBackground(index) {
+  var number = parseInt(index, 10);
+  if (!isFinite(number) || number < 1 || number > 9) return '';
+  return flatpaper_safe_url(url_for('/images/home/cta/webp/cta-bg-' + String(number).padStart(2, '0') + '.webp'), 'image');
+}
+function ctaBackgroundUrl(value) {
+  var raw = String(value || '').trim();
+  if (!raw) return ctaBuiltinBackground(1);
+  if (/^0?[1-9]$/.test(raw)) return ctaBuiltinBackground(raw);
+  return heroImageUrl(raw);
+}
+if (ctaBackground.toLowerCase() === 'random') {
+  for (var ctaBgIndex = 1; ctaBgIndex <= 9; ctaBgIndex++) {
+    ctaBgImages.push(ctaBuiltinBackground(ctaBgIndex));
+  }
+}
+var ctaBgImage = ctaBgImages[0] || ctaBackgroundUrl(ctaBackground);
+var ctaBgImageCss = ctaBgImage.replace(/[\\"]/g, '\\$&');
+var stickerItems = [
+  { key: 'builtin-note', cls: 'hero-sticker--note', text: builtinNoteText }
+];
+var maxCustomStickers = 5;
+
+function stickerSize(value) {
+  var raw = String(value == null ? '' : value).trim();
+  if (!raw) return '';
+  var size = parseInt(raw, 10);
+  if (!size || size < 48) size = 48;
+  if (size > 180) size = 180;
+  return '--sticker-size: ' + size + 'px;';
+}
+
+var customStickerItems = configuredCustomStickers.slice(0, maxCustomStickers).map(function (raw, index) {
+  var entry = raw && typeof raw === 'object' ? raw : { image: raw };
+  var rawImage = String(entry.image || entry.src || entry.sticker || '').trim();
+  if (!rawImage) return null;
+  var image = flatpaper_safe_url(url_for(rawImage), 'image');
+  if (!image) return null;
+  var rawHref = String(entry.link || entry.href || '').trim();
+  var href = rawHref ? heroHref(rawHref) : '';
+  var external = rawHref && /^(?:https?:)?\/\//i.test(rawHref);
+  var label = entry.alt || entry.text || entry.label || entry.name || entry.title || flatpaper_i18n('home_hero.sticker_image');
+  return {
+    index: index,
+    image: image,
+    href: href,
+    label: label,
+    title: entry.title || label,
+    external: external,
+    style: stickerSize(entry.size)
+  };
+}).filter(Boolean);
+var hasLinkedCustomStickers = customStickerItems.some(function (item) { return !!item.href; });
+%>
+
+<section
+  class="home-hero<%= heroImage ? ' home-hero--image' : '' %><%= heroMobileImage ? ' home-hero--mobile-image' : '' %><%= stickersDraggable ? ' has-draggable-stickers' : '' %>"
+  aria-label="<%= flatpaper_i18n('home_hero.label') %>"
+  <% if (heroImage) { %>style="--hero-bg-image: url(&quot;<%= heroImageCss %>&quot;); --hero-image-overlay-top: rgba(42, 33, 22, <%= heroOverlay.top %>); --hero-image-overlay-bottom: rgba(42, 33, 22, <%= heroOverlay.bottom %>);"<% } %>
+  <% if (heroImages.length > 1) { %>data-hero-images="<%= JSON.stringify(heroImages) %>"<% } %>
+>
+  <div class="home-hero__grain" aria-hidden="true"></div>
+  <div class="home-hero__tools" aria-label="<%= flatpaper_i18n('home_hero.tools') %>">
+    <% if (stickersEnabled && stickersDraggable) { %>
+      <button class="icon-button home-hero__tool js-hero-shuffle" type="button" aria-label="<%= flatpaper_i18n('home_hero.shuffle_stickers') %>" title="<%= flatpaper_i18n('home_hero.shuffle_stickers') %>">
+        <%- partial('_partial/icons', { icon: 'shuffle' }) %>
+      </button>
+    <% } %>
+    <button class="theme-toggle home-hero__tool" type="button" aria-label="<%= flatpaper_i18n('colors.toggle_color_mode') %>" title="<%= flatpaper_i18n('colors.toggle_color_mode') %>">
+      <span class="theme-icon theme-icon--sun"><%- partial('_partial/icons', { icon: 'sun' }) %></span>
+      <span class="theme-icon theme-icon--moon"><%- partial('_partial/icons', { icon: 'moon' }) %></span>
+    </button>
+  </div>
+  <% if (stickersEnabled) { %>
+    <div class="home-hero__stickers"<% if (!hasLinkedCustomStickers) { %> aria-hidden="true"<% } %>>
+      <% stickerItems.forEach(function (item, index) { %>
+        <button
+          type="button"
+          class="hero-sticker <%= item.cls %>"
+          data-hero-sticker="<%= item.key || index %>"
+          aria-hidden="true"
+          tabindex="-1"
+        ><% if (item.text) { %><span><%= item.text %></span><% } %></button>
+      <% }) %>
+      <% customStickerItems.forEach(function (item) { %>
+        <% if (item.href) { %>
+          <a
+            class="hero-sticker hero-sticker--custom hero-sticker--custom-<%= item.index %>"
+            href="<%= item.href %>"
+            data-hero-sticker="custom-<%= item.index %>"
+            aria-label="<%= item.label %>"
+            draggable="false"
+            <% if (item.title) { %>title="<%= item.title %>"<% } %>
+            <% if (item.style) { %>style="<%= item.style %>"<% } %>
+            <% if (item.external) { %>target="_blank" rel="noopener"<% } %>
+          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false" referrerpolicy="no-referrer" aria-hidden="true"></a>
+        <% } else { %>
+          <button
+            type="button"
+            class="hero-sticker hero-sticker--custom hero-sticker--custom-<%= item.index %>"
+            data-hero-sticker="custom-<%= item.index %>"
+            aria-hidden="true"
+            tabindex="-1"
+            <% if (item.style) { %>style="<%= item.style %>"<% } %>
+          ><img src="<%= item.image %>" alt="" loading="lazy" decoding="async" draggable="false" referrerpolicy="no-referrer"></button>
+        <% } %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <div class="home-hero__content">
+    <div class="home-hero__profile">
+      <% if (heroAvatar) { %>
+        <div class="avatar avatar--image<%= avatarShape === 'circle' ? ' avatar--circle' : '' %> home-hero__avatar">
+          <img src="<%= flatpaper_safe_url(url_for(heroAvatar), 'image') %>" alt="<%= config.author || heroTitle %>" loading="eager" referrerpolicy="no-referrer">
+        </div>
+      <% } else { %>
+        <div class="avatar home-hero__avatar" aria-hidden="true">
+          <span></span><i></i><em></em><b></b>
+        </div>
+      <% } %>
+      <p class="home-hero__eyebrow"><span class="green-dot"></span><%= heroSubtitle || flatpaper_i18n('home_hero.default_subtitle') %></p>
+      <h1><%= heroTitle %></h1>
+      <p class="home-hero__bio"><%= heroBio %></p>
+      <% var heroLinks = hero.hero_links; %>
+      <% if (heroLinks && Array.isArray(heroLinks) && heroLinks.length > 0) { %>
+        <nav class="home-hero__nav" aria-label="<%= flatpaper_i18n('home_hero.nav_links') %>">
+          <% heroLinks.forEach(function(link) { 
+               var isExternal = /^(?:https?:)?\/\//i.test(link.link);
+               var linkAlt = link.alt || link.name;
+          %>
+            <a href="<%= flatpaper_safe_url(url_for(link.link), 'href') %>" class="home-hero__nav-link" title="<%= linkAlt %>" aria-label="<%= linkAlt %>" <%- isExternal ? 'target="_blank" rel="noopener"' : '' %>>
+              <span><%= link.name %></span>
+            </a>
+          <% }) %>
+        </nav>
+      <% } else { %>
+        <div class="home-hero__divider" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="12" viewBox="0 0 56 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6c3.5-3.5 6.5-3.5 10 0s6.5 3.5 10 0 6.5-3.5 10 0 6.5 3.5 10 0 6.5-3.5 10 0" />
+          </svg>
+        </div>
+      <% } %>
+      <div class="socials home-hero__links" aria-label="<%= flatpaper_i18n('home_hero.profile_links') %>">
+        <% Object.keys(socials).forEach(function(name) {
+          var raw = socials[name];
+          var entry = (raw && typeof raw === 'object') ? raw : { url: raw };
+          var href = entry.url || entry.href || '';
+          if (!href) { return; }
+          var key = name.toLowerCase();
+          var iconMap = {
+            github: 'github', twitter: 'twitter', x: 'x-twitter',
+            email: 'mail', mail: 'mail', rss: 'rss',
+            steam: 'steam', bilibili: 'bilibili', youtube: 'youtube',
+            facebook: 'facebook', instagram: 'instagram',
+            telegram: 'telegram', weibo: 'weibo'
+          };
+          var iconName = entry.icon || iconMap[key] || 'send';
+          var label = entry.label || entry.name || entry.title || name;
+          var tooltip = entry.tooltip || label;
+        %>
+          <a href="<%= flatpaper_safe_url(href, 'href') %>" target="_blank" rel="noopener" aria-label="<%= label %>" data-tooltip="<%= tooltip %>">
+            <% if (entry.svg) { %>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" class="lucide lucide-custom" aria-hidden="true"><%- entry.svg %></svg>
+            <% } else { %>
+              <%- partial('_partial/icons', { icon: iconName }) %>
+            <% } %>
+          </a>
+        <% }) %>
+        <% if (rss && rss.enable) { %>
+          <% var rssLabel = rss.label || rss.title || 'RSS feed'; %>
+          <% var rssTooltip = rss.tooltip || rssLabel; %>
+          <a href="<%= flatpaper_safe_url(url_for(rss.path || 'atom.xml'), 'href') %>" aria-label="<%= rssLabel %>" data-tooltip="<%= rssTooltip %>">
+            <%- partial('_partial/icons', { icon: 'rss' }) %>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <a
+    class="home-hero__arrow"
+    href="<%= ctaHref %>"
+    data-hero-scroll
+    <% if (ctaBgImages.length > 1) { %>data-hero-cta-backgrounds="<%= JSON.stringify(ctaBgImages) %>"<% } %>
+    style="--hero-cta-bg: url(&quot;<%= ctaBgImageCss %>&quot;);"
+    aria-label="<%= ctaText %>"
+    title="<%= ctaText %>"
+  >
+    <span class="home-hero__arrow-text"><%= ctaText %></span>
+  </a>
+</section>

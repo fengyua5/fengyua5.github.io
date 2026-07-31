@@ -1,0 +1,170 @@
+<%
+var categories = page.categories ? page.categories.toArray() : [];
+var tags = page.tags ? page.tags.toArray() : [];
+var postTopImgCfg = theme.post_top_img || {};
+var postTopImgMode = postTopImgCfg && postTopImgCfg.mode ? String(postTopImgCfg.mode).toLowerCase() : '';
+var postTopImg = flatpaper_post_top_img_info(page, postTopImgMode);
+// related_posts 显式设为 0 表示禁用；未配置则使用 3
+var relatedCount = (theme.related_posts != null ? theme.related_posts : 3);
+
+// 文章底部互动区的自定义条目（赞赏 / 打赏等）。
+// 当前支持 type: image —— hover / 点击按钮气泡弹出一张图片（通常是收款二维码）。
+// align 决定靠左(left)还是靠右(right，默认)；支持配置多个。
+var reactionCfg = theme.reactions || {};
+var customReactions = Array.isArray(reactionCfg.custom) ? reactionCfg.custom : [];
+var leftReactions = [];
+var rightReactions = [];
+customReactions.forEach(function (item) {
+  if (!item) return;
+  var type = String(item.type || 'image').toLowerCase();
+  // 目前仅支持 image 类型
+  if (type !== 'image' || !item.image) return;
+  (String(item.align || 'right').toLowerCase() === 'left' ? leftReactions : rightReactions).push(item);
+});
+var allPosts = relatedCount > 0 ? flatpaper_sorted_posts() : [];
+var pageTaxonomy = relatedCount > 0 ? flatpaper_post_taxonomy_meta(page) : { catIds: [], tagIds: [] };
+
+// Build id sets for fast match
+var curCatIds = {};
+pageTaxonomy.catIds.forEach(function (id) { curCatIds[id] = true; });
+var curTagIds = {};
+pageTaxonomy.tagIds.forEach(function (id) { curTagIds[id] = true; });
+
+var CAT_WEIGHT = 3;
+var TAG_WEIGHT = 2;
+
+function score(post) {
+  var s = 0;
+  var meta = flatpaper_post_taxonomy_meta(post);
+  meta.catIds.forEach(function (id) {
+    if (curCatIds[id]) s += CAT_WEIGHT;
+  });
+  meta.tagIds.forEach(function (id) {
+    if (curTagIds[id]) s += TAG_WEIGHT;
+  });
+  return s;
+}
+
+var relatedPosts = allPosts
+  .filter(function (p) { return p.path !== page.path; })
+  .map(function (p) { return { post: p, score: score(p), time: +new Date(p.date) }; })
+  .filter(function (x) { return x.score > 0; })
+  .sort(function (a, b) {
+    if (b.score !== a.score) return b.score - a.score;
+    return b.time - a.time;
+  })
+  .slice(0, relatedCount)
+  .map(function (x) { return x.post; });
+%>
+
+<div class="article-tape-wrap">
+<span class="tape tape--top-right" aria-hidden="true"></span>
+<article class="article-paper<%= postTopImg.src ? ' article-paper--with-top-img' : '' %>">
+  <% if (postTopImg.src) { %>
+    <figure class="article-top-img" aria-label="<%= page.title %>">
+      <img src="<%= postTopImg.src %>" alt="" loading="eager" fetchpriority="high" referrerpolicy="no-referrer" draggable="false">
+    </figure>
+  <% } %>
+  <header class="article-header">
+    <% if (categories.length) { %>
+      <a class="label-pill" href="<%- url_for(categories[0].path) %>">
+        <%- partial('_partial/icons', { icon: 'folder' }) %>
+        <%= categories[0].name %>
+      </a>
+    <% } %>
+    <h1><%= page.title %></h1>
+    <div class="meta-line meta-line--article">
+      <span class="meta-date"><%- partial('_partial/icons', { icon: 'calendar' }) %><%= date(page.date, 'YYYY-MM-DD') %></span>
+      <% if (tags.length) { %>
+        <span class="meta-tags">
+          <%- partial('_partial/icons', { icon: 'tag' }) %>
+          <% tags.forEach(function(tag) { %><a class="meta-tag-link" href="<%- url_for(tag.path) %>">#<%= tag.name %></a><% }) %>
+        </span>
+      <% } %>
+    </div>
+  </header>
+
+  <%- partial('_partial/adsense-slot', { name: 'post_top' }) %>
+
+  <div class="article-content">
+    <%- page.content %>
+  </div>
+
+  <footer class="article-reactions">
+    <div class="reaction-group">
+      <button type="button" class="reaction reaction--comment" aria-label="<%= flatpaper_i18n('post.scroll_to_comments') %>" data-action="scroll-to-comments">
+        <%- partial('_partial/icons', { icon: 'message-circle' }) %>
+      </button>
+      <span class="reaction-label"><%= flatpaper_i18n('common.comments') %></span>
+      <% leftReactions.forEach(function (item) { %><%- partial('_partial/reaction-pop', { item: item }) %><% }) %>
+    </div>
+    <div class="reaction-group reaction-group--right">
+      <% rightReactions.forEach(function (item) { %><%- partial('_partial/reaction-pop', { item: item }) %><% }) %>
+      <button type="button" class="reaction reaction--share" aria-label="<%= flatpaper_i18n('common.share') %>" data-action="share">
+        <%- partial('_partial/icons', { icon: 'share-2' }) %>
+      </button>
+      <span class="reaction-label"><%= flatpaper_i18n('common.share') %></span>
+    </div>
+  </footer>
+
+  <%- partial('_partial/adsense-slot', { name: 'post_bottom' }) %>
+
+  <nav class="article-actions">
+    <% if (page.prev) { %>
+      <a class="article-action article-action--prev" href="<%- url_for(page.prev.path) %>">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span class="action-label"><%= flatpaper_i18n('post.previous') %></span>
+        <span class="action-title"><%= page.prev.title %></span>
+      </a>
+    <% } else { %>
+      <span class="article-action article-action--prev is-disabled" aria-disabled="true">
+        <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
+        <span class="action-label"><%= flatpaper_i18n('post.previous') %></span>
+        <span class="action-title"><%= flatpaper_i18n('post.no_previous') %></span>
+      </span>
+    <% } %>
+    <% if (page.next) { %>
+      <a class="article-action article-action--next" href="<%- url_for(page.next.path) %>">
+        <span class="action-label"><%= flatpaper_i18n('post.next') %></span>
+        <span class="action-title"><%= page.next.title %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    <% } else { %>
+      <span class="article-action article-action--next is-disabled" aria-disabled="true">
+        <span class="action-label"><%= flatpaper_i18n('post.next') %></span>
+        <span class="action-title"><%= flatpaper_i18n('post.no_next') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </span>
+    <% } %>
+  </nav>
+</article>
+</div>
+
+<button type="button" class="back-to-top" data-action="scroll-to-top" aria-label="<%= flatpaper_i18n('post.back_to_top') %>" hidden>
+  <%- partial('_partial/icons', { icon: 'arrow-up' }) %>
+</button>
+
+<% if (relatedPosts.length) { %>
+  <section class="related-paper">
+    <header class="related-paper__head">
+      <h2><%- partial('_partial/icons', { icon: 'link' }) %><%= flatpaper_i18n('post.related_posts') %></h2>
+      <a class="related-paper__more" href="<%- url_for((config.archive_dir || 'archives') + '/') %>">
+        <span><%= flatpaper_i18n('post.view_more') %></span>
+        <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
+      </a>
+    </header>
+    <div class="related-paper__grid">
+      <% relatedPosts.forEach(function (post, index) { %>
+        <a class="related-card" href="<%- url_for(post.path) %>">
+          <span class="related-card__thumb">
+            <%- partial('_partial/thumbnail', { index: index, post: post }) %>
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title"><%= post.title %></strong>
+            <em class="related-card__date"><%= date(post.date, 'YYYY-MM-DD') %></em>
+          </span>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+<% } %>

@@ -1,0 +1,262 @@
+/* ============== NOTE BLOCKS ============== */
+.flatpaper-note {
+  --note-accent-rgb: var(--muted-rgb);
+  --note-bg-opacity: 0.08;
+  --note-border-opacity: 0.35;
+  --note-accent: unquote('rgb(var(--note-accent-rgb))');
+  --note-bg: unquote('rgba(var(--note-accent-rgb), var(--note-bg-opacity))');
+  --note-border: unquote('rgba(var(--note-accent-rgb), var(--note-border-opacity))');
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  margin: 22px 0;
+  padding: 14px 18px 14px 16px;
+  border-left: 4px solid var(--note-accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--note-bg);
+  color: var(--ink);
+}
+
+.flatpaper-note > .flatpaper-note__body > :first-child { margin-top: 0; }
+.flatpaper-note > .flatpaper-note__body > :last-child { margin-bottom: 0; }
+
+.flatpaper-note__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--note-accent);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.flatpaper-note__icon::before {
+  content: "i";
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.flatpaper-note--default { --note-accent-rgb: var(--muted-rgb);  --note-bg-opacity: 0.1;  --note-border-opacity: 0.4;  }
+.flatpaper-note--primary { --note-accent-rgb: var(--violet-rgb); --note-bg-opacity: 0.1;  --note-border-opacity: 0.45; }
+.flatpaper-note--success { --note-accent-rgb: var(--green-rgb);  --note-bg-opacity: 0.12; --note-border-opacity: 0.45; }
+.flatpaper-note--info    { --note-accent-rgb: var(--blue-rgb);   --note-bg-opacity: 0.12; --note-border-opacity: 0.45; }
+.flatpaper-note--warning { --note-accent-rgb: var(--yellow-rgb); --note-bg-opacity: 0.14; --note-border-opacity: 0.5;  }
+.flatpaper-note--danger  { --note-accent-rgb: var(--red-rgb);    --note-bg-opacity: 0.13; --note-border-opacity: 0.5;  }
+
+.flatpaper-note--success .flatpaper-note__icon::before { content: "✓"; font-family: inherit; font-style: normal; font-size: 13px; }
+.flatpaper-note--warning .flatpaper-note__icon::before { content: "!"; font-family: inherit; font-style: normal; font-size: 14px; }
+.flatpaper-note--danger  .flatpaper-note__icon::before { content: "!"; font-family: inherit; font-style: normal; font-size: 14px; }
+.flatpaper-note--primary .flatpaper-note__icon::before { content: "★"; font-family: inherit; font-style: normal; font-size: 12px; }
+
+.flatpaper-note__body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+.flatpaper-note__body p { margin: 6px 0; }
+
+.flatpaper-note__body code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--note-accent);
+}
+
+.dark-mode .flatpaper-note__body code {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Collapsible note (with title -> <details>) */
+details.flatpaper-note {
+  display: block;
+  padding: 0;
+}
+
+details.flatpaper-note > .flatpaper-note__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--note-accent);
+  user-select: none;
+}
+
+details.flatpaper-note > .flatpaper-note__title::-webkit-details-marker { display: none; }
+details.flatpaper-note > .flatpaper-note__title::marker { content: ""; }
+
+details.flatpaper-note > .flatpaper-note__title .flatpaper-note__icon {
+  margin-top: 0;
+}
+
+details.flatpaper-note .flatpaper-note__label { flex: 1; }
+
+details.flatpaper-note .flatpaper-note__chevron {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+details.flatpaper-note[open] .flatpaper-note__chevron {
+  transform: rotate(225deg);
+}
+
+details.flatpaper-note > .flatpaper-note__body {
+  padding: 12px 18px 14px 48px;
+  border-top: 1px dashed var(--note-border);
+}
+
+details.flatpaper-note > .flatpaper-note__title:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.dark-mode details.flatpaper-note > .flatpaper-note__title:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ===== Style: simple — left accent + thin border, no fill ===== */
+body[data-note-style="simple"] .flatpaper-note {
+  padding: 10px 14px;
+  border: 1px solid var(--note-border);
+  border-left: 4px solid var(--note-accent);
+  border-radius: 6px;
+  background: transparent;
+}
+body[data-note-style="simple"] .flatpaper-note__icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  background: transparent;
+  color: var(--note-accent);
+}
+body[data-note-style="simple"] .flatpaper-note__icon::before {
+  color: var(--note-accent);
+}
+body[data-note-style="simple"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 6px 14px;
+}
+body[data-note-style="simple"] details.flatpaper-note > .flatpaper-note__body {
+  padding: 4px 14px 8px 44px;
+  border-top: 0;
+}
+
+/* ===== Style: modern — filled box, no left accent ===== */
+body[data-note-style="modern"] .flatpaper-note {
+  border-left: 0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: var(--note-bg);
+  box-shadow: inset 0 0 0 1px var(--note-border);
+}
+body[data-note-style="modern"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 12px 16px;
+}
+body[data-note-style="modern"] details.flatpaper-note > .flatpaper-note__body {
+  border-top: 1px solid var(--note-border);
+  padding: 12px 18px 14px 48px;
+}
+
+/* ===== Icons off: hide the badge and reclaim the grid column ===== */
+body[data-note-icons="off"] .flatpaper-note {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+body[data-note-icons="off"] .flatpaper-note__icon { display: none; }
+body[data-note-icons="off"] details.flatpaper-note > .flatpaper-note__body {
+  padding-left: 18px;
+}
+body[data-note-icons="off"][data-note-style="simple"] details.flatpaper-note > .flatpaper-note__body {
+  padding-left: 14px;
+}
+
+/* ===== Style: sticky — paper sticker, square corners, top-center tape ===== */
+body[data-note-style="sticky"] .flatpaper-note {
+  margin: 32px 0 26px;
+  padding: 18px 18px 16px;
+  border: 1px solid unquote('color-mix(in srgb, var(--note-accent) 24%, var(--paper-solid) 76%)');
+  border-radius: 0;
+  background: unquote('color-mix(in srgb, var(--note-accent) 12%, var(--paper-solid) 88%)');
+  box-shadow: 1px 1px 3px unquote('rgba(var(--paper-shadow-rgb), 0.1)');
+}
+
+/* striped tape, tinted to the note's own accent */
+body[data-note-style="sticky"] .flatpaper-note::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  z-index: 1;
+  width: 70px;
+  height: 20px;
+  border-radius: 1px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 7px),
+    unquote('color-mix(in srgb, var(--note-accent) 36%, transparent)');
+  box-shadow: 0 2px 6px unquote('rgba(var(--paper-shadow-rgb), 0.14)');
+  transform: translateX(-50%) rotate(-1deg);
+}
+
+/* collapsible variant: keep tape clear of the title row */
+body[data-note-style="sticky"] details.flatpaper-note {
+  padding: 0;
+}
+body[data-note-style="sticky"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 14px 16px 12px;
+}
+body[data-note-style="sticky"] details.flatpaper-note > .flatpaper-note__body {
+  padding: 12px 18px 14px 46px;
+  border-top: 1px dashed var(--note-border);
+}
+
+.dark-mode body[data-note-style="sticky"] .flatpaper-note {
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Style: disabled — strip decoration, keep semantics ===== */
+body[data-note-style="disabled"] .flatpaper-note {
+  display: block;
+  margin: 18px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+}
+body[data-note-style="disabled"] .flatpaper-note__icon { display: none; }
+body[data-note-style="disabled"] .flatpaper-note__body {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+body[data-note-style="disabled"] .flatpaper-note__body code {
+  color: inherit;
+}
+body[data-note-style="disabled"] details.flatpaper-note { padding: 0; }
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__title {
+  padding: 0;
+  color: inherit;
+  font-weight: 700;
+}
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__title:hover {
+  background: transparent;
+}
+body[data-note-style="disabled"] details.flatpaper-note > .flatpaper-note__body {
+  padding: 4px 0 0;
+  border-top: 0;
+}

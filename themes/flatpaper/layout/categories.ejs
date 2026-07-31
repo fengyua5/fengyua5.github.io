@@ -1,0 +1,28 @@
+<%
+var pageTopImg = flatpaper_page_top_img_info(page);
+var hasPageTopImg = !!pageTopImg.src;
+var categories = site.categories ? site.categories.toArray() : [];
+%>
+<section class="taxonomy-paper<%= hasPageTopImg ? ' taxonomy-paper--with-top-img article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <% if (hasPageTopImg) { %>
+    <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: flatpaper_i18n('common.categories') }) %>
+    <header class="article-header">
+      <h1><%= flatpaper_i18n('common.categories') %></h1>
+    </header>
+  <% } else { %>
+    <h1><%= flatpaper_i18n('common.categories') %></h1>
+  <% } %>
+  <% if (categories.length) { %>
+    <div class="taxonomy-grid">
+      <% categories.forEach(function(category, index) { %>
+        <a class="taxonomy-card" href="<%- url_for(category.path) %>">
+          <span class="dot dot-<%= index % 4 %>"></span>
+          <strong><%= category.name %></strong>
+          <em><%= flatpaper_i18n('taxonomy.category_count', category.length) %></em>
+        </a>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="empty-state"><%= flatpaper_i18n('taxonomy.empty_categories') %></p>
+  <% } %>
+</section>

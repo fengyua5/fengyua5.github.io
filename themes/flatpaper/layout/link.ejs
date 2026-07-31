@@ -1,0 +1,72 @@
+<%
+var data = site.data && site.data.links ? site.data.links : [];
+var groups = Array.isArray(data) ? data : [data];
+groups = groups.filter(function (g) { return g && (g.link_list || g.class_name); });
+var avatarFallback = flatpaper_safe_url(url_for('/images/icon-error.webp'), 'image');
+var pageTopImg = flatpaper_page_top_img_info(page);
+%>
+
+<article class="article-paper friends-page<%= pageTopImg.src ? ' article-paper--with-top-img article-paper--page-top-img' : '' %>">
+  <%- partial('_partial/page-top-img', { topImg: pageTopImg, label: page.title || flatpaper_i18n('links.title') }) %>
+  <header class="article-header">
+    <span class="label-pill"><%= flatpaper_i18n('links.label') %></span>
+    <h1><%= page.title || flatpaper_i18n('links.title') %></h1>
+    <% if (page.subtitle) { %>
+      <p class="friends-subtitle"><%= page.subtitle %></p>
+    <% } %>
+  </header>
+
+  <% if (!groups.length) { %>
+    <p class="friends-empty"><%= flatpaper_i18n('links.empty_data') %></p>
+  <% } %>
+
+  <% groups.forEach(function (group) {
+    var list = group && group.link_list ? group.link_list : [];
+    if (!list.length) return;
+  %>
+    <section class="friends-group">
+      <div class="friends-group__head">
+        <h2><span class="green-dot"></span><%= group.class_name || flatpaper_i18n('links.title') %></h2>
+        <% if (group.class_desc) { %>
+          <span class="friends-group__desc"><%= group.class_desc %></span>
+        <% } %>
+      </div>
+
+      <ul class="friends-grid">
+        <% list.forEach(function (item) {
+          var avatar = item.avatar ? flatpaper_safe_url(url_for(item.avatar), 'image') : '';
+          var styleClass = (theme.links && theme.links.style === 'tape') ? ' friend-card--tape' : '';
+        %>
+          <li class="friend-card<%= styleClass %>">
+            <a class="friend-card__link" href="<%= flatpaper_safe_url(item.link, 'href') %>" target="_blank" rel="noopener noreferrer" title="<%= item.name %><%= item.descr ? ' · ' + item.descr : '' %>">
+              <div class="friend-card__avatar-wrap">
+                <% if (avatar) { %>
+                  <img class="friend-card__avatar" src="<%= avatar %>" alt="<%= item.name %>" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='<%= avatarFallback %>'">
+                <% } else { %>
+                  <span class="friend-card__avatar friend-card__avatar--text" aria-hidden="true"><%= (item.name || '?').charAt(0) %></span>
+                <% } %>
+              </div>
+              <div class="friend-card__body">
+                <strong class="friend-card__name"><%= item.name %></strong>
+                <% if (item.descr) { %>
+                  <span class="friend-card__desc"><%= item.descr %></span>
+                <% } %>
+              </div>
+            </a>
+            <% if (item.rss) { %>
+              <a class="friend-card__rss" href="<%= flatpaper_safe_url(item.rss, 'href') %>" target="_blank" rel="noopener noreferrer" aria-label="<%= flatpaper_i18n('links.rss_label', item.name) %>" title="RSS">
+                <%- partial('_partial/icons', { icon: 'rss' }) %>
+              </a>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+  <% }) %>
+
+  <% if (page.content && page.content.trim()) { %>
+    <div class="article-content friends-intro">
+      <%- page.content %>
+    </div>
+  <% } %>
+</article>

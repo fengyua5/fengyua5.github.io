@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Hexo / build output
+public/
+.deploy*/
+.hexo/
+.db.json
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Package manager metadata
+.npm/
+.pnpm-store/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Private docs
+.docs

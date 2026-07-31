@@ -1,0 +1,45 @@
+<%
+var variant = index % 3;
+var classes = ['paper-thumb', 'paper-thumb-' + variant];
+var isLarge = typeof large !== 'undefined' && large;
+var isSmall = typeof small !== 'undefined' && small;
+var fallbackCovers = [
+  '/images/cover/camera.webp',
+  '/images/cover/mountain.webp',
+  '/images/cover/notebook.webp',
+  '/images/cover/port.webp',
+  '/images/cover/snowman.webp'
+];
+if (isLarge) classes.push('paper-thumb--large');
+if (isSmall) classes.push('paper-thumb--small');
+
+// Resolve a real cover image from the post, if any.
+var cover = '';
+var fallbackCover = fallbackCovers[index % fallbackCovers.length];
+var thumbSrc = '';
+var thumbAlt = '';
+if (typeof post !== 'undefined' && post) {
+  cover = flatpaper_cover_info(post, fallbackCover);
+  thumbAlt = post.title || '';
+}
+thumbSrc = cover ? cover.src : flatpaper_safe_url(url_for(fallbackCover), 'image');
+if (thumbSrc) classes.push('paper-thumb--cover');
+%>
+<div class="<%= classes.join(' ') %>">
+  <% if (thumbSrc) { %>
+    <img class="paper-thumb__img" src="<%= thumbSrc %>" alt="<%= cover && !cover.isFallback ? thumbAlt : '' %>" loading="lazy" referrerpolicy="no-referrer">
+  <% } else { %>
+    <div class="sun"></div>
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="mountain mountain-a"></div>
+    <div class="mountain mountain-b"></div>
+    <div class="mountain mountain-c"></div>
+    <% if (variant === 1) { %>
+      <div class="screen"><i></i><i></i><i></i></div>
+    <% } %>
+    <% if (variant === 2) { %>
+      <div class="camera"><i></i></div>
+    <% } %>
+  <% } %>
+</div>

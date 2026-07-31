@@ -1,0 +1,186 @@
+/* ============== FEATURED PAPER ============== */
+.featured-paper {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(170px, 0.9fr);
+  gap: 0;
+  align-items: stretch;
+  padding: 0;
+  overflow: visible;
+}
+
+.featured-paper > .tape {
+  z-index: 5;
+}
+
+.featured-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 26px 28px;
+}
+
+.label-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-height: 24px;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: var(--label-text, #fff);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-strong));
+  box-shadow: var(--soft-shadow);
+}
+
+.label-pill .lucide {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2;
+}
+
+.featured-paper h1 {
+  margin: 14px 0 10px;
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.featured-paper h1 a {
+  background-image: linear-gradient(180deg, transparent 62%, rgba(241, 193, 84, 0.45) 62%);
+}
+
+.featured-paper p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meta-line span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-tags {
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.meta-tag-link,
+.meta-cat-link {
+  color: inherit;
+  transition: color 0.15s ease;
+}
+
+.meta-tag-link:hover,
+.meta-cat-link:hover {
+  color: var(--color-accent-strong);
+}
+
+.dark-mode .meta-tag-link:hover,
+.dark-mode .meta-cat-link:hover {
+  color: var(--color-accent-muted);
+}
+
+.meta-line .lucide {
+  display: block;
+  width: 13px;
+  height: 13px;
+  opacity: 0.75;
+  stroke-width: 1.8;
+  flex-shrink: 0;
+}
+
+/* Optical alignment: folder/tag mass sits slightly higher than calendar's
+   geometric center; nudge them down 1px to align visually. */
+.meta-line .lucide-folder,
+.meta-line .lucide-tag {
+  transform: translateY(1px);
+}
+
+.read-more {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.featured-thumb {
+  position: relative;
+  align-self: stretch;
+  border-radius: 0 4px 4px 0;
+  overflow: visible;
+  min-height: 180px;
+}
+
+.featured-thumb .paper-thumb,
+.featured-thumb .paper-thumb--large {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  border-radius: 0 4px 4px 0;
+}
+
+.featured-thumb .paper-thumb:not(.paper-thumb--cover),
+.featured-thumb .paper-thumb--large:not(.paper-thumb--cover) {
+  filter: url(#paper-edge);
+}
+
+.featured-thumb--zigzag::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  z-index: 2;
+  width: 30px;
+  pointer-events: none;
+  background: var(--paper);
+  filter: drop-shadow(1px 0 0 rgba(255, 248, 236, 0.72)) drop-shadow(3px 1px 4px unquote('rgba(var(--paper-shadow-rgb), 0.22)'));
+  clip-path: polygon(
+    0 0,
+    72% 0,
+    56% 4%,
+    75% 7%,
+    48% 11%,
+    79% 15%,
+    62% 18%,
+    70% 23%,
+    51% 27%,
+    77% 31%,
+    59% 35%,
+    73% 39%,
+    46% 43%,
+    80% 47%,
+    65% 51%,
+    54% 55%,
+    76% 58%,
+    50% 63%,
+    78% 67%,
+    61% 70%,
+    72% 74%,
+    47% 78%,
+    79% 82%,
+    58% 86%,
+    74% 90%,
+    52% 94%,
+    68% 97%,
+    63% 100%,
+    0 100%
+  );
+}

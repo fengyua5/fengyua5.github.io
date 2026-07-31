@@ -1,0 +1,162 @@
+/* ============== SHELL & PAPERS ============== */
+.paper-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 280px;
+  gap: 28px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+/* Non-article pages (home / archive / category / tag): sidebars scroll
+   with the page in normal flow — no sticky pinning. */
+
+/* Article pages: two columns, wider main */
+.paper-shell--article {
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: stretch;
+}
+
+
+/* The sidebar grid cell stretches to match the main column's full height,
+   so the sticky TOC stays pinned all the way to the end of the article. */
+.paper-shell--article .paper-sidebar {
+  align-content: start;
+  height: 100%;
+}
+
+.paper-main {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+
+.paper-sidebar {
+  display: grid;
+  gap: 22px;
+}
+
+/* Article-page sidebar: scrolls with the page. TOC and article-only cards stick as a group once author cards scroll away. */
+.paper-shell--article .paper-sidebar .post-sticky-stack {
+  position: sticky;
+  top: 110px;
+  z-index: 2;
+  max-height: calc(100dvh - 130px);
+  display: grid;
+  gap: 22px;
+  align-self: start;
+}
+
+.paper-shell--article .paper-sidebar .toc-card {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.paper-shell--article .paper-sidebar .toc-card__head {
+  flex-shrink: 0;
+}
+
+.paper-shell--article .paper-sidebar .toc-content {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
+.side-card,
+.welcome-card,
+.featured-paper,
+.post-card,
+.article-paper,
+.archive-paper,
+.taxonomy-paper,
+.empty-paper {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.side-card::after,
+.welcome-card::before,
+.featured-paper::before,
+.post-card::before,
+.article-paper::before,
+.archive-paper::before,
+.taxonomy-paper::before,
+.empty-paper::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--paper);
+  z-index: -1;
+  border-radius: 4px;
+  filter: url(#paper-edge);
+}
+
+/* Sidebar cards follow the post-card lift treatment for a consistent paper stack. */
+.side-card,
+.welcome-card {
+  transition: transform 0.22s ease;
+}
+
+.side-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.welcome-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -2;
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.side-card:hover,
+.welcome-card:hover {
+  transform: translateY(-3px);
+}
+
+.side-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.welcome-card:hover::after {
+  opacity: 1;
+}
+
+.side-card {
+  padding: 20px 22px;
+}
+
+.side-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.side-card h2 > .lucide {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.dark-mode .side-card h2 > .lucide {
+  color: var(--color-accent-muted);
+}
+
+.green-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-handdrawn);
+  background: var(--color-accent);
+  transform: rotate(15deg);
+  flex-shrink: 0;
+}

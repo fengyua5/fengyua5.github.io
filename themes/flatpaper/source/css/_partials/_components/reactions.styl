@@ -1,0 +1,133 @@
+/* ============== ARTICLE REACTIONS ============== */
+.article-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 6px -64px 0;
+  padding: 18px 64px;
+  border-top: 1px dashed var(--line);
+}
+
+.reaction-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reaction-group .reaction + .reaction-label {
+  margin-left: -2px;
+  margin-right: 6px;
+}
+
+.reaction-group .reaction-label:last-child {
+  margin-right: 0;
+}
+
+.reaction-group--right {
+  margin-left: auto;
+}
+
+.reaction {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 1px dashed var(--dash);
+  border-radius: 50%;
+  color: var(--ink-soft);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.reaction:hover {
+  color: var(--color-accent-strong);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.reaction .lucide {
+  width: 16px;
+  height: 16px;
+}
+
+.reaction-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Custom reward / tip popover ---- */
+.reaction-pop {
+  --reaction-anchor-x: 18px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reaction--reward:hover {
+  color: var(--color-accent-strong);
+}
+
+.reaction--reward[aria-expanded="true"] {
+  color: var(--color-accent-strong);
+}
+
+.reaction-bubble {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: var(--reaction-anchor-x);
+  z-index: 30;
+  width: 180px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.reaction-bubble::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--paper-warm);
+  z-index: -1;
+  border-radius: 8px;
+  filter: url(#paper-edge) drop-shadow(0 10px 30px rgba(0,0,0,0.12));
+}
+
+.reaction-bubble[hidden] {
+  display: none;
+}
+
+/* 小箭头：指向触发按钮 */
+.reaction-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -7px;
+  background: var(--paper-warm);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.reaction-bubble-title {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reaction-bubble-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

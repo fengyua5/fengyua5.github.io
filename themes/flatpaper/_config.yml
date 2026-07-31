@@ -1,0 +1,382 @@
+# 导航菜单：
+menu:
+  # 首页:
+  #   link: /
+  #   icon: home
+  # 友链:
+  #   link: /links/
+  #   icon: link
+  # 关于:
+  #    link: /about/
+  #    icon: user 
+  # # 二级菜单示例
+  # 文章:
+  #   icon: folder
+  #   item:
+  #     分类:
+  #       link: /categories/
+  #       icon: folder
+  #     标签:
+  #       link: /tags/
+  #       icon: tag
+  #     归档:
+  #       link: /archives/
+  #       icon: archive
+
+nav:
+  enable: false
+  menu:
+    # - title: Live DEMO
+    #   item:
+    #     - name: FlapaperDemo
+    #       link: https://flatpaper.nep.me/
+    #       icon: leaf
+    #     - name: Homulilly
+    #       link: https://homulilly.com/
+    #       icon: https://homulilly.com/images/avatar.jpg
+    # - title: Project
+    #   item:
+    #     - name: Flatpaper Tools
+    #       link: https://hexotag.nep.me
+    #       icon: https://hexotag.nep.me/icon.svg
+
+# Favicon：默认使用主题内置 /images/favicon.png。
+# 设为 false 时不输出 <link rel="icon">，交给浏览器请求站点根目录 /favicon.ico。
+# favicon: /images/favicon.png
+# favicon: false
+
+# 背景特效
+# 选项: default(默认纸纹) / grid(网格) / line(横线) / cross(十字星) / dotted(点阵)
+background:
+  style: default
+
+profile:
+  role: 日常记录
+  bio: 介绍一下自己 — 一两句话，写写你想被别人记住的部分。
+  # 头像图片路径（站点根的 source/ 目录下）。留空则使用 CSS 绘制的默认头像。
+  avatar:
+  # 头像图片形状：square（默认，原始方形）或 circle（应用圆形遮罩）
+  avatar_shape: square
+  # Profile 卡片站点统计；为空或 false 隐藏，true 显示无链接，其他非空值渲染为链接
+  site_info:
+    # posts: /archives/
+    # categories: /categories/
+    # tags: /tags/
+  social:
+    # 内置图标（按键名自动匹配，大小写不敏感）。未加前缀时优先匹配 Lucide；
+    # Font Awesome Free 6 可写 fa-solid:trash-can / fa-regular:heart / fa-brands:github。
+    #   github, twitter, x, mail/email, rss,
+    #   steam, bilibili, youtube, facebook, instagram, telegram, weibo
+    # 写法 1：键 -> URL（按键名自动匹配图标）
+    # 默认不提供任何条目，避免主题默认值在站点配置中被"注释掉"后仍然显现。
+    # 在站点的 _config.flatpaper.yml 里按需启用：
+    # GitHub: https://github.com/yourname
+    # Twitter: https://twitter.com/yourname
+    # Email: mailto:you@example.com
+    # X: https://x.com/yourname
+    # YouTube: https://youtube.com/@yourchannel
+    # Bilibili: https://space.bilibili.com/12345
+    # Steam: https://steamcommunity.com/id/yourname
+    # Facebook: https://facebook.com/yourname
+    # Instagram: https://instagram.com/yourname
+    # Telegram: https://t.me/yourname
+    # Weibo: https://weibo.com/u/12345
+    # 写法 2：对象 -> 指定使用某个内置图标（用于自定义命名 / 别名）
+    # Mastodon:
+    #   url: https://mastodon.social/@yourname
+    #   icon: send
+    #   tooltip: 在 Mastodon 找我
+    # 写法 3：完全自定义 SVG —— 提供 <path>/<circle> 等子元素字符串，
+    # 容器视图框为 24x24，颜色用 currentColor
+    # 知乎:
+    #   url: https://www.zhihu.com/people/yourname
+    #   tooltip: 知乎主页
+    #   svg: '<path d="M2 2 L22 22"/>'
+  # 在 socials 区域追加一个 RSS 图标（需要装 hexo-generator-feed 并在站点 _config.yml 启用 feed）
+  rss:
+    enable: true
+    path: /atom.xml
+
+welcome:
+  label: 今日份记录
+  title: 把日子，慢慢写下来
+  text: 生活不是每天都精彩，但总有值得收藏的片段。
+  cta_text: 开始阅读
+  cta_link: archives/
+  # 自定义封面图。留空则使用 CSS 绘制的山景默认图。
+  # 支持站内相对路径（如 /images/welcome.jpg，放在站点 source/ 下）或绝对 URL。
+  # image:
+
+# 首页开屏大图。默认关闭，不影响已有站点；仅在首页第一页渲染。
+# 开启后默认复用 profile 的头像、简介、社交链接与 RSS，也可以在这里覆盖。
+home_hero:
+  enable: false
+  # title: 我的手账
+  # subtitle: 今日份记录
+  # bio: 写给路过此处的你。
+  # avatar: /images/avatar.jpg
+  # avatar_shape: circle
+  #
+  # 背景图。留空时使用主题内置的手账纸张背景；设置后图片会铺满开屏。
+  # 也可配置为数组，浏览器每次载入随机使用一张。
+  # image: /images/hero.jpg
+  # image:
+  #   - /images/hero-1.jpg
+  #   - /images/hero-2.jpg
+  # 移动端是否继续显示背景图；设为 false 时窄屏回退到纸张背景。
+  mobile_image: true
+  #
+  # 背景图暗色遮罩透明度：[顶部, 底部]，范围 0-1。
+  # image_overlay: [0.2, 0.2]
+  # 底部贴纸按钮的文字与目标锚点；默认进入首页内容区。
+  # cta_text: 开始阅读
+  # cta_link: "#flatpaper-home-content"
+  # 贴纸按钮背景：01-09、random，或自定义图片路径。
+  # cta_background: 01
+  #
+  # Hero 区域的快速导航链接。配置后将替代默认的波浪线分隔符。
+  # hero_links:
+  #   - name: 归档
+  #     link: /archives/
+  #   - name: 分类
+  #     link: /categories/
+  #   - name: Flatpaper Tools
+  #     link: https://hexotag.nep.me
+  #     alt: Flatpaper Tools
+  # 一些贴纸装饰
+  stickers:
+    enable: true
+    draggable: true
+    # 内置便签贴纸的文字。
+    # note_text: 今日
+    # 自定义图片贴纸最多渲染 5 张；加上内置便签后，开屏最多 6 个 sticker。link 可选，不配置则只是可拖动装饰。
+    # items:
+    #   - image: /images/stickers/memo.png
+    #     alt: 手账贴纸
+    #     size: 96
+    #   - image: /images/stickers/github.png
+    #     alt: GitHub
+    #     link: https://github.com/yourname
+
+# 首页文章卡片摘要的最大字符数（无 <!-- more --> 时按正文截断）
+excerpt_length: 96
+# 侧边栏随机文章展示数量
+random_posts: 5
+# 随机文章候选池大小；从生成期最新 N 篇中抽取，0 或留空表示不限
+random_posts_pool: 100
+# 文章页侧栏 TOC 下方的最新文章组件；默认关闭。limit 默认为 5。
+latest_posts:
+  enable: false
+  limit: 5
+# 文章页底部"相关文章"展示数量；0 表示禁用；不配置则默认 3 篇
+related_posts: 4
+
+# 文章页顶部大图模式：
+# 留空禁用；top_img 只使用文章 front-matter 的 top_img；fallback 则 top_img 优先，缺省时按 cover/thumbnail/image/banner/正文首图解析。
+post_top_img:
+  mode:
+
+# 文章正文加粗文本是否使用主题色；设为 false 则只保留默认加粗。
+article:
+  strong_accent: true
+
+# 文章底部互动区（评论 / 分享 一行）追加的自定义条目，常用于"赞赏 / 打赏"。
+# 鼠标 hover 或点击按钮后，气泡弹出一张图片（一般是收款二维码）。可添加多个。
+# 每项字段：
+#   type   目前仅支持 image（弹出一张图片）
+#   name   按钮旁文字，如 赞赏 / 微信 / 支付宝（缺省为 赞赏）
+#   icon   图标名：gift（默认）| alipay | weixin | paypal | heart 或任意内置图标
+#   align  left（靠左，与"评论"同侧）| right（靠右，与"分享"同侧，默认）
+#   image  图片路径（站点 source/ 下的相对路径，如 /images/reward.jpg）或绝对 URL
+#   title  可选；气泡标题，缺省用 name
+reactions:
+  custom:
+    # - type: image
+    #   name: 赞赏
+    #   icon: weixin
+    #   align: right
+    #   image: /images/reward-weixin.jpg
+    #   title: 微信赞赏
+    # - type: image
+    #   name: 支付宝
+    #   icon: alipay
+    #   align: right
+    #   image: /images/reward-alipay.jpg
+
+# 前端搜索索引上限（0 或留空 = 不限）。文章很多时调小可减小首屏 JSON 体积。
+search:
+  limit: 0
+
+# 标签样式： tape | pill
+tags:
+  style: tape
+
+# 友链样式： default | tape
+links:
+  style: tape
+
+# Friend-Circle-Lite 兼容数据
+# https://github.com/willow-god/Friend-Circle-Lite
+# 构建时会读取 source/_data/links.yml，并在站点根目录输出 /friend.json
+# 只有配置了非空 rss 字段的友链会写入 friend.json。
+# 将该 URL 填入 Friend-Circle-Lite 的 spider_settings.json_url 即可复用友链数据。
+fcl:
+  friend_json:
+    enable: true
+    path: friend.json
+
+# 图标按钮样式： circle（默认圆形，1px 虚线）| tape（手帐贴纸：墨团圆角、手贴歪斜、悬停胶带斜纹）
+# 作用于：顶栏 logo/汉堡/搜索/调色盘/明暗切换、社交链接、文章反应按钮、TOC 折叠、搜索关闭、窄屏抽屉关闭
+buttons:
+  style: circle
+
+# 首页轮播置顶（最多 4 项；按文章 slug / 路径 / 标题任一匹配）
+featured:
+  # - hello-world
+  # - markdown-elements-showcase
+  # - 2026/05/09/weekend-photowalk-notes
+
+# 轮播自动播放（毫秒，0 表示关闭）
+featured_autoplay: 5000
+
+# 首页 featured 图片左侧折线特效
+featured_image_zigzag: true
+
+# 默认主题色：orange | purple | sakura | blue | pink | green | black
+color: green
+
+# 胶带装饰总开关
+tape:
+  enable: true
+
+# 页脚：
+# - left 支持 HTML；占位符：{year}=当前年份，{name}=站点 _config.yml 的 author
+# - powered 负责主题署名；设为 false 或配置 enable: false 可关闭
+# - links 支持一维链接列表（一行）或二维链接列表（多行），同一行内用 " · " 分隔
+# 不配置 footer 时默认：左 "© {year} {author}"，右 "Powered by Theme FlatPaper"
+footer:
+  left: '© {year} By {name}'
+  powered:
+    enable: true
+    prefix: Powered by Theme
+    name: FlatPaper
+    link: https://github.com/Homulilly/hexo-theme-flatpaper
+  links:
+    # -
+    #   - name: 服务条款
+    #     link: /terms
+    #   - name: 隐私政策
+    #     link: /privacy
+    # -
+    #   - name: Flatpaper Tools
+    #     link: https://hexotag.nep.me/
+
+# {% note %} 提示块外观风格：
+#   flat      左侧实色条 + 淡背景填充（默认）
+#   simple    无背景，仅左侧实色条 + 细边框 — 干净低调
+#   modern    完全填充的圆角盒，无左侧条
+#   sticky    便签贴纸：直角、右下微阴影，顶部中间条纹胶带
+#   disabled  去掉所有装饰，保留语义结构
+# icons：是否在正文/标题前显示圆形图标徽章（true | false）
+note:
+  style: sticky
+  icons: true
+
+# 代码块外观主题： simple | dark | sand | light
+code:
+  theme: simple
+
+# Umami 网站统计（https://umami.is）
+# enable 为 true 时，会在每个页面 </head> 前注入 Umami tracker：
+#   <script defer src="https://<host>/script.js" data-website-id="<website_id>" [data-domains="..."]></script>
+# host       Umami 服务的域名（不含协议、不含路径），例如 analytics.example.com
+# website_id 后台为站点生成的 UUID
+# domains    可选，逗号分隔或 YAML 列表，仅在这些域名下上报；用来过滤 localhost / 预览域名 / 被拷贝部署到其他域的情况
+umami:
+  enable: false
+  host:                                 # 例如：analytics.example.com
+  website_id:                           # 例如：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  # domains: example.com,www.example.com
+
+# Google Analytics 4 / Google tag (gtag.js)
+# enable 为 true 且 measurement_id 合法时，会在每个页面 <head> 开头注入：
+#   <script async src="https://www.googletagmanager.com/gtag/js?id=<measurement_id>"></script>
+# measurement_id GA4 衡量 ID，形如 G-12345678
+google_analytics:
+  enable: false
+  measurement_id:                       # 例如：G-12345678
+
+# Google AdSense
+# enable 为 true 且 client 合法时，会在每个页面 <head> 中注入 AdSense loader：
+#   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<client>" crossorigin="anonymous"></script>
+# 同时附带一个 <meta name="google-adsense-account" content="<client>">，用于站点审核期识别归属。
+# client  发布商 ID，形如 ca-pub-1234567890123456
+# account 可选；默认与 client 一致。设为 false 可禁用 meta 标签，或填入其它 ca-pub-* 覆盖
+# 注意：变现还需在站点根放置 ads.txt（例如 source/ads.txt），主题不会代为生成。
+adsense:
+  enable: false
+  # 例如：ca-pub-1234567890123456
+  client:
+  account: false
+  # 预置广告位：每项留空则该位置不渲染。值可写成 ad_slot ID 字符串，
+  # 或对象形式 { slot, format, layout, layout_key, responsive } 用于覆盖默认。
+  #   post_top    文章标题/元信息与正文之间
+  #   post_bottom 正文结束、上一篇/下一篇导航之前
+  #   sidebar     右侧栏底部（文章页 / 列表页通用）
+  slots:
+    post_top:
+    post_bottom:
+    sidebar:
+
+# 评论系统选择： twikoo | artalk （留空 / 删除则不启用评论区）
+# 只在文章和独立页面（layout: page）渲染；单篇可在 front-matter 用 `comments: false` 关闭。
+comments:
+
+# Twikoo（https://twikoo.js.org，需自行部署后端 https://twikoo.js.org/quick-start.html）
+twikoo:
+  envId:                                # Twikoo 后端 URL，例如：https://twikoo.example.com
+  # cdn:                                # 可选；覆盖默认 jsDelivr CDN（私有镜像 / 企业 CDN）
+
+# Artalk（https://artalk.js.org，需自行部署后端 https://artalk.js.org/guide/deploy.html）
+artalk:
+  server:                               # Artalk 后端 URL，例如：https://artalk.example.com
+  site:                                 # 站点名（需与 Artalk 后台已注册的站点一致）
+  # cdn_css:                            # 可选；覆盖默认 jsDelivr CSS
+  # cdn_js:                             # 可选；覆盖默认 jsDelivr JS
+
+# Fancybox 图片灯箱（https://fancyapps.com/fancybox/）
+# 启用后，文章页与独立页面（layout: page）的正文 <img> 自动用 Fancybox 包裹：
+# 点击放大、左右键切换、ESC 关闭。同一页面内所有图片共属一个 gallery。
+# 已被 <a> 包裹的图片不重复包裹；要单独排除某张图给它加 class="no-zoom"。
+fancybox:
+  enable: true
+  # cdn_css:                            # 可选；覆盖默认 jsDelivr CSS
+  # cdn_js:
+
+# Google Fonts。默认关闭；开启后会在 <head> 注入 Google Fonts CSS。
+# cdn 可填写镜像域名，用于覆盖 https://fonts.googleapis.com，例如 https://fonts.loli.net。
+google_fonts:
+  enable: false
+  cdn: https://fonts.googleapis.com
+  # 可选：为固定文本单独加载一个裁剪字体，会自动排在 fonts 前面。
+  # text_font 可使用字重语法；text 是要保留的字符集。动态正文不建议使用。
+  # text_font: Noto Sans JP:wght@400;700
+  # text: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+  # 按顺序填写字体名称即可；第一个字体会优先用于正文。
+  # 有特殊字重需求时，可使用 Google Fonts 语法，如 Noto Sans SC:wght@400;700。
+  fonts:
+    # - Noto Sans SC
+  # 等宽字体单独配置；也可以只填写 mono，不改变正文字体。
+  mono:
+    # - JetBrains Mono
+
+# 自定义 css 与 js 注入
+# head：每个条目原样输出到 </head> 之前
+# bottom：每个条目原样输出到 </body> 之前
+# 条目为完整 HTML 字符串（<link> / <script> / <style> 等均可）
+inject:
+  head:
+    # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
+    # - <script src="/js/xxx.js"></script>
+  bottom:
+    # - <script src="/js/xxx.js" defer></script>

@@ -1,0 +1,173 @@
+common:
+  posts: Posts
+  categories: Categories
+  tags: Tags
+  comments: Comments
+  share: Share
+  page: Page
+  archive: Archive
+  post_list: Posts
+  search_posts: Search posts
+  random_posts: Random posts
+  reward: Reward
+  view_all: View all
+
+pagination:
+  prev: Previous
+  next: Next
+  post_pager: Post pagination
+  archive_pager: Archive pagination
+
+index:
+  featured: Featured posts
+  pinned: Pinned
+  read_more: Read more
+  previous_slide: Previous slide
+  next_slide: Next slide
+  carousel_pagination: Carousel pagination
+  carousel_slide: Slide %d
+  latest_posts: Latest posts
+  empty_posts: No posts yet. Create your first post and the latest content will appear here.
+
+archive:
+  title: Archive
+  post_list: Posts
+
+taxonomy:
+  category_count: "%d posts"
+  empty_categories: No categories yet.
+  empty_tags: No tags yet.
+
+links:
+  label: Friends
+  title: Friend links
+  empty_data: Could not load friend link data. Make sure source/_data/links.yml exists and run hexo clean.
+  rss_label: "%s's RSS"
+
+friends_feed:
+  label: Circle
+  title: Friend circle
+  loading: Loading friend updates...
+  missing_url: No all.json URL configured.
+  load_failed: Failed to load friend updates. Try again later.
+  empty: No friend articles have been fetched yet.
+  load_more: Load more
+  updated_at: Updated at %s
+  friend_count: "%d friends"
+  active_count: "%d active"
+  article_count: "%d articles"
+  unknown_author: Unknown site
+  date_unknown: Unknown time
+
+guestbook:
+  label: Guestbook
+  title: Guestbook
+  loading: Unrolling the message wall...
+  missing_config: "The wall needs a comment system: set comments: twikoo (with envId) or comments: artalk (with server) in the theme config."
+  load_failed: Failed to load messages. Try again later.
+  empty: The wall is still empty — stick the first note!
+  load_more: Show more messages
+  total_count: "%d messages in total"
+  latest_note: Showing the latest %d on the wall
+  jump_to_comment: View original comment
+  sort_time: View latest
+  sort_random: Random order
+  anonymous: Anonymous
+  write_hint: Leave a message below; it lands on the wall after a refresh
+
+post:
+  scroll_to_comments: Jump to comments
+  previous: Previous
+  next: Next
+  no_previous: No earlier posts
+  no_next: This is the latest post
+  back_to_top: Back to top
+  related_posts: Related posts
+  view_more: View more
+
+not_found:
+  label: Page missing
+  title: Page not found
+  text: This address may have moved, been deleted, or never existed.
+  home: Back home
+  search: Search posts
+
+search:
+  placeholder: Type keywords, press Esc to close
+  empty: Type keywords to search matching posts
+  loading: Loading search index...
+  load_failed: Failed to load the search index. Reopen search and try again.
+  no_result: No posts found for "%s"
+  close: Close search
+
+code:
+  copy: Copy code
+  collapse: Collapse code
+  expand: Expand code
+
+heading:
+  anchor: "Link to this section: %s"
+
+head:
+  tag: "Tag: %s"
+  category: "Category: %s"
+  archive: Archive
+  archive_with_date: "Archive: %s"
+  page_number: Page %d
+
+navigation:
+  primary: Primary navigation
+  mobile: Mobile navigation
+  brand_home: FlatPaper home
+  brand_menu: Open site navigation
+  open_sidebar: Open sidebar
+  close_sidebar: Close sidebar
+  sidebar: Sidebar
+  sidebar_tools: Sidebar tools
+  site_links: Site links
+  site_info: Site information
+
+colors:
+  choose_theme_color: Choose theme color
+  theme_color: Theme color
+  toggle_color_mode: Toggle color mode
+  green: Green
+  purple: Purple
+  pink: Pink
+  sakura: Sakura pink
+  blue: Blue
+  orange: Orange
+  black: Black
+
+profile:
+  default_bio: Loves life, code, and sharing notes from both.
+
+welcome:
+  cta: Start reading
+  title: Welcome to FlatPaper
+  text: A blog theme focused on content and a calm reading experience.
+
+home_hero:
+  label: Home opening
+  enter: Start reading
+  note: Today
+  default_subtitle: Daily notes
+  nav_links: Hero navigation
+  profile_links: Profile links
+  tools: Hero tools
+  shuffle_stickers: Shuffle stickers
+  link: Link
+  sticker_image: Sticker image
+  visit_confirm: Visit %s?
+  visit: Visit
+  cancel: Cancel
+
+toc:
+  title: Table of contents
+  empty: The table of contents is generated from post headings.
+  expand_all: Expand all headings
+  collapse_all: Collapse headings
+
+sidebar:
+  hot_tags: Popular tags
+  latest_posts: Latest posts
