@@ -10,13 +10,13 @@
 <meta name="description" content="2026-07-31，DeepSeek 官方正式发布 V4-Flash-0731。这次升级的意义不只是模型本身，而是把「兼容」做到了极致——DeepSeek 已经能原生接入 Codex 了。 作为开源社区公认的「价格屠夫」，DeepSeek V4 在推理能力、上下文窗口和成本上又上了一个台阶，而且这次它主动拥抱了 OpenAI 的 Responses API...">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek 能原生接入 Codex，不要高兴那么早 | fengyua5">
-<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/">
+<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/08/01/deepseek-codex-native-integration/">
 <meta property="og:site_name" content="fengyua5">
 <meta property="og:description" content="2026-07-31，DeepSeek 官方正式发布 V4-Flash-0731。这次升级的意义不只是模型本身，而是把「兼容」做到了极致——DeepSeek 已经能原生接入 Codex 了。 作为开源社区公认的「价格屠夫」，DeepSeek V4 在推理能力、上下文窗口和成本上又上了一个台阶，而且这次它主动拥抱了 OpenAI 的 Responses API...">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fengyua5.github.io/img/deepseek-0731.jpg">
 <meta property="article:published_time" content="2026-08-01T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-01T06:13:34.306Z">
+<meta property="article:modified_time" content="2026-08-01T06:39:01.214Z">
 <meta property="article:author" content="fengyua5">
 <meta property="article:tag" content="deepseek">
 <meta property="article:tag" content="v4-flash">
@@ -24,11 +24,11 @@
 <meta property="article:tag" content="agent">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fengyua5.github.io/img/deepseek-0731.jpg">
-<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/">
+<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2026/08/01/deepseek-codex-native-integration/">
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"DeepSeek 能原生接入 Codex，不要高兴那么早","name":"DeepSeek 能原生接入 Codex，不要高兴那么早 | fengyua5","description":"2026-07-31，DeepSeek 官方正式发布 V4-Flash-0731。这次升级的意义不只是模型本身，而是把「兼容」做到了极致——DeepSeek 已经能原生接入 Codex 了。 作为开源社区公认的「价格屠夫」，DeepSeek V4 在推理能力、上下文窗口和成本上又上了一个台阶，而且这次它主动拥抱了 OpenAI 的 Responses API...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/","datePublished":"2026-08-01T04:00:00.000Z","dateModified":"2026-08-01T06:13:34.306Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"deepseek, v4-flash, client, agent"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"DeepSeek 能原生接入 Codex，不要高兴那么早","name":"DeepSeek 能原生接入 Codex，不要高兴那么早 | fengyua5","description":"2026-07-31，DeepSeek 官方正式发布 V4-Flash-0731。这次升级的意义不只是模型本身，而是把「兼容」做到了极致——DeepSeek 已经能原生接入 Codex 了。 作为开源社区公认的「价格屠夫」，DeepSeek V4 在推理能力、上下文窗口和成本上又上了一个台阶，而且这次它主动拥抱了 OpenAI 的 Responses API...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/01/deepseek-codex-native-integration/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/01/deepseek-codex-native-integration/","datePublished":"2026-08-01T04:00:00.000Z","dateModified":"2026-08-01T06:39:01.214Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"deepseek, v4-flash, client, agent"}</script>
 
 <script>
   (function () {
