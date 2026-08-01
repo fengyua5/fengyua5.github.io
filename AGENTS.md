@@ -123,10 +123,11 @@ categories:
 
 ## 注意事项
 
-1. **直接编辑 Markdown 文件**：在 `source/_posts/` 下创建或编辑 `.md` 文件，然后运行 `npm run build` 生成 HTML。不要直接编辑 `public/` 下的 HTML 产物。
-2. **根目录的旧 HTML 文件**：`index.html`、`main.*.js`、`mobile.*.js`、`slider.*.js` 等是早期直接提交的生成产物。现在使用 Hexo 标准工作流后，生成产物在 `public/` 目录中，根目录的旧文件可以后续清理。
-3. **主题更新**：Yilia 主题在 `themes/yilia/` 目录中，从 `https://github.com/litten/hexo-theme-yilia` 克隆。主题有自己的 `_config.yml` 可以单独配置。
-4. **package.json 中的 hexo 字段**：`"hexo": { "version": "7.3.0" }` 是必需的，Hexo 依赖它来判断是否加载配置。
+1. **文章文件名使用英文**：`source/_posts/` 下新建文章的文件名必须用英文（小写、连字符分隔，如 `deepseek-codex-native-integration.md`），不要出现中文。中文标题只写在 front-matter 的 `title` 字段里。
+2. **直接编辑 Markdown 文件**：在 `source/_posts/` 下创建或编辑 `.md` 文件，然后运行 `npm run build` 生成 HTML。不要直接编辑 `public/` 下的 HTML 产物。
+3. **根目录的旧 HTML 文件**：`index.html`、`main.*.js`、`mobile.*.js`、`slider.*.js` 等是早期直接提交的生成产物。现在使用 Hexo 标准工作流后，生成产物在 `public/` 目录中，根目录的旧文件可以后续清理。
+4. **主题更新**：Yilia 主题在 `themes/yilia/` 目录中，从 `https://github.com/litten/hexo-theme-yilia` 克隆。主题有自己的 `_config.yml` 可以单独配置。
+5. **package.json 中的 hexo 字段**：`"hexo": { "version": "7.3.0" }` 是必需的，Hexo 依赖它来判断是否加载配置。
 
 ## 内容分类
 
