@@ -15,7 +15,7 @@
 <meta property="og:description" content="PI Agent（开源仓库 badlogic&#x2F;pi-mono，本文基于 commit 74caa26）是目前最成熟的 Typescript Code Agent 智能体框架之一，OpenClaw 小龙虾就是基于这个框架开发。它把「上下文工程」当作第一等公民，核心只做一件事：让 agent 在有限的上下文窗口里高效地思考、行动、并且永远知道自己下一步该干什么...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-31T02:58:00.000Z">
-<meta property="article:modified_time" content="2026-07-31T08:07:40.464Z">
+<meta property="article:modified_time" content="2026-08-01T06:13:34.306Z">
 <meta property="article:author" content="fengyua5">
 <meta property="article:tag" content="pi-agent">
 <meta property="article:tag" content="architecture">
@@ -25,7 +25,7 @@
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PI Agent 源代码设计深度解析","name":"PI Agent 源代码设计深度解析 | fengyua5","description":"PI Agent（开源仓库 badlogic/pi-mono，本文基于 commit 74caa26）是目前最成熟的 Typescript Code Agent 智能体框架之一，OpenClaw 小龙虾就是基于这个框架开发。它把「上下文工程」当作第一等公民，核心只做一件事：让 agent 在有限的上下文窗口里高效地思考、行动、并且永远知道自己下一步该干什么...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/07/31/pi-agent-source-design/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/07/31/pi-agent-source-design/","datePublished":"2026-07-31T02:58:00.000Z","dateModified":"2026-07-31T08:07:40.464Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"pi-agent, architecture, source-code"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PI Agent 源代码设计深度解析","name":"PI Agent 源代码设计深度解析 | fengyua5","description":"PI Agent（开源仓库 badlogic/pi-mono，本文基于 commit 74caa26）是目前最成熟的 Typescript Code Agent 智能体框架之一，OpenClaw 小龙虾就是基于这个框架开发。它把「上下文工程」当作第一等公民，核心只做一件事：让 agent 在有限的上下文窗口里高效地思考、行动、并且永远知道自己下一步该干什么...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/07/31/pi-agent-source-design/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/07/31/pi-agent-source-design/","datePublished":"2026-07-31T02:58:00.000Z","dateModified":"2026-08-01T06:13:34.306Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"pi-agent, architecture, source-code"}</script>
 
 <script>
   (function () {
@@ -290,7 +290,7 @@
         
           
             <a class="site-info__item" href="/archives/">
-              <strong>18</strong>
+              <strong>19</strong>
               <span>文章</span>
             </a>
           
@@ -304,7 +304,7 @@
         
           
             <a class="site-info__item" href="/tags/">
-              <strong>20</strong>
+              <strong>24</strong>
               <span>标签</span>
             </a>
           
@@ -939,13 +939,13 @@
 
   <nav class="article-actions">
     
-      <span class="article-action article-action--prev is-disabled" aria-disabled="true">
+      <a class="article-action article-action--prev" href="/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-left"></use></svg>
 
         <span class="action-label">上一篇</span>
-        <span class="action-title">没有更早的文章了</span>
-      </span>
+        <span class="action-title">DeepSeek 能原生接入 Codex，不要高兴那么早</span>
+      </a>
     
     
       <a class="article-action article-action--next" href="/2019/10/31/react-hooks%E5%9F%BA%E7%A1%80/">
@@ -966,6 +966,39 @@
 
 </button>
 
+
+  <section class="related-paper">
+    <header class="related-paper__head">
+      <h2>
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-link"></use></svg>
+相关文章</h2>
+      <a class="related-paper__more" href="/archives/">
+        <span>查看更多</span>
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-right"></use></svg>
+
+      </a>
+    </header>
+    <div class="related-paper__grid">
+      
+        <a class="related-card" href="/2026/08/01/%E5%93%AA%E4%B8%AA%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%80%E9%80%82%E9%85%8DDeepSeek-V4-Flash-0731/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-0 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="https://fengyua5.github.io/img/deepseek-0731.jpg" alt="DeepSeek 能原生接入 Codex，不要高兴那么早" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">DeepSeek 能原生接入 Codex，不要高兴那么早</strong>
+            <em class="related-card__date">2026-08-01</em>
+          </span>
+        </a>
+      
+    </div>
+  </section>
 
 
       
