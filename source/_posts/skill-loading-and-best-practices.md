@@ -1,5 +1,5 @@
 ---
-title: Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角
+title: Skills 最佳实践
 date: 2026-08-03 10:00:00
 tags: [agent, skill, opencode, claude-code, best-practice]
 categories: AI
