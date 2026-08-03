@@ -6,26 +6,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f7f3e9" data-flatpaper-theme-color>
 
-<title>前端微服务 | fengyua5</title>
-<meta name="description" content="1、什么是前端微服务？为什么出现前端微服务 微前端架构是一种设计方法，其中，前端应用被分解为多个松散而协同工作的半独立”微应用”。微前端的思想来源于微服务，其名称也遵循了微服务的命名方式">
+<title>Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角 | fengyua5</title>
+<meta name="description" content="Skill（技能）是 2025 年底 Agent 圈最热门的扩展方式。Anthropic 在 2025 年 12 月把 Agent Skills 开源成开放标准，Codex CLI、Cursor、Gemini CLI 先后跟进，一个 SKILL.md 可以在多个工具间通用。 但很多人把 SKILL.md 丢进目录就完事了——它到底是什么时候被加载的？调用的时...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="前端微服务 | fengyua5">
-<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2019/10/14/%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+<meta property="og:title" content="Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角 | fengyua5">
+<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-loading-and-best-practices/">
 <meta property="og:site_name" content="fengyua5">
-<meta property="og:description" content="1、什么是前端微服务？为什么出现前端微服务 微前端架构是一种设计方法，其中，前端应用被分解为多个松散而协同工作的半独立”微应用”。微前端的思想来源于微服务，其名称也遵循了微服务的命名方式">
+<meta property="og:description" content="Skill（技能）是 2025 年底 Agent 圈最热门的扩展方式。Anthropic 在 2025 年 12 月把 Agent Skills 开源成开放标准，Codex CLI、Cursor、Gemini CLI 先后跟进，一个 SKILL.md 可以在多个工具间通用。 但很多人把 SKILL.md 丢进目录就完事了——它到底是什么时候被加载的？调用的时...">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-10-14T02:33:21.000Z">
+<meta property="article:published_time" content="2026-08-03T02:00:00.000Z">
 <meta property="article:modified_time" content="2026-08-03T06:41:42.997Z">
 <meta property="article:author" content="fengyua5">
-<meta property="article:tag" content="工程化">
-<meta property="article:tag" content="架构">
-<meta property="article:tag" content="微前端">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="skill">
+<meta property="article:tag" content="opencode">
+<meta property="article:tag" content="claude-code">
+<meta property="article:tag" content="best-practice">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2019/10/14/%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
+<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-loading-and-best-practices/">
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"前端微服务","name":"前端微服务 | fengyua5","description":"1、什么是前端微服务？为什么出现前端微服务 微前端架构是一种设计方法，其中，前端应用被分解为多个松散而协同工作的半独立”微应用”。微前端的思想来源于微服务，其名称也遵循了微服务的命名方式","url":"https://fengyua5.github.io/fengyua5.github.io/2019/10/14/%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2019/10/14/%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/","datePublished":"2019-10-14T02:33:21.000Z","dateModified":"2026-08-03T06:41:42.997Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"工程化, 架构, 微前端"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角","name":"Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角 | fengyua5","description":"Skill（技能）是 2025 年底 Agent 圈最热门的扩展方式。Anthropic 在 2025 年 12 月把 Agent Skills 开源成开放标准，Codex CLI、Cursor、Gemini CLI 先后跟进，一个 SKILL.md 可以在多个工具间通用。 但很多人把 SKILL.md 丢进目录就完事了——它到底是什么时候被加载的？调用的时...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-loading-and-best-practices/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-loading-and-best-practices/","datePublished":"2026-08-03T02:00:00.000Z","dateModified":"2026-08-03T06:41:42.997Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"agent, skill, opencode, claude-code, best-practice"}</script>
 
 <script>
   (function () {
@@ -356,7 +358,7 @@
         </header>
         <div class="toc-content">
           
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E5%87%BA%E7%8E%B0%E5%89%8D%E7%AB%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">1、什么是前端微服务？为什么出现前端微服务</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%85%A8%E6%99%AF%EF%BC%9ASkill-%E7%9A%84%E5%9B%9B%E9%98%B6%E6%AE%B5%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">1. 全景：Skill 的四阶段生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8A%A0%E8%BD%BD%EF%BC%9F%E2%80%94%E2%80%94%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2"><span class="toc-text">2. 什么时候加载？——渐进式披露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%EF%BC%9A%E4%BC%9A%E8%AF%9D%E5%90%AF%E5%8A%A8%EF%BC%8C%E5%8F%AA%E6%B3%A8%E5%85%A5%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">一级：会话启动，只注入元数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%EF%BC%9A%E6%8F%8F%E8%BF%B0%E5%8C%B9%E9%85%8D%EF%BC%8C%E5%8A%A0%E8%BD%BD%E6%AD%A3%E6%96%87"><span class="toc-text">二级：描述匹配，加载正文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%EF%BC%9A%E6%AD%A3%E6%96%87%E5%BC%95%E7%94%A8%EF%BC%8C%E6%8C%89%E9%9C%80%E8%AF%BB%E5%8F%96%E8%B5%84%E6%BA%90"><span class="toc-text">三级：正文引用，按需读取资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B0%83%E7%94%A8%E7%8E%B0%E5%9C%BA%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7%EF%BC%9F"><span class="toc-text">3. 调用现场长什么样？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Claude-Code%EF%BC%9ASkill-%E5%85%83%E5%B7%A5%E5%85%B7-%E4%B8%A4%E6%9D%A1%E6%B6%88%E6%81%AF%E6%B3%A8%E5%85%A5"><span class="toc-text">Claude Code：Skill 元工具 + 两条消息注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#opencode%EF%BC%9A%E5%8E%9F%E7%94%9F-skill-%E5%B7%A5%E5%85%B7"><span class="toc-text">opencode：原生 skill 工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E7%85%A7%EF%BC%9ATools-vs-Skills-vs-Commands-vs-CLAUDE-md"><span class="toc-text">对照：Tools vs Skills vs Commands vs CLAUDE.md</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Skill-%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B1%82%E7%BA%A7%EF%BC%88%E4%BD%9C%E7%94%A8%E5%9F%9F%EF%BC%89"><span class="toc-text">4. Skill 的三个层级（作用域）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%86%99-Skill-%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">5. 写 Skill 的最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-frontmatter%EF%BC%9A%E4%B8%A4%E4%B8%AA%E5%BF%85%E5%A1%AB%E5%AD%97%E6%AE%B5"><span class="toc-text">5.1 frontmatter：两个必填字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-description-%E4%B8%89%E8%A6%81%E7%B4%A0%E5%86%99%E6%B3%95"><span class="toc-text">5.2 description 三要素写法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2%EF%BC%9ASKILL-md-%E7%B2%BE%E7%AE%80%EF%BC%8C%E7%BB%86%E8%8A%82%E6%94%BE%E5%A4%96%E9%9D%A2"><span class="toc-text">5.3 渐进式披露：SKILL.md 精简，细节放外面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E4%B8%80%E6%8A%80%E8%83%BD%E4%B8%80%E4%BA%8B-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-text">5.4 一技能一事 + 权限控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E8%87%AA%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-text">5.5 自查清单</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%9C%9F%E5%AE%9E%E6%A1%88%E4%BE%8B%E5%A4%8D%E7%9B%98%EF%BC%9Amd-to-xiaohongshu-%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91"><span class="toc-text">6. 真实案例复盘：md-to-xiaohongshu 的三个坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%BB%93%E8%AE%BA-%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-text">7. 结论 + 速查表</span></a></li></ol>
           
         </div>
       </section>
@@ -379,24 +381,24 @@
   
   <header class="article-header">
     
-      <a class="label-pill" href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/">
+      <a class="label-pill" href="/categories/AI/">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-folder"></use></svg>
 
-        工程化
+        AI
       </a>
     
-    <h1>前端微服务</h1>
+    <h1>Code Agent 的 Skill 是怎么被加载和调用的？——opencode × Claude Code 双视角</h1>
     <div class="meta-line meta-line--article">
       <span class="meta-date">
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-calendar"></use></svg>
-2019-10-14</span>
+2026-08-03</span>
       
         <span class="meta-tags">
           
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
 
-          <a class="meta-tag-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">#工程化</a><a class="meta-tag-link" href="/tags/%E6%9E%B6%E6%9E%84/">#架构</a><a class="meta-tag-link" href="/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF/">#微前端</a>
+          <a class="meta-tag-link" href="/tags/agent/">#agent</a><a class="meta-tag-link" href="/tags/skill/">#skill</a><a class="meta-tag-link" href="/tags/opencode/">#opencode</a><a class="meta-tag-link" href="/tags/claude-code/">#claude-code</a><a class="meta-tag-link" href="/tags/best-practice/">#best-practice</a>
         </span>
       
     </div>
@@ -406,16 +408,176 @@
 
 
   <div class="article-content">
-    <h3 id="1、什么是前端微服务？为什么出现前端微服务"><a href="#1、什么是前端微服务？为什么出现前端微服务" class="headerlink" title="1、什么是前端微服务？为什么出现前端微服务"></a>1、什么是前端微服务？为什么出现前端微服务</h3><blockquote>
-<p>微前端架构是一种设计方法，其中，前端应用被分解为多个松散而协同工作的半独立”微应用”。微前端的思想来源于微服务，其名称也遵循了微服务的命名方式</p>
-</blockquote>
+    <p>Skill（技能）是 2025 年底 Agent 圈最热门的扩展方式。Anthropic 在 2025 年 12 月把 Agent Skills 开源成开放标准，Codex CLI、Cursor、Gemini CLI 先后跟进，一个 <code>SKILL.md</code> 可以在多个工具间通用。</p>
+<p>但很多人把 <code>SKILL.md</code> 丢进目录就完事了——<strong>它到底是什么时候被加载的？调用的时候长什么样？为什么我写的 skill 从来不触发？</strong> 这篇文章以 opencode 和 Claude Code 双视角拆开看，最后总结一份写 Skill 的最佳实践清单。</p>
 <span id="more"></span>
 
-<p>随着现在软件系统的业务越来越复杂，现在很多系统都是SPA（单页面应用），但是随着业务的模块也来越多，越来越复杂，出现了一下问题：</p>
+<h2 id="1-全景：Skill-的四阶段生命周期"><a href="#1-全景：Skill-的四阶段生命周期" class="headerlink" title="1. 全景：Skill 的四阶段生命周期"></a>1. 全景：Skill 的四阶段生命周期</h2><p>不管是 opencode 还是 Claude Code，一个 Skill 的生命周期都分四步：</p>
+<ol>
+<li><strong>发现（Discovery）</strong>：启动时扫描技能目录，收集每个 Skill 的元数据（<code>name</code> + <code>description</code>）</li>
+<li><strong>注册（Registration）</strong>：把元数据注入系统提示词 &#x2F; 暴露成工具，告诉 Agent「我有这些技能可用」</li>
+<li><strong>触发（Trigger）</strong>：Agent 根据你的请求和 <code>description</code> 做语义匹配，决定是否调用</li>
+<li><strong>执行（Execution）</strong>：加载 <code>SKILL.md</code> 全文 + 相关资源，按指令执行任务</li>
+</ol>
+<p>理解这四步的关键是：<strong>元数据是「常驻的」，正文是「按需加载的」</strong>。这个设计叫 <strong>渐进式披露（Progressive Disclosure）</strong>。</p>
+<h2 id="2-什么时候加载？——渐进式披露"><a href="#2-什么时候加载？——渐进式披露" class="headerlink" title="2. 什么时候加载？——渐进式披露"></a>2. 什么时候加载？——渐进式披露</h2><h3 id="一级：会话启动，只注入元数据"><a href="#一级：会话启动，只注入元数据" class="headerlink" title="一级：会话启动，只注入元数据"></a>一级：会话启动，只注入元数据</h3><p>启动时 Agent 读取所有 Skill 的 frontmatter（<code>name</code> + <code>description</code>），把它们放进系统提示词或工具定义里。此时 <code>SKILL.md</code> 的<strong>正文完全不进场</strong>，每个 Skill 只占约 100 tokens。</p>
+<p>以 opencode 为例，每个 Skill 在启动时变成一个工具定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skill(openclaw): 管理 OpenClaw 小龙虾的配置与启动，处理多智能体编排、备份恢复、日志排查</span><br><span class="line">skill(md-to-xiaohongshu): 把 Markdown 转成小红书图文稿，清除 Markdown 符号、加 emoji、按平台格式收尾</span><br></pre></td></tr></table></figure>
+
+<h3 id="二级：描述匹配，加载正文"><a href="#二级：描述匹配，加载正文" class="headerlink" title="二级：描述匹配，加载正文"></a>二级：描述匹配，加载正文</h3><p>当你的请求与某个 Skill 的 <code>description</code> 语义匹配时，Agent 才会真正去读 <code>SKILL.md</code> 正文，注入上下文（约 1K-5K tokens）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用户：把这篇 markdown 转成小红书文案</span><br><span class="line">  └─ Agent 扫元数据，命中 md-to-xiaohongshu 的 description</span><br><span class="line">      └─ 调用 skill(&#123;name: &quot;md-to-xiaohongshu&quot;&#125;)</span><br><span class="line">          └─ 读取 SKILL.md 全文 → 注入上下文 → 按规则执行</span><br></pre></td></tr></table></figure>
+
+<h3 id="三级：正文引用，按需读取资源"><a href="#三级：正文引用，按需读取资源" class="headerlink" title="三级：正文引用，按需读取资源"></a>三级：正文引用，按需读取资源</h3><p><code>SKILL.md</code> 里引用的 <code>references/</code>、<code>scripts/</code> 等配套文件，只在需要时读取——用到才加载，用不到零成本。</p>
+<p><strong>结论：<code>description</code> 是唯一的触发开关，正文平时零成本。</strong> 模糊的 description 意味着 Skill 永远不触发。</p>
+<h2 id="3-调用现场长什么样？"><a href="#3-调用现场长什么样？" class="headerlink" title="3. 调用现场长什么样？"></a>3. 调用现场长什么样？</h2><h3 id="Claude-Code：Skill-元工具-两条消息注入"><a href="#Claude-Code：Skill-元工具-两条消息注入" class="headerlink" title="Claude Code：Skill 元工具 + 两条消息注入"></a>Claude Code：<code>Skill</code> 元工具 + 两条消息注入</h3><p>Claude Code 把 Skill 实现为一个名为 <code>Skill</code> 的元工具（meta-tool）。模型发起工具调用 <code>Skill(&#123;command: &quot;pdf&quot;&#125;)</code> 后，系统会注入<strong>两条用户消息</strong>：</p>
 <ul>
-<li>页面模块越来越多，即使我们把webpack、gulp等打包工具优化到极致，打包时间仍然长达20分钟以上</li>
-<li>页面模块耦合太严重。改一部分代码会影响到另外的模块中的代码</li>
+<li>一条给用户看的可见元数据</li>
+<li>一条带 <code>isMeta: true</code> 标记的隐藏指令（正文），用户在终端看不到，但模型能完整读到</li>
 </ul>
+<blockquote>
+<p>这就是为什么你在终端只看到 <code>/pdf running...</code>，而背后的几千字指引已经进入模型上下文了。<code>isMeta</code> 解决了「UI 污染」问题。</p>
+</blockquote>
+<h3 id="opencode：原生-skill-工具"><a href="#opencode：原生-skill-工具" class="headerlink" title="opencode：原生 skill 工具"></a>opencode：原生 <code>skill</code> 工具</h3><p>opencode 的做法更直接：启动时把每个 Skill 注册成原生 <code>skill</code> 工具，模型在每一步对话时看到可用列表，匹配即调用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skill(&#123; name: &quot;md-to-xiaohongshu&quot; &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>调用后才会把该 Skill 的完整内容（SKILL.md 正文 + frontmatter）加载进上下文。<strong>没被调用的 Skill 永远不进入上下文</strong>。</p>
+<h3 id="对照：Tools-vs-Skills-vs-Commands-vs-CLAUDE-md"><a href="#对照：Tools-vs-Skills-vs-Commands-vs-CLAUDE-md" class="headerlink" title="对照：Tools vs Skills vs Commands vs CLAUDE.md"></a>对照：Tools vs Skills vs Commands vs CLAUDE.md</h3><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>本质</th>
+<th>谁触发</th>
+<th>加载时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tools</td>
+<td>执行具体动作（读文件、跑命令）</td>
+<td>模型</td>
+<td>工具定义常驻，执行按需</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td><strong>注入指令、改变模型行为</strong></td>
+<td><strong>模型（model-invoked）</strong></td>
+<td><strong>元数据常驻，正文按需</strong></td>
+</tr>
+<tr>
+<td>Commands（slash）</td>
+<td>用户主动触发的工作流</td>
+<td>用户（<code>/xxx</code>）</td>
+<td>用户调用时</td>
+</tr>
+<tr>
+<td>CLAUDE.md</td>
+<td>项目级规则&#x2F;事实</td>
+<td>常驻</td>
+<td><strong>启动即全量加载</strong></td>
+</tr>
+</tbody></table>
+<p>Skills 与 CLAUDE.md 的关键区别：<strong>CLAUDE.md 每个会话都全量占用上下文，Skills 平时只有几十字元数据</strong>。所以「长参考材料」应该做成 Skill，而不是塞进 CLAUDE.md。</p>
+<h2 id="4-Skill-的三个层级（作用域）"><a href="#4-Skill-的三个层级（作用域）" class="headerlink" title="4. Skill 的三个层级（作用域）"></a>4. Skill 的三个层级（作用域）</h2><p>Skill 可以放在三个不同的位置，作用域完全不同：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>opencode</th>
+<th>Claude Code</th>
+<th>作用域</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>全局层</strong>（用户级）</td>
+<td><code>~/.config/opencode/skills/</code></td>
+<td><code>~/.claude/skills/</code></td>
+<td>所有项目</td>
+<td>通用工作流：提交信息规范、PDF 处理、通用审查清单</td>
+</tr>
+<tr>
+<td><strong>工具层</strong>（插件&#x2F;内置）</td>
+<td>插件 bundle 的 skills、<code>~/.agents/skills/</code></td>
+<td>Claude Code 内置 skills（如 <code>pdf</code>）、插件 skills</td>
+<td>随工具&#x2F;插件分发，跨仓库可用</td>
+<td>工具自带能力、第三方技能库</td>
+</tr>
+<tr>
+<td><strong>项目层</strong></td>
+<td><code>.opencode/skills/</code></td>
+<td><code>.claude/skills/</code></td>
+<td>仅当前项目</td>
+<td>项目专属约定：md-to-xiaohongshu、本仓库规范</td>
+</tr>
+</tbody></table>
+<p><strong>同名冲突时，项目层 &gt; 全局层 &gt; 工具层</strong>。</p>
+<p><strong>怎么选？</strong> 一套思路：</p>
+<ul>
+<li>所有项目都用 → 放全局层</li>
+<li>跟着工具&#x2F;插件走、别人也能装 → 工具层</li>
+<li>只对这个仓库有意义 → 项目层</li>
+</ul>
+<h2 id="5-写-Skill-的最佳实践"><a href="#5-写-Skill-的最佳实践" class="headerlink" title="5. 写 Skill 的最佳实践"></a>5. 写 Skill 的最佳实践</h2><h3 id="5-1-frontmatter：两个必填字段"><a href="#5-1-frontmatter：两个必填字段" class="headerlink" title="5.1 frontmatter：两个必填字段"></a>5.1 frontmatter：两个必填字段</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">md-to-xiaohongshu</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">把</span> <span class="string">Markdown</span> <span class="string">转成小红书图文稿，清除</span> <span class="string">Markdown</span> <span class="string">符号、加</span> <span class="string">emoji、按平台格式收尾</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>name</code></strong>：小写字母、数字、连字符；<strong>必须和目录名一致</strong>（<code>.opencode/skills/md-to-xiaohongshu/SKILL.md</code>）</li>
+<li><strong><code>description</code></strong>：触发开关，必填</li>
+</ul>
+<h3 id="5-2-description-三要素写法"><a href="#5-2-description-三要素写法" class="headerlink" title="5.2 description 三要素写法"></a>5.2 description 三要素写法</h3><p>description 要回答三个问题：<strong>做什么</strong> + <strong>什么时候用</strong> + <strong>怎么触发</strong>。越具体越容易命中。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 模糊，几乎不触发</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">处理小红书内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 具体，指明触发场景</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">|</span></span><br><span class="line"><span class="string">  把 Markdown 文档转换为可直接发布到小红书的图文稿，清除 Markdown 符号、</span></span><br><span class="line"><span class="string">  用 emoji 提升可读性、按平台格式收尾。当用户要求把 markdown/博客文章</span></span><br><span class="line"><span class="string">  转成小红书文案时使用。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>判断标准：你读完 description 能立刻知道什么时候该用，Agent 才能知道。</strong></p>
+<h3 id="5-3-渐进式披露：SKILL-md-精简，细节放外面"><a href="#5-3-渐进式披露：SKILL-md-精简，细节放外面" class="headerlink" title="5.3 渐进式披露：SKILL.md 精简，细节放外面"></a>5.3 渐进式披露：SKILL.md 精简，细节放外面</h3><ul>
+<li>主文件只放核心规则和流程</li>
+<li>长参考材料 → <code>references/</code> 子目录</li>
+<li>机械性的校验、解析、格式化 → <code>scripts/</code> 脚本（模型做判断，脚本做脏活）</li>
+</ul>
+<h3 id="5-4-一技能一事-权限控制"><a href="#5-4-一技能一事-权限控制" class="headerlink" title="5.4 一技能一事 + 权限控制"></a>5.4 一技能一事 + 权限控制</h3><ul>
+<li>一个 Skill 只负责一件事，不要试图覆盖五个工作流</li>
+<li>有副作用的操作（部署、发消息）用 <code>disable-model-invocation: true</code>，只允许用户 <code>/命令</code> 触发</li>
+<li>需要特定工具的 Skill 用 <code>allowed-tools</code> 声明</li>
+</ul>
+<h3 id="5-5-自查清单"><a href="#5-5-自查清单" class="headerlink" title="5.5 自查清单"></a>5.5 自查清单</h3><p>写完后逐条验证：</p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>grep -c &#39;\*\*&#39; 输出文件</code> 为 0（无残留 Markdown 符号）</li>
+<li><input disabled="" type="checkbox"> description 里能读到触发场景</li>
+<li><input disabled="" type="checkbox"> name 与目录名一致、全小写连字符</li>
+<li><input disabled="" type="checkbox"> 正文没有塞大段参考文档（应放 references&#x2F;）</li>
+<li><input disabled="" type="checkbox"> 实测触发一次，确认能命中</li>
+</ul>
+<h2 id="6-真实案例复盘：md-to-xiaohongshu-的三个坑"><a href="#6-真实案例复盘：md-to-xiaohongshu-的三个坑" class="headerlink" title="6. 真实案例复盘：md-to-xiaohongshu 的三个坑"></a>6. 真实案例复盘：md-to-xiaohongshu 的三个坑</h2><p>我在自己的博客项目里写了一个 <code>md-to-xiaohongshu</code> skill，踩了三个典型坑：</p>
+<p><strong>坑 1：description 太泛，Skill 不触发。</strong> 最初描述是「处理小红书内容」，push 完成后怎么都不触发。改成「把 Markdown 文档转换为可直接发布到小红书的图文稿……当用户要求把 markdown&#x2F;博客文章转成小红书文案时使用」才命中。</p>
+<p><strong>坑 2：会话级缓存导致注册过期。</strong> 把 skill 从全局层迁到项目层后，当前会话的注册表还指向旧路径，加载直接报错。<strong>技能目录在会话启动时扫描，改了位置要重启会话。</strong></p>
+<p><strong>坑 3：输出模板与规则自相矛盾。</strong> skill 里规则写着「标题去掉 <code>#</code>」，输出模板却画着 <code># &#123;标题&#125;</code>——模型照模板输出，标题带了一堆 <code>#</code>。<strong>规则和模板必须一致，自查项要能 grep 验证。</strong></p>
+<h2 id="7-结论-速查表"><a href="#7-结论-速查表" class="headerlink" title="7. 结论 + 速查表"></a>7. 结论 + 速查表</h2><p><strong>一句话总结</strong>：Skill 的本质是「<strong>平时零成本的按需指令注入</strong>」——启动只带元数据，触发才加载正文；<code>description</code> 决定是否触发，层级决定作用域。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加载时机</td>
+<td>启动只注入元数据，触发才加载正文，资源按需读取</td>
+</tr>
+<tr>
+<td>触发开关</td>
+<td><code>description</code>，三要素：做什么 + 何时用 + 触发场景</td>
+</tr>
+<tr>
+<td>三层级</td>
+<td>全局 <code>~/.config/opencode/skills</code> &#x2F; <code>~/.claude/skills</code>，工具（插件&#x2F;内置），项目 <code>.opencode/skills</code> &#x2F; <code>.claude/skills</code>；项目优先</td>
+</tr>
+<tr>
+<td>与 CLAUDE.md</td>
+<td>CLAUDE.md 常驻全量，Skill 按需加载，长参考用 Skill</td>
+</tr>
+<tr>
+<td>最佳实践</td>
+<td>一技能一事、SKILL.md 精简、机械活放脚本、权限控制、grep 自查</td>
+</tr>
+</tbody></table>
+<p>想自己动手写一个？从「你反复粘贴到聊天里的那段流程」开始——它就该是一个 Skill。</p>
 
   </div>
 
@@ -445,18 +607,18 @@
 
   <nav class="article-actions">
     
-      <a class="article-action article-action--prev" href="/2019/10/31/react-hooks%E5%9F%BA%E7%A1%80/">
+      <span class="article-action article-action--prev is-disabled" aria-disabled="true">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-left"></use></svg>
 
         <span class="action-label">上一篇</span>
-        <span class="action-title">react hooks 基础</span>
-      </a>
+        <span class="action-title">没有更早的文章了</span>
+      </span>
     
     
-      <a class="article-action article-action--next" href="/2019/06/27/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96-%E5%AF%B9%E4%BA%8E%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E6%8B%86%E8%A7%A3%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%80%9D%E8%80%83/">
+      <a class="article-action article-action--next" href="/2026/08/01/deepseek-codex-native-integration/">
         <span class="action-label">下一篇</span>
-        <span class="action-title">前端工程化-对于如何有效地拆解项目的思考</span>
+        <span class="action-title">DeepSeek 能原生接入 Codex，不要高兴那么早</span>
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-right"></use></svg>
 
@@ -487,23 +649,23 @@
     </header>
     <div class="related-paper__grid">
       
-        <a class="related-card" href="/2019/06/27/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96-%E5%AF%B9%E4%BA%8E%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E5%9C%B0%E6%8B%86%E8%A7%A3%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%80%9D%E8%80%83/">
+        <a class="related-card" href="/2026/08/01/deepseek-codex-native-integration/">
           <span class="related-card__thumb">
             
 <div class="paper-thumb paper-thumb-0 paper-thumb--cover">
   
-    <img class="paper-thumb__img" src="https://raw.githubusercontent.com/fengyua5/blog/master/img/category.png" alt="前端工程化-对于如何有效地拆解项目的思考" loading="lazy" referrerpolicy="no-referrer">
+    <img class="paper-thumb__img" src="https://fengyua5.github.io/img/deepseek-0731.jpg" alt="DeepSeek 能原生接入 Codex，不要高兴那么早" loading="lazy" referrerpolicy="no-referrer">
   
 </div>
 
           </span>
           <span class="related-card__body">
-            <strong class="related-card__title">前端工程化-对于如何有效地拆解项目的思考</strong>
-            <em class="related-card__date">2019-06-27</em>
+            <strong class="related-card__title">DeepSeek 能原生接入 Codex，不要高兴那么早</strong>
+            <em class="related-card__date">2026-08-01</em>
           </span>
         </a>
       
-        <a class="related-card" href="/2018/07/26/%E8%B7%AF%E7%94%B1%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96/">
+        <a class="related-card" href="/2026/07/31/pi-agent-source-design/">
           <span class="related-card__thumb">
             
 <div class="paper-thumb paper-thumb-1 paper-thumb--cover">
@@ -514,8 +676,8 @@
 
           </span>
           <span class="related-card__body">
-            <strong class="related-card__title">路由去中心化</strong>
-            <em class="related-card__date">2018-07-26</em>
+            <strong class="related-card__title">PI Agent 源代码设计深度解析</strong>
+            <em class="related-card__date">2026-07-31</em>
           </span>
         </a>
       
