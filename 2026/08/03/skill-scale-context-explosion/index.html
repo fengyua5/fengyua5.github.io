@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f7f3e9" data-flatpaper-theme-color>
 
-<title>装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5</title>
+<title>装了 100 个 Skill 后，Agent 突然变笨了？ | fengyua5</title>
 <meta name="description" content="上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5">
+<meta property="og:title" content="装了 100 个 Skill 后，Agent 突然变笨了？ | fengyua5">
 <meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/">
 <meta property="og:site_name" content="fengyua5">
 <meta property="og:description" content="上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-03T07:30:00.000Z">
-<meta property="article:modified_time" content="2026-08-04T01:02:03.423Z">
+<meta property="article:modified_time" content="2026-08-04T01:04:54.027Z">
 <meta property="article:author" content="fengyua5">
 <meta property="article:tag" content="agent">
 <meta property="article:tag" content="skill">
@@ -28,7 +28,7 @@
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"装了 100 个 Skill 后，Agent 突然变笨了","name":"装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5","description":"上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","datePublished":"2026-08-03T07:30:00.000Z","dateModified":"2026-08-04T01:02:03.423Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"agent, skill, opencode, claude-code, context-window, llm"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"装了 100 个 Skill 后，Agent 突然变笨了？","name":"装了 100 个 Skill 后，Agent 突然变笨了？ | fengyua5","description":"上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","datePublished":"2026-08-03T07:30:00.000Z","dateModified":"2026-08-04T01:04:54.027Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"agent, skill, opencode, claude-code, context-window, llm"}</script>
 
 <script>
   (function () {
@@ -389,7 +389,7 @@
         AI
       </a>
     
-    <h1>装了 100 个 Skill 后，Agent 突然变笨了</h1>
+    <h1>装了 100 个 Skill 后，Agent 突然变笨了？</h1>
     <div class="meta-line meta-line--article">
       <span class="meta-date">
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-calendar"></use></svg>
