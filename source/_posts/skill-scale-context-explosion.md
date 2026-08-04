@@ -1,5 +1,5 @@
 ---
-title: 装了 100 个 Skill 后，Agent 突然变笨了
+title: 装了 100 个 Skill 后，Agent 突然变笨了？
 date: 2026-08-03 15:30:00
 tags: [agent, skill, opencode, claude-code, context-window, llm]
 categories: AI
