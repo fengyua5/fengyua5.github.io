@@ -6,26 +6,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f7f3e9" data-flatpaper-theme-color>
 
-<title>js文件的异步加载 | fengyua5</title>
-<meta name="description" content="js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题">
+<title>装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5</title>
+<meta name="description" content="上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js文件的异步加载 | fengyua5">
-<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/">
+<meta property="og:title" content="装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5">
+<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/">
 <meta property="og:site_name" content="fengyua5">
-<meta property="og:description" content="js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题">
+<meta property="og:description" content="上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-09-15T02:00:00.000Z">
+<meta property="article:published_time" content="2026-08-03T07:30:00.000Z">
 <meta property="article:modified_time" content="2026-08-04T00:25:44.024Z">
 <meta property="article:author" content="fengyua5">
-<meta property="article:tag" content="javascript">
-<meta property="article:tag" content="webpack">
-<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="skill">
+<meta property="article:tag" content="opencode">
+<meta property="article:tag" content="claude-code">
+<meta property="article:tag" content="context-window">
+<meta property="article:tag" content="llm">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/">
+<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/">
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"js文件的异步加载","name":"js文件的异步加载 | fengyua5","description":"js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题","url":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","datePublished":"2017-09-15T02:00:00.000Z","dateModified":"2026-08-04T00:25:44.024Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"javascript, webpack, 性能优化"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"装了 100 个 Skill 后，Agent 突然变笨了","name":"装了 100 个 Skill 后，Agent 突然变笨了 | fengyua5","description":"上一篇《Skills 最佳实践》讲了 Skill 的加载机制：元数据常驻、正文按需加载，结论是「Skill 平时只有几十字元数据，所以可以随便装」。 然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？ 这篇文章把账算清楚：Skill 元数据...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/08/03/skill-scale-context-explosion/","datePublished":"2026-08-03T07:30:00.000Z","dateModified":"2026-08-04T00:25:44.024Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"agent, skill, opencode, claude-code, context-window, llm"}</script>
 
 <script>
   (function () {
@@ -356,7 +359,7 @@
         </header>
         <div class="toc-content">
           
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BDjs%E6%96%87%E4%BB%B6"><span class="toc-text">1、为什么要异步加载js文件</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%97%AE%E9%A2%98%EF%BC%9A100-%E4%B8%AA-Skill-%E2%89%88-10K-tokens-%E5%B8%B8%E9%A9%BB"><span class="toc-text">1. 问题：100 个 Skill ≈ 10K tokens 常驻</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BD%92%E5%9B%A0%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E3%80%8C%E5%B8%B8%E9%A9%BB%E5%85%83%E6%95%B0%E6%8D%AE%E3%80%8D%E8%BF%99%E4%B9%88%E8%B4%B5"><span class="toc-text">2. 归因：为什么「常驻元数据」这么贵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E6%B3%95%E5%85%A8%E6%99%AF%EF%BC%9A%E5%85%AD%E5%A5%97%E6%96%B9%E6%A1%88%EF%BC%8C%E4%BB%8E%E8%BD%BB%E5%88%B0%E9%87%8D"><span class="toc-text">3. 解法全景：六套方案，从轻到重</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%B2%BE%E7%AE%80-description%EF%BC%88%E9%9B%B6%E6%88%90%E6%9C%AC%EF%BC%8C%E5%85%88%E5%81%9A%EF%BC%89"><span class="toc-text">3.1 精简 description（零成本，先做）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%8A%80%E8%83%BD%E8%B7%AF%E7%94%B1%EF%BC%9A%E4%BD%8E%E9%A2%91-Skill-%E4%B8%8D%E8%BF%9B%E6%89%AB%E6%8F%8F%E7%9B%AE%E5%BD%95%EF%BC%88%E6%94%B9%E9%85%8D%E7%BD%AE%EF%BC%89"><span class="toc-text">3.2 技能路由：低频 Skill 不进扫描目录（改配置）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%B8%A4%E5%B1%82%E6%9E%B6%E6%9E%84%EF%BC%9Apinned-ecosystem%EF%BC%88%E8%A6%81%E6%94%B9%E6%A1%86%E6%9E%B6%EF%BC%89"><span class="toc-text">3.3 两层架构：pinned + ecosystem（要改框架）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%90%91%E9%87%8F%E5%8C%96%E8%B7%AF%E7%94%B1%EF%BC%9Aembedding-%E5%81%9A%E8%AF%AD%E4%B9%89%E5%8C%B9%E9%85%8D%EF%BC%88%E9%95%BF%E6%9C%9F%E6%96%B9%E6%A1%88%EF%BC%89"><span class="toc-text">3.4 向量化路由：embedding 做语义匹配（长期方案）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96%EF%BC%9Aappend-to-end-%E4%BF%9D%E4%BD%8F%E5%89%8D%E7%BC%80%E7%BC%93%E5%AD%98%EF%BC%88%E8%B0%83%E5%B7%A5%E5%85%B7%EF%BC%89"><span class="toc-text">3.5 缓存优化：append-to-end 保住前缀缓存（调工具）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-SkillReducer%EF%BC%9A%E6%9E%84%E5%BB%BA%E6%9C%9F%E5%8E%8B%E7%BC%A9-Skill%EF%BC%88%E8%AF%BB%E8%AE%BA%E6%96%87%EF%BC%89"><span class="toc-text">3.6 SkillReducer：构建期压缩 Skill（读论文）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8A%A8%E6%89%8B%E8%B7%AF%E5%BE%84%EF%BC%9A%E5%85%88%E6%B5%8B%E9%87%8F%EF%BC%8C%E5%86%8D%E8%A3%81%E5%89%AA"><span class="toc-text">4. 动手路径：先测量，再裁剪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BB%93%E8%AE%BA"><span class="toc-text">5. 结论</span></a></li></ol>
           
         </div>
       </section>
@@ -379,24 +382,24 @@
   
   <header class="article-header">
     
-      <a class="label-pill" href="/categories/javascript/">
+      <a class="label-pill" href="/categories/AI/">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-folder"></use></svg>
 
-        javascript
+        AI
       </a>
     
-    <h1>js文件的异步加载</h1>
+    <h1>装了 100 个 Skill 后，Agent 突然变笨了</h1>
     <div class="meta-line meta-line--article">
       <span class="meta-date">
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-calendar"></use></svg>
-2017-09-15</span>
+2026-08-03</span>
       
         <span class="meta-tags">
           
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
 
-          <a class="meta-tag-link" href="/tags/javascript/">#javascript</a><a class="meta-tag-link" href="/tags/webpack/">#webpack</a><a class="meta-tag-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">#性能优化</a>
+          <a class="meta-tag-link" href="/tags/agent/">#agent</a><a class="meta-tag-link" href="/tags/skill/">#skill</a><a class="meta-tag-link" href="/tags/opencode/">#opencode</a><a class="meta-tag-link" href="/tags/claude-code/">#claude-code</a><a class="meta-tag-link" href="/tags/context-window/">#context-window</a><a class="meta-tag-link" href="/tags/llm/">#llm</a>
         </span>
       
     </div>
@@ -406,27 +409,139 @@
 
 
   <div class="article-content">
-    <h1 id="js文件的异步加载"><a href="#js文件的异步加载" class="headerlink" title="js文件的异步加载"></a>js文件的异步加载</h1><h2 id="1、为什么要异步加载js文件"><a href="#1、为什么要异步加载js文件" class="headerlink" title="1、为什么要异步加载js文件"></a>1、为什么要异步加载js文件</h2><p>有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题</p>
-<ul>
-<li>浪费带宽</li>
-<li>如果页面文件加载过多会有性能问题</li>
-</ul>
+    <p>上一篇《<a href="/2026/08/03/skill-loading-and-best-practices/">Skills 最佳实践</a>》讲了 Skill 的加载机制：<strong>元数据常驻、正文按需加载</strong>，结论是「Skill 平时只有几十字元数据，所以可以随便装」。</p>
+<p>然后我就信了。一个、两个、十个……装了 50 多个 Skill，Agent 开始变笨了：反应变慢、该触发的 skill 不触发、偶尔还答非所问。上篇说的「零成本」去哪了？</p>
+<p>这篇文章把账算清楚：<strong>Skill 元数据确实是常驻的，100 个就是 10K tokens 起。</strong> 以及社区为这个问题给出的六套解法。</p>
 <span id="more"></span>
 
-<p>下面是有些实际场景</p>
-<p>1、微信sdk分享</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;https://res.wx.qq.com/open/js/jweixin-1.3.2.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="1-问题：100-个-Skill-≈-10K-tokens-常驻"><a href="#1-问题：100-个-Skill-≈-10K-tokens-常驻" class="headerlink" title="1. 问题：100 个 Skill ≈ 10K tokens 常驻"></a>1. 问题：100 个 Skill ≈ 10K tokens 常驻</h2><p>回看加载机制：每次会话启动，Agent 把所有 Skill 的 <code>name + description</code> 注入系统提示词。上篇算过，一个 Skill 的元数据约 100 tokens。</p>
+<p>于是成本就是纯乘法：</p>
+<table>
+<thead>
+<tr>
+<th>Skill 数量</th>
+<th>元数据体积（约）</th>
+<th>感受</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10 个</td>
+<td>~1K tokens</td>
+<td>无感</td>
+</tr>
+<tr>
+<td>100 个</td>
+<td>~10K tokens</td>
+<td>开始拖慢</td>
+</tr>
+<tr>
+<td>500 个</td>
+<td>~50K tokens</td>
+<td>明显变笨</td>
+</tr>
+<tr>
+<td>1500 个</td>
+<td>~150K tokens</td>
+<td>上下文直接爆掉</td>
+</tr>
+</tbody></table>
+<p>而且这是<strong>每一轮对话都要重发</strong>的。它不像正文那样「触发才加载」，元数据常驻意味着你问「今天天气」时，模型也要先读一遍那 10K tokens 的 Skill 清单。</p>
+<p><strong>真实案例</strong>（opencode issue #20647）：一位用户装了 1500 个 Skill，光元数据就吃掉约 <strong>147K tokens</strong>，占模型 262K 上下文窗口的 <strong>56%</strong>。模型一半的脑容量在记技能名，哪还有空间思考你问的问题？</p>
+<h2 id="2-归因：为什么「常驻元数据」这么贵"><a href="#2-归因：为什么「常驻元数据」这么贵" class="headerlink" title="2. 归因：为什么「常驻元数据」这么贵"></a>2. 归因：为什么「常驻元数据」这么贵</h2><p>要解决问题，先看清它贵在哪：</p>
+<ol>
+<li><strong>全量注入</strong>：不管用不用得上，全部 Skill 的 description 一个不落进 system prompt。描述写得越长，每个 Skill 的 100 tokens 越接近 200-300。</li>
+<li><strong>每轮重发</strong>：system prompt 属于「固定前缀」，但很多工具会整段重发，而不是只发增量。token 数不变，成本每轮都付。</li>
+<li><strong>上下文挤压</strong>：模型可用的上下文是一块固定蛋糕。Skill 元数据 + CLAUDE.md + 工具定义 + 历史对话都在抢，抢走 56% 之后，留给推理和答案的空间就少了。</li>
+<li><strong>注意力稀释</strong>：1500 个 description 摆在那，模型在语义匹配时更容易「眼花」，该触发的 skill 匹配错或漏掉——这解释了「装了越多越不触发」。</li>
+</ol>
+<p>一句话：<strong>渐进式披露只保护了正文，没保护元数据。</strong> 元数据本身成为新的膨胀点。</p>
+<h2 id="3-解法全景：六套方案，从轻到重"><a href="#3-解法全景：六套方案，从轻到重" class="headerlink" title="3. 解法全景：六套方案，从轻到重"></a>3. 解法全景：六套方案，从轻到重</h2><h3 id="3-1-精简-description（零成本，先做）"><a href="#3-1-精简-description（零成本，先做）" class="headerlink" title="3.1 精简 description（零成本，先做）"></a>3.1 精简 description（零成本，先做）</h3><p>最简单的一招：<strong>description 越短越好</strong>。很多 skill 把整段操作步骤写进 description，触发只需要三要素：做什么 + 何时用 + 触发场景。把多余的话删掉，100 tokens 能压到 50。</p>
+<p>配合上篇的「渐进式披露」：细节放 <code>references/</code>、机械活放 <code>scripts/</code>，正文别长，description 更别长。</p>
+<p><strong>这一个动作能省一半元数据体积，成本为零。</strong></p>
+<h3 id="3-2-技能路由：低频-Skill-不进扫描目录（改配置）"><a href="#3-2-技能路由：低频-Skill-不进扫描目录（改配置）" class="headerlink" title="3.2 技能路由：低频 Skill 不进扫描目录（改配置）"></a>3.2 技能路由：低频 Skill 不进扫描目录（改配置）</h3><p>把「不常用」的 Skill 移出自动扫描目录（如 <code>~/.config/opencode/skills/</code>），换成手动查询。做法是保留一个常驻的 <strong>skill-router</strong>（路由 Skill）：它自己不装技能，而是用 grep 按需搜索其他 Skill 的 description。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用户：处理一下这个 PDF</span><br><span class="line">  └─ Agent 查 skill-router 目录索引</span><br><span class="line">      └─ grep 到 pdf 类 skill → 读取该 skill 正文 → 执行</span><br></pre></td></tr></table></figure>
 
-<p>一般来说我们会把上述的代码放在body的最后，但是我们应该思考一个问题，就是这段js代码肯定会用到吗？答案是no，因为我们可以在用户点击分享的时候动态的加载js，所以有些问题我们能深入研究一下就可以知道一些高深的问题也不是很难懂</p>
-<p>下面直接上代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function loadScript(url, callback) &#123;</span><br><span class="line">  var script = document.createElement(&quot;script&quot;);</span><br><span class="line">  script.type = &quot;text/javascript&quot;;</span><br><span class="line">  if (script.readyState) &#123; //IE</span><br><span class="line">    script.onreadystatechange = function () &#123;</span><br><span class="line">      if (script.readyState == &quot;loaded&quot; || script.readyState == &quot;complete&quot;) &#123;</span><br><span class="line">        script.onreadystatechange = null;</span><br><span class="line">        callback();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125; else &#123; //Others</span><br><span class="line">    script.onload = function () &#123;</span><br><span class="line">      callback();</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  script.src = url;</span><br><span class="line">  document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但社区实测（Claude 内部社区讨论）提醒：纯 description 匹配的触发率 <strong>不到 30%</strong>，靠「关键词 + 交叉引用」能到 70-80%，仍然不可靠。适合低频、边界清晰的技能；核心技能别走这条。</p>
+<h3 id="3-3-两层架构：pinned-ecosystem（要改框架）"><a href="#3-3-两层架构：pinned-ecosystem（要改框架）" class="headerlink" title="3.3 两层架构：pinned + ecosystem（要改框架）"></a>3.3 两层架构：pinned + ecosystem（要改框架）</h3><p>把 Skill 分成两类：</p>
+<ul>
+<li><strong>Pinned（钉住）</strong>：高频使用的 10-15 个，永远注入元数据</li>
+<li><strong>Ecosystem（生态）</strong>：其余全部，元数据不进上下文，只在需要时被发现加载</li>
+</ul>
+<p>实现依赖 <code>skills.ecosystem</code> 之类的配置项，当前 opencode &#x2F; Claude Code 原生不直接支持，需要改框架源码或等官方落地。这是「标准答案」的方向，但还不是开箱即用的。</p>
+<p><strong>实战变体：按 domain 分组。</strong> pinned + ecosystem 的按需发现做细一点，可以按领域（domain）分组——每个领域只注入该领域自己的元数据，把「当前任务无关」的领域整体挡在上下文外。举个前端工程师的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">~/.config/opencode/skills/</span><br><span class="line">├── _domain-frontend/          # 前端领域：常驻</span><br><span class="line">│   ├── react-optimization/</span><br><span class="line">│   ├── css-typo-checklist/</span><br><span class="line">│   └── vite-config-guide/</span><br><span class="line">├── _domain-backend/           # 后端领域：按需发现</span><br><span class="line">│   ├── go-http-handler/</span><br><span class="line">│   └── sql-query-review/</span><br><span class="line">├── _domain-data/              # 数据领域：按需发现</span><br><span class="line">│   ├── etl-troubleshoot/</span><br><span class="line">│   └── dbt-migration/</span><br><span class="line">└── skill-router/              # 路由：按 domain 分桶搜索</span><br></pre></td></tr></table></figure>
 
-<p>2、webpack的懒加载</p>
-<p>我们大家现在基本上都用到过webpack、gulp等自动化打包工具，他可以帮我们做很多东西，但是大家有没有了解他的具体细节那，他的懒加载和例子一是同样的原理</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">// This file contains only the entry chunk.</span><br><span class="line">// The chunk loading function for additional chunks</span><br><span class="line">// runtime代码里面只包含了入口的chunk</span><br><span class="line">// 这个函数的主要作用:</span><br><span class="line">// 1. 异步加载chunk</span><br><span class="line">// 2. 提供对于chunk加载失败或者处于加载中的处理</span><br><span class="line">// 其中chunk加载状态的判断是根据installedChunks对象chunkId是数字0还是数组来进行判断的</span><br><span class="line">__webpack_require__.e = function requireEnsure(chunkId) &#123;</span><br><span class="line">    // 数字0代表chunk加载成功</span><br><span class="line">    if(installedChunks[chunkId] === 0)</span><br><span class="line">        return Promise.resolve();</span><br><span class="line"></span><br><span class="line">    // an Promise means &quot;currently loading&quot;.</span><br><span class="line">    // 如果installedChunks[chunkId]为一个数组</span><br><span class="line">    if(installedChunks[chunkId]) &#123;</span><br><span class="line">        // 返回一个promise对象</span><br><span class="line">        return installedChunks[chunkId][2];</span><br><span class="line">    &#125;</span><br><span class="line">    // start chunk loading</span><br><span class="line">    // 通过生成script标签来异步加载chunk.文件名是根据接受的chunkId来确认的</span><br><span class="line">    var head = document.getElementsByTagName(&#x27;head&#x27;)[0];</span><br><span class="line">    var script = document.createElement(&#x27;script&#x27;);</span><br><span class="line">    script.type = &#x27;text/javascript&#x27;;</span><br><span class="line">    script.charset = &#x27;utf-8&#x27;;</span><br><span class="line">    script.async = true;</span><br><span class="line">    // 超时时间为120s</span><br><span class="line">    script.timeout = 120000;</span><br><span class="line"></span><br><span class="line">    if (__webpack_require__.nc) &#123;</span><br><span class="line">        script.setAttribute(&quot;nonce&quot;, __webpack_require__.nc);</span><br><span class="line">    &#125;</span><br><span class="line">    // 需要加载的文件名</span><br><span class="line">    script.src = __webpack_require__.p + &quot;js/register/&quot; + (&#123;&quot;2&quot;:&quot;index&quot;&#125;[chunkId]||chunkId) + &quot;.js&quot;;</span><br><span class="line">    // 120s的定时器，超时后触发onScriptComplete回调</span><br><span class="line">    var timeout = setTimeout(onScriptComplete, 120000);</span><br><span class="line">    // chunk加载完毕后的回调</span><br><span class="line">    script.onerror = script.onload = onScriptComplete;</span><br><span class="line">    function onScriptComplete() &#123;</span><br><span class="line">        // avoid mem leaks in IE.</span><br><span class="line">        script.onerror = script.onload = null;</span><br><span class="line">        // 清空定时器</span><br><span class="line">        clearTimeout(timeout);</span><br><span class="line">        // 获取这个chunk的加载状态</span><br><span class="line">        // 若为数字0，表示加载成功</span><br><span class="line">        // 若为一个数组, 调用数组的第2个元素（第二个元素为promise内传入的reject函数），使得promise捕获抛出的错误。reject(new Error(&#x27;xxx&#x27;))</span><br><span class="line">        var chunk = installedChunks[chunkId];</span><br><span class="line">        if(chunk !== 0) &#123;</span><br><span class="line">            if(chunk) chunk[1](new Error(&#x27;Loading chunk &#x27; + chunkId + &#x27; failed.&#x27;));</span><br><span class="line">            installedChunks[chunkId] = undefined;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    // 每次需要进行异步加载chunk时，会将这个chunk的加载状态进行初始化为一个数组,并以key/value的形式保存在installedChunks里</span><br><span class="line">    // 这个数组为[resolve, reject, promise];</span><br><span class="line">    var promise = new Promise(function(resolve, reject) &#123;</span><br><span class="line">        installedChunks[chunkId] = [resolve, reject];</span><br><span class="line">    &#125;);</span><br><span class="line">    installedChunks[chunkId][2] = promise;</span><br><span class="line"></span><br><span class="line">    head.appendChild(script);</span><br><span class="line">    //返回promise</span><br><span class="line">    return promise;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>_domain-frontend</code> 是 pinned（写 React 时永远在），后端和数据领域不进上下文。当用户突然问「这个 Go 接口怎么优化」，路由 skill 先按 domain 索引找到 <code>_domain-backend</code>，再把它的元数据临时注入——<strong>当前领域零成本，跨领域才付费</strong>。代价和 3.2 一样：路由触发靠匹配，低频冷门请求可能漏；所以「常驻 domain」要挑最常干的活，别贪多。</p>
+<p>目录树里那个 <code>skill-router/</code> 本身也是一个常驻 Skill，它不装任何技能，只负责「发现」——<strong>自己是路由，也是唯一常驻的索引</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: skill-router</span><br><span class="line">description: 按领域索引仓库内所有 Skill。当用户请求与已安装</span><br><span class="line"><span class="section">  技能相关、但当前未加载该领域时使用。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># Skill 路由器</span></span><br><span class="line"></span><br><span class="line">当前领域索引（来自 scripts/build-index.sh 生成）：</span><br><span class="line"></span><br><span class="line">| 领域 | 路径 | 关键词 |</span><br><span class="line">|------|------|--------|</span><br><span class="line">| backend | <span class="emphasis">_domain-backend/ | go, http, handler, sql |</span></span><br><span class="line"><span class="emphasis">| data | _</span>domain-data/ | etl, dbt, migration |</span><br><span class="line"></span><br><span class="line"><span class="section">## 匹配流程</span></span><br><span class="line"><span class="bullet">1.</span> 提取用户请求的关键词，对照上表找命中领域</span><br><span class="line"><span class="bullet">2.</span> 命中后调用 <span class="code">`skill(&#123;name: &quot;对应 Skill 名&quot;&#125;)`</span> 加载正文</span><br><span class="line"><span class="bullet">3.</span> 没命中任何领域 → 直接告知用户「当前没有可用技能」，不要硬凑</span><br><span class="line"></span><br><span class="line"><span class="section">## 维护</span></span><br><span class="line"><span class="bullet">-</span> 新增/删除 Skill 后运行 <span class="code">`scripts/build-index.sh`</span> 重建索引</span><br></pre></td></tr></table></figure>
 
-<p>大家看一下是不是同样的原理</p>
-<p>如果你觉得写的不错的话，请给个star</p>
+<p>关键设计：<strong>路由的索引是脚本生成的</strong>（<code>scripts/build-index.sh</code>），不是手写——这样新增 Skill 时索引不会过期，也不会像 3.2 那样靠 grep 碰运气。路由本身只有 ~300 tokens，常驻成本可忽略。代价是：一个「没命中」的冷门请求，模型会诚实告诉你没技能，而不是硬猜——这是有意的取舍。</p>
+<p>再看路由命中后、跨域加载的子域 Skill 长相（以 <code>_domain-backend/go-http-handler/SKILL.md</code> 为例），<strong>meta 尽量短，正文按需进</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: go-http-handler</span><br><span class="line">description: 审查/优化 Go 的 net/http 与 chi 路由处理函数。当用户</span><br><span class="line"><span class="section">  提到 Go 后端接口、handler 或路由性能时使用。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># Go HTTP Handler 审查清单</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 快速检查</span></span><br><span class="line"><span class="bullet">-</span> [ ] 方法、路径、状态码是否与 REST 约定一致</span><br><span class="line"><span class="bullet">-</span> [ ] context 是否贯穿到 DB 调用（超时、取消）</span><br><span class="line"><span class="bullet">-</span> [ ] panic 是否 recover，错误是否包装（%w）语义</span><br><span class="line"><span class="bullet">-</span> [ ] 是否把 handler 逻辑抽到 service 层</span><br><span class="line"></span><br><span class="line"><span class="section">## 性能</span></span><br><span class="line"><span class="bullet">-</span> 避免在 hot path 里做字符串拼接/反射</span><br><span class="line"><span class="bullet">-</span> 连接池、pprof 检查内存分配</span><br><span class="line"></span><br><span class="line"><span class="section">## 参考</span></span><br><span class="line">详见 <span class="code">`references/routing-patterns.md`</span></span><br></pre></td></tr></table></figure>
+
+<p>前端领域没加载它，它的正文零成本；只有路由把 <code>_domain-backend</code> 拉进来，这 ~500 tokens 才进场。<strong>description 里那句「当用户提到 Go 后端接口…时使用」就是路由匹配的抓手</strong>——所以跨域 Skill 的 description 必须写清触发场景，否则路由找不到。</p>
+<h3 id="3-4-向量化路由：embedding-做语义匹配（长期方案）"><a href="#3-4-向量化路由：embedding-做语义匹配（长期方案）" class="headerlink" title="3.4 向量化路由：embedding 做语义匹配（长期方案）"></a>3.4 向量化路由：embedding 做语义匹配（长期方案）</h3><p>既然 description 匹配靠关键字不靠谱，那就上向量：把每个 Skill 的 description 提前做 embedding 存进向量库，每轮请求对用户问题算相似度，<strong>只把 top-K（如 5 个）最相关的 Skill 元数据注入上下文</strong>。</p>
+<p>好处是上下文体积从 O(N) 降到 O(K)，还解决了语义匹配不准的问题。代价是要维护向量索引、引入相似度阈值，属于架构级改动。hermes-agent 社区把这条列为官方 Roadmap 的候选。</p>
+<h3 id="3-5-缓存优化：append-to-end-保住前缀缓存（调工具）"><a href="#3-5-缓存优化：append-to-end-保住前缀缓存（调工具）" class="headerlink" title="3.5 缓存优化：append-to-end 保住前缀缓存（调工具）"></a>3.5 缓存优化：append-to-end 保住前缀缓存（调工具）</h3><p>大模型推理有 <strong>前缀缓存（prefix cache）</strong>：如果 system prompt 每次都一样，服务端可以复用计算，速度快、成本低。</p>
+<p>但很多工具在每轮对话中<strong>把 Skill 元数据动态追加进 system prompt</strong>，前缀一变，缓存失效，等于每轮都全量重算。解法是把<strong>静态前缀固定、动态内容 append 到末尾</strong>，让前缀部分稳定命中缓存。这条不改架构、只调实现，收益立竿见影。</p>
+<h3 id="3-6-SkillReducer：构建期压缩-Skill（读论文）"><a href="#3-6-SkillReducer：构建期压缩-Skill（读论文）" class="headerlink" title="3.6 SkillReducer：构建期压缩 Skill（读论文）"></a>3.6 SkillReducer：构建期压缩 Skill（读论文）</h3><p>一篇很新的论文《SkillReducer: Compressing Skills for Efficient Large Language Model Inference》（arXiv 2603.29919）提出：与其在运行时优化加载，不如在<strong>构建期</strong>就把 Skill 写得更 token 高效——删除冗余示例、合并重复指令、压缩格式。</p>
+<p>方法论很简单：把 SKILL.md 当代码，CI 里跑 token 计数，超阈值就报警，逼着作者精简。<strong>「把 Skill 当代码来管理」</strong>——版本化、review、lint，是这条路的精髓。</p>
+<h2 id="4-动手路径：先测量，再裁剪"><a href="#4-动手路径：先测量，再裁剪" class="headerlink" title="4. 动手路径：先测量，再裁剪"></a>4. 动手路径：先测量，再裁剪</h2><p>解决方案再多，不动手都是零。推荐从测量开始：</p>
+<ol>
+<li><strong>测</strong>：用 TokenScope 这类插件（opencode 生态的 token 分析器）看当前上下文里每个 Skill 吃多少 token，找出大户。</li>
+<li><strong>删</strong>：干掉从没触发过的 Skill——<code>description</code> 写得模糊的、装了就忘的，全清。</li>
+<li><strong>压</strong>：剩下的 Skill 统一精简 description，机械步骤移进 <code>scripts/</code>。</li>
+<li><strong>分</strong>：低频技能挪到手动路由，高频技能保持原生触发。</li>
+<li><strong>盯</strong>：固定一个元数据预算（比如 5K tokens），新增 Skill 前先算账，超标就不装。</li>
+</ol>
+<h2 id="5-结论"><a href="#5-结论" class="headerlink" title="5. 结论"></a>5. 结论</h2><p>Skill 的「零成本」是<strong>相对的</strong>——正文按需加载没问题，但元数据是常驻的。装到 100 个，10K tokens 就压上来了。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>成本</th>
+<th>收益</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>精简 description</td>
+<td>零</td>
+<td>减半</td>
+<td>立即做</td>
+</tr>
+<tr>
+<td>技能路由</td>
+<td>低</td>
+<td>中（触发率 30-80%）</td>
+<td>低频技能</td>
+</tr>
+<tr>
+<td>pinned + ecosystem</td>
+<td>高（改框架）</td>
+<td>高</td>
+<td>标准答案，等落地</td>
+</tr>
+<tr>
+<td>向量化路由</td>
+<td>高（架构级）</td>
+<td>高</td>
+<td>长期</td>
+</tr>
+<tr>
+<td>append-to-end 缓存</td>
+<td>低</td>
+<td>高</td>
+<td>立刻</td>
+</tr>
+<tr>
+<td>SkillReducer 压缩</td>
+<td>低</td>
+<td>中</td>
+<td>写新 Skill 时</td>
+</tr>
+</tbody></table>
+<p>上篇教你「怎么写好一个 Skill」，这篇告诉你「装多了怎么办」。<strong>保持克制</strong>——Skill 的价值在触发率，不在数量。10 个用得好的，胜过 100 个躺着占内存的。</p>
 
   </div>
 
@@ -456,18 +571,18 @@
 
   <nav class="article-actions">
     
-      <a class="article-action article-action--prev" href="/2018/03/08/react-HOC/">
+      <span class="article-action article-action--prev is-disabled" aria-disabled="true">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-left"></use></svg>
 
         <span class="action-label">上一篇</span>
-        <span class="action-title">react HOC</span>
-      </a>
+        <span class="action-title">没有更早的文章了</span>
+      </span>
     
     
-      <a class="article-action article-action--next" href="/2017/09/08/%E5%85%B3%E4%BA%8EReact%E7%9A%84api-setState/">
+      <a class="article-action article-action--next" href="/2026/08/03/skill-loading-and-best-practices/">
         <span class="action-label">下一篇</span>
-        <span class="action-title">关于React的api setState</span>
+        <span class="action-title">Skills 最佳实践</span>
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-right"></use></svg>
 
@@ -498,7 +613,7 @@
     </header>
     <div class="related-paper__grid">
       
-        <a class="related-card" href="/2018/07/26/%E8%B7%AF%E7%94%B1%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96/">
+        <a class="related-card" href="/2026/08/03/skill-loading-and-best-practices/">
           <span class="related-card__thumb">
             
 <div class="paper-thumb paper-thumb-0 paper-thumb--cover">
@@ -509,8 +624,40 @@
 
           </span>
           <span class="related-card__body">
-            <strong class="related-card__title">路由去中心化</strong>
-            <em class="related-card__date">2018-07-26</em>
+            <strong class="related-card__title">Skills 最佳实践</strong>
+            <em class="related-card__date">2026-08-03</em>
+          </span>
+        </a>
+      
+        <a class="related-card" href="/2026/08/01/deepseek-codex-native-integration/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-1 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="https://fengyua5.github.io/img/deepseek-0731.jpg" alt="DeepSeek 能原生接入 Codex，不要高兴那么早" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">DeepSeek 能原生接入 Codex，不要高兴那么早</strong>
+            <em class="related-card__date">2026-08-01</em>
+          </span>
+        </a>
+      
+        <a class="related-card" href="/2026/07/31/pi-agent-source-design/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-2 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="/images/cover/notebook.webp" alt="" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">PI Agent 源代码设计深度解析</strong>
+            <em class="related-card__date">2026-07-31</em>
           </span>
         </a>
       
