@@ -15,17 +15,17 @@
 <meta property="og:description" content="js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-09-15T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-21T07:40:08.005Z">
+<meta property="article:modified_time" content="2026-10-21T07:48:10.492Z">
 <meta property="article:author" content="fengyua5">
-<meta property="article:tag" content="webpack">
 <meta property="article:tag" content="javascript">
+<meta property="article:tag" content="webpack">
 <meta property="article:tag" content="性能优化">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/">
 
 <link rel="icon" href="/images/favicon.png" type="image/png">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"js文件的异步加载","name":"js文件的异步加载 | fengyua5","description":"js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题","url":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","datePublished":"2017-09-15T02:00:00.000Z","dateModified":"2026-10-21T07:40:08.005Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"webpack, javascript, 性能优化"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"js文件的异步加载","name":"js文件的异步加载 | fengyua5","description":"js文件的异步加载1、为什么要异步加载js文件有的操作用户不一定操作，所以有的文件不一定加载，如果我们不分情况的加载下来，会有两个问题 浪费带宽 如果页面文件加载过多会有性能问题","url":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2017/09/15/%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6/","datePublished":"2017-09-15T02:00:00.000Z","dateModified":"2026-10-21T07:48:10.492Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"javascript, webpack, 性能优化"}</script>
 
 <script>
   (function () {
@@ -396,7 +396,7 @@
           
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
 
-          <a class="meta-tag-link" href="/tags/webpack/">#webpack</a><a class="meta-tag-link" href="/tags/javascript/">#javascript</a><a class="meta-tag-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">#性能优化</a>
+          <a class="meta-tag-link" href="/tags/javascript/">#javascript</a><a class="meta-tag-link" href="/tags/webpack/">#webpack</a><a class="meta-tag-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">#性能优化</a>
         </span>
       
     </div>
@@ -430,6 +430,22 @@
 
   </div>
 
+  
+    <section class="article-reward">
+      
+<figure class="reaction-inline">
+  <figcaption class="reaction-inline__caption">
+    
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 576 512" fill="currentColor" class="lucide lucide-weixin flatpaper-icon flatpaper-icon--fa-brands" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-fa-brands-weixin"></use></svg>
+
+    <span>微信赞赏码</span>
+  </figcaption>
+  <img class="reaction-inline__img no-zoom" src="/img/weixin.jpg" alt="微信赞赏码" loading="lazy">
+</figure>
+
+    </section>
+  
+
   <footer class="article-reactions">
     <div class="reaction-group">
       <button type="button" class="reaction reaction--comment" aria-label="跳转到评论区" data-action="scroll-to-comments">
@@ -442,19 +458,6 @@
     </div>
     <div class="reaction-group reaction-group--right">
       
-<div class="reaction-pop reaction-pop--right">
-  <button type="button" class="reaction reaction--reward" data-action="toggle-pop" aria-expanded="false" aria-label="赞赏">
-    
-<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 576 512" fill="currentColor" class="lucide lucide-weixin flatpaper-icon flatpaper-icon--fa-brands" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-fa-brands-weixin"></use></svg>
-
-  </button>
-  <span class="reaction-label">赞赏</span>
-  <div class="reaction-bubble" role="dialog" aria-label="微信赞赏码" hidden>
-    <div class="reaction-bubble-title">微信赞赏码</div>
-    <img class="reaction-bubble-img no-zoom" src="/img/weixin.jpg" alt="微信赞赏码" loading="lazy">
-  </div>
-</div>
-
       <button type="button" class="reaction reaction--share" aria-label="分享" data-action="share">
         
 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2 flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-share-2"></use></svg>
