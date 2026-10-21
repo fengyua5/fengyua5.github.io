@@ -152,17 +152,12 @@ article:
 #   title  可选；气泡标题，缺省用 name
 reactions:
   custom:
-    # - type: image
-    #   name: 赞赏
-    #   icon: weixin
-    #   align: right
-    #   image: /images/reward-weixin.jpg
-    #   title: 微信赞赏
-    # - type: image
-    #   name: 支付宝
-    #   icon: alipay
-    #   align: right
-    #   image: /images/reward-alipay.jpg
+    - type: image
+      name: 赞赏
+      icon: weixin
+      align: right
+      image: /img/weixin.jpg
+      title: 微信赞赏码
 
 # 前端搜索索引上限（0 或留空 = 不限）。文章很多时调小可减小首屏 JSON 体积。
 search:
