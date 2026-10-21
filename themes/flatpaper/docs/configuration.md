@@ -283,7 +283,7 @@ There is no theme-level page top image option. Pages without `top_img` render wi
 
 ## Reactions
 
-Custom reaction buttons are useful for reward/donation QR codes. Image popovers open on hover or click.
+Custom reaction buttons are useful for reward/donation QR codes. `type: image` appends a button to the reaction row whose image popover opens on hover or click; `type: inline` renders no button and lays the image out directly at the end of the article.
 
 ```yaml
 reactions:
@@ -294,16 +294,21 @@ reactions:
       align: right
       image: /images/reward-weixin.jpg
       title: Weixin reward
+    - type: inline
+      name: Reward
+      icon: weixin
+      image: /images/reward-weixin.jpg
+      title: Weixin reward code
 ```
 
 Fields:
 
-- `type`: currently `image`
+- `type`: `image` (button + popover, default) or `inline` (shown directly at the end of the article)
 - `name`: button label
 - `icon`: built-in icon name, such as `gift`, `weixin`, `alipay`, `paypal`, `heart`
-- `align`: `left` or `right`
+- `align`: `left` or `right` (ignored by `inline`)
 - `image`: site path or absolute URL
-- `title`: optional popover title
+- `title`: optional popover title / caption for the inline variant
 
 ## Search
 

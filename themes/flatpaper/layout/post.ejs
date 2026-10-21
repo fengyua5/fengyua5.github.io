@@ -8,17 +8,23 @@ var postTopImg = flatpaper_post_top_img_info(page, postTopImgMode);
 var relatedCount = (theme.related_posts != null ? theme.related_posts : 3);
 
 // 文章底部互动区的自定义条目（赞赏 / 打赏等）。
-// 当前支持 type: image —— hover / 点击按钮气泡弹出一张图片（通常是收款二维码）。
+// type: image —— hover / 点击按钮气泡弹出一张图片（通常是收款二维码）。
+// type: inline —— 不做按钮，正文末尾直接铺开图片。
 // align 决定靠左(left)还是靠右(right，默认)；支持配置多个。
 var reactionCfg = theme.reactions || {};
 var customReactions = Array.isArray(reactionCfg.custom) ? reactionCfg.custom : [];
 var leftReactions = [];
 var rightReactions = [];
+var inlineReactions = [];
 customReactions.forEach(function (item) {
   if (!item) return;
   var type = String(item.type || 'image').toLowerCase();
-  // 目前仅支持 image 类型
-  if (type !== 'image' || !item.image) return;
+  if (!item.image) return;
+  if (type === 'inline') {
+    inlineReactions.push(item);
+    return;
+  }
+  if (type !== 'image') return;
   (String(item.align || 'right').toLowerCase() === 'left' ? leftReactions : rightReactions).push(item);
 });
 var allPosts = relatedCount > 0 ? flatpaper_sorted_posts() : [];
@@ -89,6 +95,12 @@ var relatedPosts = allPosts
   <div class="article-content">
     <%- page.content %>
   </div>
+
+  <% if (inlineReactions.length) { %>
+    <section class="article-reward">
+      <% inlineReactions.forEach(function (item) { %><%- partial('_partial/reaction-inline', { item: item }) %><% }) %>
+    </section>
+  <% } %>
 
   <footer class="article-reactions">
     <div class="reaction-group">

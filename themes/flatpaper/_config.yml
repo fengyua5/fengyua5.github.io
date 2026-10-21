@@ -181,14 +181,15 @@ article:
   strong_accent: true
 
 # 文章底部互动区（评论 / 分享 一行）追加的自定义条目，常用于"赞赏 / 打赏"。
-# 鼠标 hover 或点击按钮后，气泡弹出一张图片（一般是收款二维码）。可添加多个。
+# type: image  —— 鼠标 hover 或点击按钮后，气泡弹出一张图片（一般是收款二维码）。
+# type: inline —— 不用按钮，正文末尾直接铺开图片。可添加多个。
 # 每项字段：
-#   type   目前仅支持 image（弹出一张图片）
+#   type   image（气泡，默认）| inline（直接展示）
 #   name   按钮旁文字，如 赞赏 / 微信 / 支付宝（缺省为 赞赏）
 #   icon   图标名：gift（默认）| alipay | weixin | paypal | heart 或任意内置图标
-#   align  left（靠左，与"评论"同侧）| right（靠右，与"分享"同侧，默认）
+#   align  left（靠左，与"评论"同侧）| right（靠右，与"分享"同侧，默认）；inline 忽略此项
 #   image  图片路径（站点 source/ 下的相对路径，如 /images/reward.jpg）或绝对 URL
-#   title  可选；气泡标题，缺省用 name
+#   title  可选；气泡标题 / 直接展示时的说明文字，缺省用 name
 reactions:
   custom:
     # - type: image

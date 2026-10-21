@@ -1,0 +1,15 @@
+<%
+// 渲染文章底部「直接展示」的自定义条目（赞赏码 / 打赏码等）。
+// 期望 local：item = { name, icon, image, title }
+// 与 reaction-pop 的区别：不使用按钮 + hover 气泡，而是把图片直接铺在文章末尾。
+var name = item.name || flatpaper_i18n('common.reward');
+var icon = item.icon || 'gift';
+var caption = item.title || name;
+%>
+<figure class="reaction-inline">
+  <figcaption class="reaction-inline__caption">
+    <%- partial('_partial/icons', { icon: icon }) %>
+    <span><%= caption %></span>
+  </figcaption>
+  <img class="reaction-inline__img no-zoom" src="<%= flatpaper_safe_url(url_for(item.image), 'image') %>" alt="<%= caption %>" loading="lazy">
+</figure>

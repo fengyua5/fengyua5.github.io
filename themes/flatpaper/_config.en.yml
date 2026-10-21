@@ -181,14 +181,15 @@ article:
   strong_accent: true
 
 # Custom action items appended to the post reaction row (comments / share), commonly used for rewards or tips.
-# Hovering or clicking the button opens a bubble with an image, usually a payment QR code. Multiple items are supported.
+# type: image  — Hovering or clicking the button opens a bubble with an image, usually a payment QR code.
+# type: inline — No button; the image is laid out directly at the end of the article. Multiple items are supported.
 # Fields:
-#   type   Currently only image is supported.
+#   type   image (bubble, default) | inline (shown directly).
 #   name   Text next to the button, such as Reward / Weixin / Alipay. Defaults to Reward.
 #   icon   Icon name: gift (default) | alipay | weixin | paypal | heart or any built-in icon.
-#   align  left (beside Comments) | right (beside Share, default).
+#   align  left (beside Comments) | right (beside Share, default). Ignored by inline.
 #   image  Image path under the site's source/ directory, such as /images/reward.jpg, or an absolute URL.
-#   title  Optional bubble title. Defaults to name.
+#   title  Optional bubble title / caption for the inline variant. Defaults to name.
 reactions:
   custom:
     # - type: image

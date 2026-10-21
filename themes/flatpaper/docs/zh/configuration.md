@@ -283,7 +283,7 @@ top_img: /images/pages/links.jpg
 
 ## Reaction 按钮
 
-常用于赞赏 / 打赏二维码，鼠标 hover 或点击按钮时展示图片弹层。
+常用于赞赏 / 打赏二维码。`type: image` 会在互动区追加一个按钮，鼠标 hover 或点击时展示图片弹层；`type: inline` 不加按钮，正文末尾直接铺开图片。
 
 ```yaml
 reactions:
@@ -294,16 +294,21 @@ reactions:
       align: right
       image: /images/reward-weixin.jpg
       title: 微信赞赏
+    - type: inline
+      name: 赞赏
+      icon: weixin
+      image: /images/reward-weixin.jpg
+      title: 微信赞赏码
 ```
 
 字段：
 
-- `type`：目前支持 `image`
+- `type`：`image`（按钮 + 弹层，默认）或 `inline`（正文末尾直接展示）
 - `name`：按钮文字
 - `icon`：内置图标名，如 `gift`、`weixin`、`alipay`、`paypal`、`heart`
-- `align`：`left` 或 `right`
+- `align`：`left` 或 `right`（`inline` 忽略）
 - `image`：站内路径或绝对 URL
-- `title`：可选弹层标题
+- `title`：可选弹层标题 / 直接展示时的说明文字
 
 ## 搜索
 

@@ -152,10 +152,9 @@ article:
 #   title  可选；气泡标题，缺省用 name
 reactions:
   custom:
-    - type: image
+    - type: inline
       name: 赞赏
       icon: weixin
-      align: right
       image: /img/weixin.jpg
       title: 微信赞赏码
 
