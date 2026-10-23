@@ -3,7 +3,10 @@ title: MCP 到底解决了什么？以及你大概率会踩的 10 个坑
 date: 2026-10-21 10:00:00
 tags: [mcp, agent, llm, ai, opencode, claude-code, best-practice]
 categories: AI
+cover: /img/mcp-purpose.jpg
 ---
+
+![MCP 到底解决了什么？](/img/mcp-purpose.jpg)
 
 如果你用过 Claude Code、Cursor 或者 opencode，配置里大概率有这样一段：
 
