@@ -126,8 +126,40 @@ categories:
 1. **文章文件名使用英文**：`source/_posts/` 下新建文章的文件名必须用英文（小写、连字符分隔，如 `deepseek-codex-native-integration.md`），不要出现中文。中文标题只写在 front-matter 的 `title` 字段里。
 2. **直接编辑 Markdown 文件**：在 `source/_posts/` 下创建或编辑 `.md` 文件，然后运行 `npm run build` 生成 HTML。不要直接编辑 `public/` 下的 HTML 产物。
 3. **根目录的旧 HTML 文件**：`index.html`、`main.*.js`、`mobile.*.js`、`slider.*.js` 等是早期直接提交的生成产物。现在使用 Hexo 标准工作流后，生成产物在 `public/` 目录中，根目录的旧文件可以后续清理。
-4. **主题更新**：Yilia 主题在 `themes/yilia/` 目录中，从 `https://github.com/litten/hexo-theme-yilia` 克隆。主题有自己的 `_config.yml` 可以单独配置。
+4. **主题**：`themes/` 下有两个主题，**当前 `_config.yml` 生效的是 `flatpaper`**（`theme: flatpaper`），`yilia` 是早期主题，仅作历史保留。改样式前先确认改的是哪个主题。
 5. **package.json 中的 hexo 字段**：`"hexo": { "version": "7.3.0" }` 是必需的，Hexo 依赖它来判断是否加载配置。
+
+## 已知坑：配图放错目录会触发 hover 抖动
+
+flatpaper 主题在 `themes/flatpaper/source/css/_partials/_mode/code-dark.styl:433` 有一条：
+
+```styl
+.article-content img:not([src*="/covers/"]):hover,
+.article-content img:not([src*="/covers/"]):focus-visible {
+  box-shadow: 5px 5px 0 rgba(var(--paper-shadow-rgb), 0.1);
+  transform: translate(-5px, -5px);
+}
+```
+
+这是给**正文小插图**做的"拍立得浮起"效果：鼠标划过时平移 5px + 右下错位阴影。它对小图好看，但对**文章顶部大图 / 封面图**就是灾难——一整张大图跟着鼠标上下抖，阴影还会溢出卡片边缘，看起来像页面在跳。
+
+主题用 `:not([src*="/covers/"])` 做了排除，所以规则是：
+
+| 图片类型 | 存放位置 | 引用路径 | hover 效果 |
+|---|---|---|---|
+| 封面图、文章顶部大图 | `source/img/covers/` | `/img/covers/xxx.jpg` | 无（正确） |
+| 正文小插图、示意图 | `source/img/` | `/img/xxx.jpg` | 浮起（正确） |
+
+**写新文章时：任何宽度接近正文满宽的大图，一律放 `source/img/covers/`。** 否则就会出现"鼠标一划过封面图，整页抖一下"的 bug。
+
+历史遗留（仍存在该问题，未修）：`source/img/mcp-purpose.jpg`、`source/img/deepseek-0731.jpg` 放在 `/img/` 根目录。
+
+发布前自检：
+
+```bash
+# 文章里引用的图片，src 是满宽大图却不在 /covers/ 下 → 有问题
+grep -n '^!\[' source/_posts/<文章>.md
+```
 
 ## 内容分类
 
