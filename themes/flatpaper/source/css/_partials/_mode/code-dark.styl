@@ -430,13 +430,13 @@
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.article-content img:hover,
-.article-content img:focus-visible {
+.article-content img:not([src*="/covers/"]):hover,
+.article-content img:not([src*="/covers/"]):focus-visible {
   box-shadow: 5px 5px 0 unquote('rgba(var(--paper-shadow-rgb), 0.1)');
   transform: translate(-5px, -5px);
 }
 
-.dark-mode .article-content img:hover,
-.dark-mode .article-content img:focus-visible {
+.dark-mode .article-content img:not([src*="/covers/"]):hover,
+.dark-mode .article-content img:not([src*="/covers/"]):focus-visible {
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.26);
 }
