@@ -121,12 +121,18 @@ var relatedPosts = allPosts
 
   <%- partial('_partial/adsense-slot', { name: 'post_bottom' }) %>
 
+  <%
+    // Hexo 的命名和直觉相反：page.prev 是更新的一篇，page.next 是更早的一篇。
+    // 先改成语义明确的名字，避免后续维护时再次接反。
+    const olderPost = page.next;
+    const newerPost = page.prev;
+  %>
   <nav class="article-actions">
-    <% if (page.prev) { %>
-      <a class="article-action article-action--prev" href="<%- url_for(page.prev.path) %>">
+    <% if (olderPost) { %>
+      <a class="article-action article-action--prev" href="<%- url_for(olderPost.path) %>">
         <%- partial('_partial/icons', { icon: 'arrow-left' }) %>
         <span class="action-label"><%= flatpaper_i18n('post.previous') %></span>
-        <span class="action-title"><%= page.prev.title %></span>
+        <span class="action-title"><%= olderPost.title %></span>
       </a>
     <% } else { %>
       <span class="article-action article-action--prev is-disabled" aria-disabled="true">
@@ -135,10 +141,10 @@ var relatedPosts = allPosts
         <span class="action-title"><%= flatpaper_i18n('post.no_previous') %></span>
       </span>
     <% } %>
-    <% if (page.next) { %>
-      <a class="article-action article-action--next" href="<%- url_for(page.next.path) %>">
+    <% if (newerPost) { %>
+      <a class="article-action article-action--next" href="<%- url_for(newerPost.path) %>">
         <span class="action-label"><%= flatpaper_i18n('post.next') %></span>
-        <span class="action-title"><%= page.next.title %></span>
+        <span class="action-title"><%= newerPost.title %></span>
         <%- partial('_partial/icons', { icon: 'arrow-right' }) %>
       </a>
     <% } else { %>
