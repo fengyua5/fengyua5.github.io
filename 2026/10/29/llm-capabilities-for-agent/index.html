@@ -1,0 +1,1567 @@
+<!doctype html>
+
+<html lang="zh-CN" data-fancybox-enabled="1">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f3e9" data-flatpaper-theme-color>
+
+<title>LLM 基础（二）：LLM 能做什么？从「会生成」到「会做事」的能力地图 | fengyua5</title>
+<meta name="description" content="上一篇 LLM 是什么？从预测下一个 token 到 OpenAI &#x2F; Anthropic 协议 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 POST &#x2F;v1&#x2F;chat&#x2F;completions 里每个字段在干什么。 这一篇回答下一个问题：那它到底能干什么？ 这个问题看着像科普，其实是工程里最容易...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM 基础（二）：LLM 能做什么？从「会生成」到「会做事」的能力地图 | fengyua5">
+<meta property="og:url" content="https://fengyua5.github.io/fengyua5.github.io/2026/10/29/llm-capabilities-for-agent/">
+<meta property="og:site_name" content="fengyua5">
+<meta property="og:description" content="上一篇 LLM 是什么？从预测下一个 token 到 OpenAI &#x2F; Anthropic 协议 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 POST &#x2F;v1&#x2F;chat&#x2F;completions 里每个字段在干什么。 这一篇回答下一个问题：那它到底能干什么？ 这个问题看着像科普，其实是工程里最容易...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fengyua5.github.io/img/covers/llm-capabilities-cover.png">
+<meta property="article:published_time" content="2026-10-29T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-29T01:03:26.238Z">
+<meta property="article:author" content="fengyua5">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="能力边界">
+<meta property="article:tag" content="模型选型">
+<meta property="article:tag" content="评估">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fengyua5.github.io/img/covers/llm-capabilities-cover.png">
+<link rel="canonical" href="https://fengyua5.github.io/fengyua5.github.io/2026/10/29/llm-capabilities-for-agent/">
+
+<link rel="icon" href="/images/favicon.png" type="image/png">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"LLM 基础（二）：LLM 能做什么？从「会生成」到「会做事」的能力地图","name":"LLM 基础（二）：LLM 能做什么？从「会生成」到「会做事」的能力地图 | fengyua5","description":"上一篇 LLM 是什么？从预测下一个 token 到 OpenAI &#x2F; Anthropic 协议 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 POST /v1/chat/completions 里每个字段在干什么。 这一篇回答下一个问题：那它到底能干什么？ 这个问题看着像科普，其实是工程里最容易...","url":"https://fengyua5.github.io/fengyua5.github.io/2026/10/29/llm-capabilities-for-agent/","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"fengyua5","url":"https://fengyua5.github.io/fengyua5.github.io/"},"image":["https://fengyua5.github.io/fengyua5.github.io/img/covers/llm-capabilities-cover.png"],"mainEntityOfPage":"https://fengyua5.github.io/fengyua5.github.io/2026/10/29/llm-capabilities-for-agent/","datePublished":"2026-10-29T02:00:00.000Z","dateModified":"2026-10-29T01:03:26.238Z","author":{"@type":"Person","name":"fengyua5"},"publisher":{"@type":"Organization","name":"fengyua5"},"keywords":"Agent, LLM, 能力边界, 模型选型, 评估"}</script>
+
+<script>
+  (function () {
+    var accents = { orange: 1, purple: 1, sakura: 1, blue: 1, pink: 1, green: 1, black: 1 };
+    var match = document.cookie.match(/(?:^|;\s*)flatpaper-accent=([^;]+)/);
+    var accent = 'green';
+    if (match) {
+      try { accent = decodeURIComponent(match[1]); } catch (e) {}
+    }
+    if (!accents[accent]) accent = 'green';
+    document.documentElement.setAttribute('data-accent', accent);
+    try {
+      if (localStorage.getItem('flatpaper-mode') === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+<script defer src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body
+  class="is-post tag-style-tape bg-style-default"
+  data-default-accent="green"
+  data-code-theme="simple"
+  data-note-style="sticky"
+  data-note-icons="on"
+  data-button-style="circle"
+  data-strong-accent="on"
+>
+  
+    <div class="page-grain"></div>
+  
+  <svg width="0" height="0" style="position:absolute;z-index:-1;" aria-hidden="true">
+    <defs>
+      <filter id="paper-edge" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+  
+  <header class="site-header">
+  
+  <button class="icon-button js-sidebar-toggle sidebar-toggle" type="button" aria-label="打开侧边栏" aria-controls="paper-sidebar-drawer" aria-expanded="false">
+    
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-menu"></use></svg>
+
+  </button>
+
+  <div class="brand">
+    <div class="brand-mark-wrapper">
+      
+        <a class="brand-mark" href="/" aria-label="FlatPaper 首页">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-layout-grid"></use></svg>
+
+        </a>
+      
+    </div>
+    <a class="brand-text" href="/">fengyua5</a>
+  </div>
+
+  <nav class="site-nav" aria-label="主导航">
+    
+      
+        <a class="site-nav-link " href="/">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-house"></use></svg>
+
+          <span>首页</span>
+        </a>
+      
+    
+      
+        <a class="site-nav-link " href="/archives/">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-archive flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-archive"></use></svg>
+
+          <span>归档</span>
+        </a>
+      
+    
+      
+        <a class="site-nav-link " href="/categories/">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-folder"></use></svg>
+
+          <span>分类</span>
+        </a>
+      
+    
+      
+        <a class="site-nav-link " href="/tags/">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
+
+          <span>标签</span>
+        </a>
+      
+    
+  </nav>
+
+  <div class="header-tools">
+    <button class="icon-button js-search-open" type="button" aria-label="搜索文章">
+      
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-search"></use></svg>
+
+    </button>
+    <div class="accent-picker">
+      <button class="icon-button accent-toggle" type="button" aria-label="选择主题色" title="选择主题色" aria-haspopup="true" aria-expanded="false" aria-controls="accent-menu">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-palette"></use></svg>
+
+      </button>
+      <div class="accent-menu" id="accent-menu" role="menu" aria-label="主题色">
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="橙色" aria-checked="false" data-accent-option="orange">
+          <span class="accent-swatch accent-swatch--orange" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="紫色" aria-checked="false" data-accent-option="purple">
+          <span class="accent-swatch accent-swatch--purple" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="樱花粉" aria-checked="false" data-accent-option="sakura">
+          <span class="accent-swatch accent-swatch--sakura" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="蓝色" aria-checked="false" data-accent-option="blue">
+          <span class="accent-swatch accent-swatch--blue" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="粉色" aria-checked="false" data-accent-option="pink">
+          <span class="accent-swatch accent-swatch--pink" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="绿色" aria-checked="false" data-accent-option="green">
+          <span class="accent-swatch accent-swatch--green" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="accent-option" role="menuitemradio" aria-label="黑色" aria-checked="false" data-accent-option="black">
+          <span class="accent-swatch accent-swatch--black" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <button class="theme-toggle" type="button" aria-label="切换颜色模式">
+      <span class="theme-icon theme-icon--sun">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-sun"></use></svg>
+</span>
+      <span class="theme-icon theme-icon--moon">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-moon"></use></svg>
+</span>
+    </button>
+  </div>
+</header>
+
+
+  
+  <main class="paper-shell paper-shell--article">
+    
+
+<aside id="paper-sidebar-drawer" class="paper-sidebar paper-sidebar--right" aria-label="侧边栏">
+  <div class="drawer-toolbar" aria-label="侧边栏工具">
+    <div class="drawer-accent-options" role="group" aria-label="主题色">
+      <button type="button" class="accent-option" aria-label="橙色" aria-pressed="false" data-accent-option="orange">
+        <span class="accent-swatch accent-swatch--orange" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="紫色" aria-pressed="false" data-accent-option="purple">
+        <span class="accent-swatch accent-swatch--purple" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="樱花粉" aria-pressed="false" data-accent-option="sakura">
+        <span class="accent-swatch accent-swatch--sakura" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="蓝色" aria-pressed="false" data-accent-option="blue">
+        <span class="accent-swatch accent-swatch--blue" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="粉色" aria-pressed="false" data-accent-option="pink">
+        <span class="accent-swatch accent-swatch--pink" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="绿色" aria-pressed="false" data-accent-option="green">
+        <span class="accent-swatch accent-swatch--green" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="accent-option" aria-label="黑色" aria-pressed="false" data-accent-option="black">
+        <span class="accent-swatch accent-swatch--black" aria-hidden="true"></span>
+      </button>
+    </div>
+    <button class="icon-button drawer-close js-sidebar-close" type="button" aria-label="关闭侧边栏">
+      
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-x"></use></svg>
+
+    </button>
+  </div>
+
+  <section class="side-card nav-card">
+    <nav class="site-nav-drawer" aria-label="移动端导航">
+      
+        
+          <a class="" href="/">
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-house"></use></svg>
+
+            <span>首页</span>
+          </a>
+        
+      
+        
+          <a class="" href="/archives/">
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-archive flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-archive"></use></svg>
+
+            <span>归档</span>
+          </a>
+        
+      
+        
+          <a class="" href="/categories/">
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-folder"></use></svg>
+
+            <span>分类</span>
+          </a>
+        
+      
+        
+          <a class="" href="/tags/">
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
+
+            <span>标签</span>
+          </a>
+        
+      
+    </nav>
+  </section>
+
+  <section class="side-card profile-card">
+    
+      <div class="avatar avatar--image avatar--circle">
+        <img src="/img/avatar.jpg" alt="fengyua5" loading="lazy" referrerpolicy="no-referrer">
+      </div>
+    
+    <h3>fengyua5</h3>
+    <p class="profile-role">AI工程师</p>
+    <p>记录技术成长，分享个人心得。</p>
+    
+      <div class="site-info" aria-label="站点信息">
+        
+          
+            <a class="site-info__item" href="/archives/">
+              <strong>27</strong>
+              <span>文章</span>
+            </a>
+          
+        
+          
+            <a class="site-info__item" href="/categories/">
+              <strong>5</strong>
+              <span>分类</span>
+            </a>
+          
+        
+          
+            <a class="site-info__item" href="/tags/">
+              <strong>47</strong>
+              <span>标签</span>
+            </a>
+          
+        
+      </div>
+    
+    <div class="socials">
+      
+        <a href="https://github.com/fengyua5" target="_blank" rel="noopener" aria-label="GitHub" data-tooltip="GitHub">
+          
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 496 512" fill="currentColor" class="lucide lucide-github flatpaper-icon flatpaper-icon--fa-brands" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-fa-brands-github"></use></svg>
+
+          
+        </a>
+      
+        <a href="mailto:liziyuanyuzhou@163.com" target="_blank" rel="noopener" aria-label="Email" data-tooltip="Email">
+          
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-mail"></use></svg>
+
+          
+        </a>
+      
+        <a href="https://www.xiaohongshu.com/user/profile/654f8531000000000202addb" target="_blank" rel="noopener" aria-label="小红书" data-tooltip="小红书">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" class="lucide lucide-custom" aria-hidden="true"><path d="M22.405 9.879c.002.016.01.02.07.019h.725a.797.797 0 0 0 .78-.972.794.794 0 0 0-.884-.618.795.795 0 0 0-.692.794c0 .101-.002.666.001.777zm-11.509 4.808c-.203.001-1.353.004-1.685.003a2.528 2.528 0 0 1-.766-.126.025.025 0 0 0-.03.014L7.7 16.127a.025.025 0 0 0 .01.032c.111.06.336.124.495.124.66.01 1.32.002 1.981 0 .01 0 .02-.006.023-.015l.712-1.545a.025.025 0 0 0-.024-.036zM.477 9.91c-.071 0-.076.002-.076.01a.834.834 0 0 0-.01.08c-.027.397-.038.495-.234 3.06-.012.24-.034.389-.135.607-.026.057-.033.042.003.112.046.092.681 1.523.787 1.74.008.015.011.02.017.02.008 0 .033-.026.047-.044.147-.187.268-.391.371-.606.306-.635.44-1.325.486-1.706.014-.11.021-.22.03-.33l.204-2.616.022-.293c.003-.029 0-.033-.03-.034zm7.203 3.757a1.427 1.427 0 0 1-.135-.607c-.004-.084-.031-.39-.235-3.06a.443.443 0 0 0-.01-.082c-.004-.011-.052-.008-.076-.008h-1.48c-.03.001-.034.005-.03.034l.021.293c.076.982.153 1.964.233 2.946.05.4.186 1.085.487 1.706.103.215.223.419.37.606.015.018.037.051.048.049.02-.003.742-1.642.804-1.765.036-.07.03-.055.003-.112zm3.861-.913h-.872a.126.126 0 0 1-.116-.178l1.178-2.625a.025.025 0 0 0-.023-.035l-1.318-.003a.148.148 0 0 1-.135-.21l.876-1.954a.025.025 0 0 0-.023-.035h-1.56c-.01 0-.02.006-.024.015l-.926 2.068c-.085.169-.314.634-.399.938a.534.534 0 0 0-.02.191.46.46 0 0 0 .23.378.981.981 0 0 0 .46.119h.59c.041 0-.688 1.482-.834 1.972a.53.53 0 0 0-.023.172.465.465 0 0 0 .23.398c.15.092.342.12.475.12l1.66-.001c.01 0 .02-.006.023-.015l.575-1.28a.025.025 0 0 0-.024-.035zm-6.93-4.937H3.1a.032.032 0 0 0-.034.033c0 1.048-.01 2.795-.01 6.829 0 .288-.269.262-.28.262h-.74c-.04.001-.044.004-.04.047.001.037.465 1.064.555 1.263.01.02.03.033.051.033.157.003.767.009.938-.014.153-.02.3-.06.438-.132.3-.156.49-.419.595-.765.052-.172.075-.353.075-.533.002-2.33 0-4.66-.007-6.991a.032.032 0 0 0-.032-.032zm11.784 6.896c0-.014-.01-.021-.024-.022h-1.465c-.048-.001-.049-.002-.05-.049v-4.66c0-.072-.005-.07.07-.07h.863c.08 0 .075.004.075-.074V8.393c0-.082.006-.076-.08-.076h-3.5c-.064 0-.075-.006-.075.073v1.445c0 .083-.006.077.08.077h.854c.075 0 .07-.004.07.07v4.624c0 .095.008.084-.085.084-.37 0-1.11-.002-1.304 0-.048.001-.06.03-.06.03l-.697 1.519s-.014.025-.008.036c.006.01.013.008.058.008 1.748.003 3.495.002 5.243.002.03-.001.034-.006.035-.033v-1.539zm4.177-3.43c0 .013-.007.023-.02.024-.346.006-.692.004-1.037.004-.014-.002-.022-.01-.022-.024-.005-.434-.007-.869-.01-1.303 0-.072-.006-.071.07-.07l.733-.003c.041 0 .081.002.12.015.093.025.16.107.165.204.006.431.002 1.153.001 1.153zm2.67.244a1.953 1.953 0 0 0-.883-.222h-.18c-.04-.001-.04-.003-.042-.04V10.21c0-.132-.007-.263-.025-.394a1.823 1.823 0 0 0-.153-.53 1.533 1.533 0 0 0-.677-.71 2.167 2.167 0 0 0-1-.258c-.153-.003-.567 0-.72 0-.07 0-.068.004-.068-.065V7.76c0-.031-.01-.041-.046-.039H17.93s-.016 0-.023.007c-.006.006-.008.012-.008.023v.546c-.008.036-.057.015-.082.022h-.95c-.022.002-.028.008-.03.032v1.481c0 .09-.004.082.082.082h.913c.082 0 .072.128.072.128V11.19s.003.117-.06.117h-1.482c-.068 0-.06.082-.06.082v1.445s-.01.068.064.068h1.457c.082 0 .076-.006.076.079v3.225c0 .088-.007.081.082.081h1.43c.09 0 .082.007.082-.08v-3.27c0-.029.006-.035.033-.035l2.323-.003c.098 0 .191.02.28.061a.46.46 0 0 1 .274.407c.008.395.003.79.003 1.185 0 .259-.107.367-.33.367h-1.218c-.023.002-.029.008-.028.033.184.437.374.871.57 1.303a.045.045 0 0 0 .04.026c.17.005.34.002.51.003.15-.002.517.004.666-.01a2.03 2.03 0 0 0 .408-.075c.59-.18.975-.698.976-1.313v-1.981c0-.128-.01-.254-.034-.38 0 .078-.029-.641-.724-.998z"/></svg>
+          
+        </a>
+      
+      
+    </div>
+  </section>
+
+  
+
+  
+    <div class="post-sticky-stack">
+      <section class="side-card toc-card">
+        <header class="toc-card__head">
+          <h2>
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table-of-contents flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-table-of-contents"></use></svg>
+文章目录</h2>
+          <button type="button" class="toc-toggle-all" data-action="toggle-toc" aria-pressed="false" aria-label="展开全部目录" title="展开全部目录">
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-chevron-down"></use></svg>
+
+          </button>
+        </header>
+        <div class="toc-content">
+          
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%85%88%E6%8B%86%E6%8E%89%E4%B8%80%E4%B8%AA%E8%AF%AF%E4%BC%9A%EF%BC%9A%E5%AE%83%E6%B2%A1%E6%9C%89%E6%89%8B"><span class="toc-text">1. 先拆掉一个误会：它没有手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%89%80%E6%9C%89%E8%83%BD%E5%8A%9B%E9%83%BD%E9%95%BF%E5%9C%A8%E5%9B%9B%E7%A7%8D%E5%8A%A8%E4%BD%9C%E4%B8%8A"><span class="toc-text">2. 所有能力都长在四种动作上</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%BB%E5%8A%A1%E7%BA%A7%EF%BC%9A%E5%85%88%E8%A7%84%E5%88%92%EF%BC%8C%E5%86%8D%E6%89%A7%E8%A1%8C"><span class="toc-text">2.1 任务级：先规划，再执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%AD%A5%E9%AA%A4%E7%BA%A7%EF%BC%9A%E6%8A%8A%E6%AF%8F%E4%B8%80%E6%AD%A5%E6%94%B6%E6%95%9B%E6%88%90%E5%A5%91%E7%BA%A6"><span class="toc-text">2.2 步骤级：把每一步收敛成契约</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%83%BD%E5%8A%9B%E9%98%B6%E6%A2%AF%EF%BC%9A%E4%BB%8E%E8%A1%A5%E5%85%A8%E5%88%B0%E8%87%AA%E4%B8%BB"><span class="toc-text">3. 能力阶梯：从补全到自主</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%80%E5%BC%A0%E6%8C%89%E6%88%90%E7%86%9F%E5%BA%A6%E6%8E%92%E7%9A%84%E8%83%BD%E5%8A%9B%E6%B8%85%E5%8D%95"><span class="toc-text">4. 一张按成熟度排的能力清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%B7%B2%E7%BB%8F%E6%AF%94%E4%BA%BA%E4%BE%BF%E5%AE%9C%E4%B8%94%E7%A8%B3%E5%AE%9A%EF%BC%88%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E4%B8%8A%EF%BC%8C%E6%8A%BD%E6%A3%80%E5%8D%B3%E5%8F%AF%EF%BC%89"><span class="toc-text">4.1 已经比人便宜且稳定（可以直接上，抽检即可）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%83%BD%E7%94%A8%EF%BC%8C%E4%BD%86%E5%BF%85%E9%A1%BB%E5%B8%A6%E9%AA%8C%E8%AF%81"><span class="toc-text">4.2 能用，但必须带验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E7%9C%8B%E8%B5%B7%E6%9D%A5%E8%83%BD%E5%81%9A%EF%BC%8C%E5%85%B6%E5%AE%9E%E4%B8%8D%E8%A6%81%E5%8D%95%E7%8B%AC%E4%BA%A4%E7%BB%99%E5%AE%83"><span class="toc-text">4.3 看起来能做，其实不要单独交给它</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BA%94%E4%B8%AA%E5%88%A4%E6%8D%AE%EF%BC%9A%E8%BF%99%E4%BB%B6%E4%BA%8B%E5%88%B0%E5%BA%95%E8%83%BD%E4%B8%8D%E8%83%BD%E5%81%9A"><span class="toc-text">5. 五个判据：这件事到底能不能做</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%88%A4%E6%8D%AE%E4%B8%80%EF%BC%9A%E8%BE%93%E5%87%BA%E8%83%BD%E4%B8%8D%E8%83%BD%E5%AE%9A%E5%BD%A2%EF%BC%9F"><span class="toc-text">5.1 判据一：输出能不能定形？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%88%A4%E6%8D%AE%E4%BA%8C%EF%BC%9A%E7%9F%A5%E8%AF%86%E5%9C%A8%E4%B8%8D%E5%9C%A8%EF%BC%9F"><span class="toc-text">5.2 判据二：知识在不在？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%88%A4%E6%8D%AE%E4%B8%89%EF%BC%9A%E9%94%99%E4%BA%86%E8%83%BD%E4%B8%8D%E8%83%BD%E8%A2%AB%E5%8F%91%E7%8E%B0%EF%BC%9F"><span class="toc-text">5.3 判据三：错了能不能被发现？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%88%A4%E6%8D%AE%E5%9B%9B%EF%BC%9A%E9%94%99%E4%BA%86%E4%BB%A3%E4%BB%B7%E5%A4%9A%E5%A4%A7%EF%BC%9F"><span class="toc-text">5.4 判据四：错了代价多大？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%88%A4%E6%8D%AE%E4%BA%94%EF%BC%9A%E8%A6%81%E5%87%A0%E6%AD%A5%EF%BC%9F"><span class="toc-text">5.5 判据五：要几步？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E5%90%88%E6%88%90%E4%B8%80%E5%BC%A0%E8%AF%84%E5%88%86%E5%8D%A1"><span class="toc-text">5.6 合成一张评分卡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%83%BD%E5%8A%9B%E6%94%BE%E5%A4%A7%E5%99%A8%EF%BC%9A%E5%90%8C%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%9B%9B%E7%A7%8D%E7%94%A8%E6%B3%95"><span class="toc-text">6. 能力放大器：同一个模型，四种用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90%E8%B5%B0%E5%AE%8C%E5%9B%9B%E5%B1%82"><span class="toc-text">6.1 一个例子走完四层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E6%AF%8F%E5%B1%82%E6%96%B0%E5%A2%9E%E7%9A%84%E4%BB%A3%E4%BB%B7"><span class="toc-text">6.2 每层新增的代价</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B%EF%BC%9A%E9%80%89%E5%A4%9F%E7%94%A8%E7%9A%84%EF%BC%8C%E4%B8%8D%E6%98%AF%E9%80%89%E6%9C%80%E5%BC%BA%E7%9A%84"><span class="toc-text">7. 模型选型：选够用的，不是选最强的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E4%B8%89%E4%B8%AA%E7%BA%A6%E6%9D%9F"><span class="toc-text">7.1 三个约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E6%8C%89%E4%BB%BB%E5%8A%A1%E5%B1%82%E7%BA%A7%E9%80%89"><span class="toc-text">7.2 按任务层级选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E6%88%90%E6%9C%AC%E7%BB%93%E6%9E%84%E6%80%8E%E4%B9%88%E8%AF%BB"><span class="toc-text">7.3 成本结构怎么读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E5%88%86%E5%B1%82%E8%B7%AF%E7%94%B1%EF%BC%9A%E6%8A%8A%E4%BE%BF%E5%AE%9C%E7%9A%84%E8%B7%AF%E8%B5%B0%E5%AE%8C"><span class="toc-text">7.4 分层路由：把便宜的路走完</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8D%E6%98%AF%E8%B6%8A%E9%95%BF%E8%B6%8A%E5%A5%BD"><span class="toc-text">7.5 上下文不是越长越好</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%88%AB%E9%97%AE%E3%80%8C%E8%83%BD%E4%B8%8D%E8%83%BD%E3%80%8D%EF%BC%8C%E9%97%AE%E3%80%8C%E9%80%9A%E8%BF%87%E7%8E%87%E5%A4%9A%E5%B0%91%E3%80%8D"><span class="toc-text">8. 别问「能不能」，问「通过率多少」</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-demo-%E5%92%8C%E7%94%9F%E4%BA%A7%E7%9A%84%E5%B7%AE%E8%B7%9D%EF%BC%8C%E6%98%AF%E4%B8%80%E4%B8%AA%E4%B9%98%E6%B3%95"><span class="toc-text">8.1 demo 和生产的差距，是一个乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E6%9C%80%E5%B0%8F%E5%8F%AF%E7%94%A8%E7%9A%84-eval%EF%BC%8850-%E8%A1%8C%E5%B0%B1%E5%A4%9F%EF%BC%89"><span class="toc-text">8.2 最小可用的 eval（50 行就够）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E7%9C%8B%E4%B8%89%E4%B8%AA%E6%95%B0"><span class="toc-text">8.3 看三个数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E5%88%A4%E6%96%AD%EF%BC%9A%E6%8A%8A%E9%9C%80%E6%B1%82%E6%8B%86%E5%88%B0%E5%AD%90%E4%BB%BB%E5%8A%A1"><span class="toc-text">9. 一次完整判断：把需求拆到子任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%B0%8F%E7%BB%93"><span class="toc-text">10. 小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+          
+        </div>
+      </section>
+      
+
+
+    </div>
+  
+
+  
+
+</aside>
+
+    <section class="paper-main">
+      
+
+<div class="article-tape-wrap">
+<span class="tape tape--top-right" aria-hidden="true"></span>
+<article class="article-paper">
+  
+  <header class="article-header">
+    
+      <a class="label-pill" href="/categories/AI/">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-folder"></use></svg>
+
+        AI
+      </a>
+    
+    <h1>LLM 基础（二）：LLM 能做什么？从「会生成」到「会做事」的能力地图</h1>
+    <div class="meta-line meta-line--article">
+      <span class="meta-date">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-calendar"></use></svg>
+2026-10-29</span>
+      
+        <span class="meta-tags">
+          
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-tag"></use></svg>
+
+          <a class="meta-tag-link" href="/tags/Agent/">#Agent</a><a class="meta-tag-link" href="/tags/LLM/">#LLM</a><a class="meta-tag-link" href="/tags/%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C/">#能力边界</a><a class="meta-tag-link" href="/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B/">#模型选型</a><a class="meta-tag-link" href="/tags/%E8%AF%84%E4%BC%B0/">#评估</a>
+        </span>
+      
+    </div>
+  </header>
+
+  
+
+
+  <div class="article-content">
+    <p style="text-align:center"><img src="/img/covers/llm-capabilities-cover.png" alt="LLM 基础（二）：LLM 能做什么"></p>
+
+<p>上一篇 <a href="https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/">LLM 是什么？从预测下一个 token 到 OpenAI &#x2F; Anthropic 协议</a> 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 <code>POST /v1/chat/completions</code> 里每个字段在干什么。</p>
+<p>这一篇回答下一个问题：<strong>那它到底能干什么？</strong></p>
+<p>这个问题看着像科普，其实是工程里最容易亏钱的一问。因为「能做什么」在 demo 里和在线上完全是两件事：</p>
+<ul>
+<li>demo 里，它写了一段能跑的代码；</li>
+<li>线上，它有 3% 的概率把字段名写成一个不存在的 API，而这 3% 落在 10 万笔订单上。</li>
+</ul>
+<p>所以这篇不打算列「100 个 AI 应用场景」。我想给你一把尺子：拿到一个需求，十分钟内判断出它落在哪一级、靠什么保证、错了怎么办、值不值得做。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="1-先拆掉一个误会：它没有手"><a href="#1-先拆掉一个误会：它没有手" class="headerlink" title="1. 先拆掉一个误会：它没有手"></a>1. 先拆掉一个误会：它没有手</h2><p>所有「AI 帮我订了机票」「AI 自己修好了 bug」的演示，底下都是同一条流水线：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">用户的话</span><br><span class="line">   ↓</span><br><span class="line">模型生成一段结构化意图（tool_calls）</span><br><span class="line">   ↓</span><br><span class="line">你的代码执行（调 API / 跑命令 / 写文件）</span><br><span class="line">   ↓</span><br><span class="line">结果塞回上下文</span><br><span class="line">   ↓</span><br><span class="line">模型继续生成</span><br></pre></td></tr></table></figure>
+
+<p>模型从头到尾只做了一件事：<strong>生成 token</strong>。它没有网络、没有文件系统、没有数据库连接，也没有「执行」这个动作。所谓「会做事」，是你写了一个函数，然后让模型来按按钮。</p>
+<p>这句话有两个直接推论，贯穿整章：</p>
+<ol>
+<li><strong>能力上限</strong>由「你能不能把这个动作写成一个函数」决定。法律不允许、API 不存在、权限给不了，模型再强也做不到。</li>
+<li><strong>可靠性下限</strong>由「模型生成的这段意图对不对」决定。而这段意图，恰好是<strong>可以被校验的</strong>——这就是它能工程化的根本原因。</li>
+</ol>
+<p>所以「LLM 能做什么」更准确的问法是：</p>
+<blockquote>
+<p>它能<strong>稳定生成什么形状的输出</strong>？以及这个形状<strong>能不能被验证</strong>？</p>
+</blockquote>
+<p>把这两个问题画成两个轴，就得到了本章的地图：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>输出形状稳定</th>
+<th>输出形状不稳定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>可自动验证</strong></td>
+<td>分类、抽取、SQL、工具参数 → <strong>直接上</strong></td>
+<td>代码、配置、正则 → <strong>跑测试再上</strong></td>
+</tr>
+<tr>
+<td><strong>不可自动验证</strong></td>
+<td>翻译、改写、短摘要 → <strong>抽检上线</strong></td>
+<td>文案、方案、长文分析 → <strong>人审，或者别用</strong></td>
+</tr>
+</tbody></table>
+<p>很多团队的坑，是把右下角的任务当成左上角的任务来做：用一个开放式的 prompt，期待一个可验证的结果，然后用「感觉还行」来验收。<strong>这一格能不能成，基本看运气。</strong></p>
+<hr>
+<h2 id="2-所有能力都长在四种动作上"><a href="#2-所有能力都长在四种动作上" class="headerlink" title="2. 所有能力都长在四种动作上"></a>2. 所有能力都长在四种动作上</h2><p>剥掉业务外壳，任何一次 LLM 调用的输入输出，都逃不出这四种：</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>输入 → 输出</th>
+<th>输出空间</th>
+<th>可靠性</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>变换 Transform</strong></td>
+<td>文本 → 同构文本</td>
+<td>大，但语义等价</td>
+<td>中高</td>
+<td>翻译、改写、润色、格式转换</td>
+</tr>
+<tr>
+<td><strong>抽取 Extract</strong></td>
+<td>非结构化 → 结构化</td>
+<td><strong>小（schema 定死）</strong></td>
+<td><strong>最高</strong></td>
+<td>分类、打标、字段抽取、实体识别</td>
+</tr>
+<tr>
+<td><strong>生成 Generate</strong></td>
+<td>少量输入 → 大量新内容</td>
+<td><strong>开放</strong></td>
+<td>中低</td>
+<td>文案、方案、代码、长文</td>
+</tr>
+<tr>
+<td><strong>决策 Decide</strong></td>
+<td>上下文 → 一个选择</td>
+<td>小（枚举）</td>
+<td>中高</td>
+<td>路由、是否退款、下一步调什么工具</td>
+</tr>
+</tbody></table>
+<p>顺带说一句：<strong>多模态不改变「四种动作」的划分。</strong> 图片被切成 patch，音频被切成帧，最后都变成同一串向量喂进 Transformer。所以「看图」本质上还是抽取和判断——它能描述图里有什么，但<strong>不能可靠地数图里有几个人，也读不清 4pt 的小字</strong>。原因和它在 <code>strawberry</code> 里数不清 <code>r</code> 是同一个：tokenizer 根本不给你那个粒度。</p>
+<p>为什么可靠性是这么排的？因为<strong>输出空间越窄，模型越不容易跑偏，你也越容易验证</strong>。</p>
+<ul>
+<li>抽取的候选空间是 schema 定义的有限结构，JSON Schema 一校验就知道对不对；</li>
+<li>决策的候选空间是一个枚举，可以用 logprob 算置信度（上一篇 4.3.2 那段）；</li>
+<li>变换的候选空间是「同一个意思的另一种说法」，可以回译、可以比对关键实体；</li>
+<li>生成的候选空间是开放的——你没法枚举「一篇好文案」的所有可能，也就没法写验证器。</li>
+</ul>
+<p>这里有个很现实的规律：<strong>商业价值和可靠性往往是反着来的。</strong> 越像「智能」的任务（写方案、做诊断、给建议）越值钱，也越难验证；越能被 schema 锁死的任务（分类、抽取），越稳，但越像传统软件。</p>
+<p>但这不意味着「所有任务都压成抽取」。真实系统分两层，很多人只做了「把输出锁死」这一层，所以模型一遇到多步任务就崩。</p>
+<h3 id="2-1-任务级：先规划，再执行"><a href="#2-1-任务级：先规划，再执行" class="headerlink" title="2.1 任务级：先规划，再执行"></a>2.1 任务级：先规划，再执行</h3><p>复杂任务不要指望一次生成就对。正确的做法是<strong>让模型先把任务拆成计划，再按计划一步步执行</strong>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">目标</span><br><span class="line"> ↓</span><br><span class="line">计划（步骤 / 工具 / 输入 / 验收条件）</span><br><span class="line"> ↓</span><br><span class="line">执行第 1 步 → 观察结果 ─┬─ 符合预期 → 下一步</span><br><span class="line">                        └─ 不符合   → 重规划</span><br><span class="line"> ↓</span><br><span class="line">汇总输出</span><br></pre></td></tr></table></figure>
+
+<p>为什么必须先规划？因为一次生成里，模型能看到的只有自己写出来的 token，看不到工具的真实返回。它只能靠想象把 10 步全推完，然后一次性写出来——这正是上一篇说的滚雪球：第 1 步猜错，后面 9 步都在为错误圆场。规划把任务切成多个回合，<strong>每个回合结束后都能拿到真实观察</strong>，再决定下一步；错误因此有机会被挡在下一步之前。</p>
+<p>一个可执行的计划不该是散文，而应该长这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;goal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;分析本月退款率上升的原因&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;steps&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;query_metric&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;metric&quot;</span><span class="punctuation">:</span> <span class="string">&quot;refund_rate&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;period&quot;</span><span class="punctuation">:</span> <span class="string">&quot;this_month&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;done_when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;拿到总体退款率和环比&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;query_breakdown&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;by&quot;</span><span class="punctuation">:</span> <span class="string">&quot;category&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;done_when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;定位到异常品类&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;query_breakdown&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;by&quot;</span><span class="punctuation">:</span> <span class="string">&quot;reason&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;女装&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;done_when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;拿到 Top3 退货原因&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;stop_when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;连续两次下钻没有新信息，或步数超过 8&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>三个字段值得单独说：</p>
+<ul>
+<li><code>action</code> 必须是<strong>工具清单里真实存在的</strong>，否则就是计划幻觉；</li>
+<li><code>args</code> 要过 schema 校验，别让模型编出不存在的参数；</li>
+<li><code>done_when</code> 是这一步的验收条件——<strong>没有验收条件的步骤，等于没有终点。</strong></li>
+</ul>
+<p>计划也不是一次定死的。执行到第 2 步发现「女装没异常，母婴才异常」，就应该改计划。这就是 Plan-and-Execute 和 ReAct 的分界：<strong>先规划降低盲目探索，边执行边观察防止计划脱离现实。</strong></p>
+<p>但规划不是银弹。<strong>规划本身就是一次生成</strong>，而且是开放度很高的生成，所以它同样会犯四种错：</p>
+<table>
+<thead>
+<tr>
+<th>规划失败</th>
+<th>症状</th>
+<th>怎么兜</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>工具幻觉</strong></td>
+<td>计划里出现不存在的工具或参数</td>
+<td>用工具清单做白名单校验，不合法直接拒</td>
+</tr>
+<tr>
+<td><strong>过度规划</strong></td>
+<td>一句话能做完的事拆成 15 步</td>
+<td>设步数上限；简单任务走单步分支</td>
+</tr>
+<tr>
+<td><strong>粒度过粗</strong></td>
+<td>「分析一下数据」这种步骤无法执行</td>
+<td>要求每步有明确的 <code>action</code> 和 <code>done_when</code></td>
+</tr>
+<tr>
+<td><strong>计划漂移</strong></td>
+<td>跑到一半忘了目标，越走越远</td>
+<td>每步回传目标摘要；重规划时重新注入 <code>goal</code></td>
+</tr>
+</tbody></table>
+<h3 id="2-2-步骤级：把每一步收敛成契约"><a href="#2-2-步骤级：把每一步收敛成契约" class="headerlink" title="2.2 步骤级：把每一步收敛成契约"></a>2.2 步骤级：把每一步收敛成契约</h3><p>计划定好之后，单个步骤的输出空间就可以被压窄了。这时候才是「抽取 + 决策」出场的地方。</p>
+<p>对比一下两种写法。</p>
+<p><strong>不可控的写法：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请分析这条客服工单，并给出处理建议。</span><br></pre></td></tr></table></figure>
+
+<p><strong>可控的写法：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">请完成三件事，只输出 JSON：</span><br><span class="line">1. category：从 [退款, 换货, 物流查询, 投诉, 其它] 中选一个</span><br><span class="line">2. priority：从 [P0, P1, P2, P3] 中选一个</span><br><span class="line">3. fields：抽取 order_id、amount、reason（没有就填 null）</span><br><span class="line"></span><br><span class="line">不要输出解释。</span><br></pre></td></tr></table></figure>
+
+<p>然后把这三段结果套进代码里的模板，生成最终建议。</p>
+<p>模板在这里不是「代替模型思考」，而是<strong>承接已经确定的部分</strong>：格式、合规话术、金额单位、字段顺序。模型只在真正需要判断的地方生成——<strong>不是不让它生成，是不让它在已经有答案的地方自由发挥。</strong></p>
+<p>所以完整的分工是：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>谁负责</th>
+<th>解决什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>规划</strong></td>
+<td>模型</td>
+<td>想清楚要做哪几步、用什么工具、怎么算完成</td>
+</tr>
+<tr>
+<td><strong>执行</strong></td>
+<td>模型 + 代码</td>
+<td>按步骤做，每步的输入输出都过 schema</td>
+</tr>
+<tr>
+<td><strong>模板</strong></td>
+<td>代码</td>
+<td>承接确定的部分，锁住格式和合规</td>
+</tr>
+</tbody></table>
+<p>一句话：<strong>规划负责「想清楚做什么」，schema 负责「把每一步做对」，模板负责「把确定的部分固化」。</strong> 三者是分工，不是替代。</p>
+<hr>
+<h2 id="3-能力阶梯：从补全到自主"><a href="#3-能力阶梯：从补全到自主" class="headerlink" title="3. 能力阶梯：从补全到自主"></a>3. 能力阶梯：从补全到自主</h2><p>同样是「用 LLM」，复杂度可以差两个数量级。我把它分成六级，<strong>每上一级，增加的不只是模型能力，还有一整套基础设施</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>它做什么</th>
+<th>典型形态</th>
+<th>新增的基础设施</th>
+<th>主要失败模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>L0 补全</strong></td>
+<td>给前缀，续写后续</td>
+<td>IDE 里的 tab 补全</td>
+<td>无</td>
+<td>补出过时或不存在的 API</td>
+</tr>
+<tr>
+<td><strong>L1 单轮转换</strong></td>
+<td>一次指令，一次输出</td>
+<td>翻译、抽取、分类、改写</td>
+<td>一个 HTTP 调用</td>
+<td>格式漂移、边界样本翻车</td>
+</tr>
+<tr>
+<td><strong>L2 多步推理</strong></td>
+<td>先想再答</td>
+<td>数学题、代码生成、复杂判断</td>
+<td>CoT &#x2F; thinking budget</td>
+<td>想错了但很自信、推理 token 烧钱</td>
+</tr>
+<tr>
+<td><strong>L3 外部知识</strong></td>
+<td>查了再答</td>
+<td>RAG 问答、搜索、查库</td>
+<td>检索 + 重排 + 引用校验</td>
+<td>检索错 → 自信地错</td>
+</tr>
+<tr>
+<td><strong>L4 行动</strong></td>
+<td>做了再说</td>
+<td>工具调用、Agent Loop</td>
+<td>工具注册 + 权限 + 沙箱 + 循环控制</td>
+<td>参数错、越权、注入、死循环</td>
+</tr>
+<tr>
+<td><strong>L5 自主</strong></td>
+<td>自己定目标、长时运行</td>
+<td>编码 Agent、运营 Agent</td>
+<td>状态机 + 记忆 + 人类闸门</td>
+<td>目标漂移、成本失控</td>
+</tr>
+</tbody></table>
+<p>这张表最重要的用法是<strong>定位</strong>，不是分级炫耀。</p>
+<p>客户说「我想要一个 AI 助手」，你先问两个问题：</p>
+<ul>
+<li>它需要知道公司内部的东西吗？→ 需要，就是 L3；</li>
+<li>它需要真的执行动作吗？→ 需要，就是 L4。</li>
+</ul>
+<p>如果两个都不需要，那它就是个 L1 的文本处理——<strong>一个便宜的模型加一个 schema 就够了，别上 Agent 框架。</strong></p>
+<p>我见过最多的浪费，是用 L4 的基础设施去做 L1 的任务：为了「以后可能要做 Agent」，先搭一套工具注册、状态机、多 Agent 编排，结果核心业务只是把工单分成六类。<strong>框架的成本是提前支付的，而收益要等需求真的长到那一步。</strong></p>
+<p>反过来也有一类坑：明明是 L4 的任务（要查库存、要下单），却想用一个超长 prompt 一次搞定。这时候你缺的不是 prompt 技巧，是工具。</p>
+<hr>
+<h2 id="4-一张按成熟度排的能力清单"><a href="#4-一张按成熟度排的能力清单" class="headerlink" title="4. 一张按成熟度排的能力清单"></a>4. 一张按成熟度排的能力清单</h2><p>下面这张清单不追求全，只追求<strong>能直接拿去做决策</strong>。我按「能不能直接上生产」分三档。</p>
+<h3 id="4-1-已经比人便宜且稳定（可以直接上，抽检即可）"><a href="#4-1-已经比人便宜且稳定（可以直接上，抽检即可）" class="headerlink" title="4.1 已经比人便宜且稳定（可以直接上，抽检即可）"></a>4.1 已经比人便宜且稳定（可以直接上，抽检即可）</h3><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>输入 → 输出</th>
+<th>为什么稳</th>
+<th>主要坑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>分类 &#x2F; 打标 &#x2F; 意图识别</strong></td>
+<td>文本 → 枚举</td>
+<td>输出空间小，可算 logprob</td>
+<td>类别定义重叠；长尾类别样本少；否定句</td>
+</tr>
+<tr>
+<td><strong>字段抽取</strong></td>
+<td>文档 → JSON</td>
+<td>schema 可校验，可逐字段比对</td>
+<td>长文档漏字段；单位&#x2F;币种；条件和否定</td>
+</tr>
+<tr>
+<td><strong>常见语种翻译</strong></td>
+<td>文本 → 文本</td>
+<td>语义等价，可回译校验</td>
+<td>术语不一致；变量名&#x2F;占位符被翻译；代码块被改</td>
+</tr>
+<tr>
+<td><strong>改写 &#x2F; 润色 &#x2F; 风格转换</strong></td>
+<td>文本 → 文本</td>
+<td>原文就在上下文里</td>
+<td>偷偷补充事实；改掉数字和专有名词</td>
+</tr>
+<tr>
+<td><strong>短文本摘要</strong></td>
+<td>文本 → 短文本</td>
+<td>可逐句对照原文</td>
+<td>丢否定词（「不建议」变「建议」）；丢条件</td>
+</tr>
+<tr>
+<td><strong>格式转换</strong></td>
+<td>结构 → 结构</td>
+<td>输入输出同构</td>
+<td>静默丢字段；注释和顺序丢失</td>
+</tr>
+<tr>
+<td><strong>代码解释 &#x2F; 单测生成</strong></td>
+<td>代码 → 文本&#x2F;代码</td>
+<td>能跑就是验证</td>
+<td>断言写反；编造不存在的 API</td>
+</tr>
+<tr>
+<td><strong>Embedding &#x2F; 相似度</strong></td>
+<td>文本 → 向量</td>
+<td>数值可计算</td>
+<td>领域不匹配；长文本被截断</td>
+</tr>
+</tbody></table>
+<p>这一档的共同特征：<strong>输出形状是收敛的，或者有原文可以对照。</strong> 你不需要相信它，你只需要检查它。</p>
+<h3 id="4-2-能用，但必须带验证"><a href="#4-2-能用，但必须带验证" class="headerlink" title="4.2 能用，但必须带验证"></a>4.2 能用，但必须带验证</h3><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>能用的前提</th>
+<th>典型失败</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>长文档摘要 &#x2F; 多文档综述</strong></td>
+<td>分段 + 引用回查</td>
+<td>中间段落被忽略（lost in the middle）；多文档冲突被抹平</td>
+</tr>
+<tr>
+<td><strong>代码生成（多文件）</strong></td>
+<td>有测试、有类型检查</td>
+<td>能跑但不符合项目约定；依赖幻觉；改坏上下文</td>
+</tr>
+<tr>
+<td><strong>写 SQL &#x2F; 做数据分析</strong></td>
+<td>schema 喂全 + <code>EXPLAIN</code> + 只读账号试跑</td>
+<td>理解错字段含义；join 错；聚合口径错</td>
+</tr>
+<tr>
+<td><strong>RAG 问答</strong></td>
+<td>强制引用 + 出处回查</td>
+<td>检索不到就编；检索到了但原文不支持结论</td>
+</tr>
+<tr>
+<td><strong>结构化报告生成</strong></td>
+<td>数字全部来自工具，模型只写叙述</td>
+<td>正文数字和表格对不上；结论和证据矛盾</td>
+</tr>
+<tr>
+<td><strong>多轮对话</strong></td>
+<td>显式状态 + 关键指令复述</td>
+<td>长对话里忘掉 system 规则；状态漂移</td>
+</tr>
+<tr>
+<td><strong>文档 &#x2F; 图像理解</strong></td>
+<td>关键字段二次校验</td>
+<td>表格结构还原错；手写和低质扫描</td>
+</tr>
+</tbody></table>
+<p>这一档的特征是：<strong>模型能做出 80 分的初稿，但那 20 分必须由机器或人来补。</strong> 直接用的结果不是「差不多能用」，而是「错得很难发现」。</p>
+<h3 id="4-3-看起来能做，其实不要单独交给它"><a href="#4-3-看起来能做，其实不要单独交给它" class="headerlink" title="4.3 看起来能做，其实不要单独交给它"></a>4.3 看起来能做，其实不要单独交给它</h3><table>
+<thead>
+<tr>
+<th>别单独交给它</th>
+<th>症状</th>
+<th>正确姿势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>精确算术 &#x2F; 计数 &#x2F; 排序</strong></td>
+<td>「strawberry 有几个 r」答错；金额加错；排序漏项</td>
+<td>让它写代码算，或直接调工具。<strong>数字永远不要经过模型的嘴</strong></td>
+</tr>
+<tr>
+<td><strong>日期时间推理</strong></td>
+<td>「下下个周五」算错；跨时区错一天</td>
+<td>模型只负责解析成结构化表达，计算交给 <code>date</code> 库</td>
+</tr>
+<tr>
+<td><strong>实时信息</strong></td>
+<td>不知道今天的股价、天气、新闻</td>
+<td>搜索 &#x2F; API，别指望参数里的记忆</td>
+</tr>
+<tr>
+<td><strong>私有数据</strong></td>
+<td>编造你公司的表名、字段、政策条款</td>
+<td>RAG + 工具查询，并且要求「资料里没有就说没有」</td>
+</tr>
+<tr>
+<td><strong>高风险决策</strong></td>
+<td>医疗、法律、金融判断说得斩钉截铁</td>
+<td>模型只给候选和依据，决策权在人</td>
+</tr>
+<tr>
+<td><strong>需要严格复现的任务</strong></td>
+<td>同样输入两次结果不同，回归测试没法做</td>
+<td>结构化输出 + 断言 + 结果缓存，别指望 seed</td>
+</tr>
+<tr>
+<td><strong>长流程自主执行</strong></td>
+<td>20 步的任务跑到第 8 步就跑偏了</td>
+<td>拆成短流程 + 状态机 + checkpoint + 人工闸门</td>
+</tr>
+</tbody></table>
+<p>这里面最容易被低估的是最后一条。下一节会算一笔账，你就知道为什么「20 步」是个很危险的数量级。</p>
+<hr>
+<h2 id="5-五个判据：这件事到底能不能做"><a href="#5-五个判据：这件事到底能不能做" class="headerlink" title="5. 五个判据：这件事到底能不能做"></a>5. 五个判据：这件事到底能不能做</h2><p>上面的清单是「别人做成了什么」，下面的判据是「你这个需求行不行」。拿到一个新需求，按顺序过一遍。</p>
+<h3 id="5-1-判据一：输出能不能定形？"><a href="#5-1-判据一：输出能不能定形？" class="headerlink" title="5.1 判据一：输出能不能定形？"></a>5.1 判据一：输出能不能定形？</h3><p>这是最强的判据。问自己一句：<strong>我能不能用 TypeScript 类型把它写出来？</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 能定形：可靠性高</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Result</span> = &#123;</span><br><span class="line">  <span class="attr">category</span>: <span class="string">&quot;refund&quot;</span> | <span class="string">&quot;exchange&quot;</span> | <span class="string">&quot;logistics&quot;</span> | <span class="string">&quot;complaint&quot;</span> | <span class="string">&quot;other&quot;</span>;</span><br><span class="line">  <span class="attr">priority</span>: <span class="string">&quot;P0&quot;</span> | <span class="string">&quot;P1&quot;</span> | <span class="string">&quot;P2&quot;</span> | <span class="string">&quot;P3&quot;</span>;</span><br><span class="line">  <span class="attr">orderId</span>: <span class="built_in">string</span> | <span class="literal">null</span>;</span><br><span class="line">  <span class="attr">amount</span>: <span class="built_in">number</span> | <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不能定形：可靠性低</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">LooseResult</span> = <span class="built_in">string</span>; <span class="comment">// &quot;一段专业的分析建议&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>能定形，你就能校验、能重试、能算通过率、能做回归。不能定形，你连「对了没有」都说不清，更别说优化。</p>
+<p><strong>这一步做不好，后面所有工程手段都是白费。</strong> 因为验证器需要形状，评估需要标准答案，重试需要知道错在哪——这些都建立在「输出是可判定的」之上。</p>
+<h3 id="5-2-判据二：知识在不在？"><a href="#5-2-判据二：知识在不在？" class="headerlink" title="5.2 判据二：知识在不在？"></a>5.2 判据二：知识在不在？</h3><p>模型的知识只有三个来源，判断需求时先归类：</p>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>什么时候够用</th>
+<th>典型问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>参数里</strong>（训练见过）</td>
+<td>通用常识、编程语言、公开概念</td>
+<td>版本更新后过时；长尾细节模糊</td>
+</tr>
+<tr>
+<td><strong>上下文里</strong>（你给的）</td>
+<td>文档问答、代码 review、会议纪要</td>
+<td>装不下；中间被忽略</td>
+</tr>
+<tr>
+<td><strong>工具里</strong>（现查）</td>
+<td>数据库、内网 API、实时数据</td>
+<td>要写工具、要权限、要控成本</td>
+</tr>
+</tbody></table>
+<p>一个反直觉但很有用的原则：</p>
+<blockquote>
+<p><strong>越是通用的知识，越该相信参数；越是具体的知识，越该相信工具。</strong></p>
+</blockquote>
+<p>问「什么是 TCP 三次握手」，不需要 RAG，模型记得比大多数人都清楚。问「我们 v2.3 的退款接口有哪些参数」，必须查文档——参数里那个版本大概率是错的。</p>
+<p>判断方法很简单：<strong>问它一个只有你们公司知道的问题。</strong> 答「根据资料……」是 RAG 生效了；答得流利但具体细节全是编的，就是纯幻觉。</p>
+<h3 id="5-3-判据三：错了能不能被发现？"><a href="#5-3-判据三：错了能不能被发现？" class="headerlink" title="5.3 判据三：错了能不能被发现？"></a>5.3 判据三：错了能不能被发现？</h3><p>有验证器的任务和没验证器的任务，是两种完全不同的工程。</p>
+<table>
+<thead>
+<tr>
+<th>验证方式</th>
+<th>适用</th>
+<th>强度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>能跑</strong></td>
+<td>代码、配置、正则</td>
+<td>最强（布尔值）</td>
+</tr>
+<tr>
+<td><strong>能算</strong></td>
+<td>数字、金额、统计</td>
+<td>强（可重算比对）</td>
+</tr>
+<tr>
+<td><strong>能查</strong></td>
+<td>引用、链接、数据库记录</td>
+<td>强（存在性可判定）</td>
+</tr>
+<tr>
+<td><strong>能比</strong></td>
+<td>和原文&#x2F;规则&#x2F;另一个模型比</td>
+<td>中（依赖比对器质量）</td>
+</tr>
+<tr>
+<td><strong>只能人审</strong></td>
+<td>文案、方案、语气</td>
+<td>弱（成本高、不一致）</td>
+</tr>
+</tbody></table>
+<p>这里要说清一个区别：<strong>「没有验证器」不等于「不能做」，而是「不能自动化」。</strong></p>
+<p>这两个说法差别很大。「给客诉写一段安抚话术」没有验证器，但它可以做——生成三版，人选一版。而「自动给客诉定赔偿金额」没有验证器就不能<strong>自动</strong>做，因为没人愿意为错误兜底。</p>
+<h3 id="5-4-判据四：错了代价多大？"><a href="#5-4-判据四：错了代价多大？" class="headerlink" title="5.4 判据四：错了代价多大？"></a>5.4 判据四：错了代价多大？</h3><p>上一篇 4.3.3 给过一个公式，这里直接用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">自动放行的条件：p_wrong × cost_wrong &lt; cost_review</span><br></pre></td></tr></table></figure>
+
+<p>把它简化成三档，判断会快很多：</p>
+<table>
+<thead>
+<tr>
+<th>错误代价</th>
+<th>例子</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>无副作用</strong></td>
+<td>推荐一句文案、生成一个标题</td>
+<td>直接上，错了重来</td>
+</tr>
+<tr>
+<td><strong>可修改</strong></td>
+<td>回复草稿、代码建议、分析报告</td>
+<td>人审一遍再发</td>
+</tr>
+<tr>
+<td><strong>不可逆</strong></td>
+<td>转账、删数据、对外发消息、下单</td>
+<td>强制确认 + 权限最小化 + 幂等键</td>
+</tr>
+</tbody></table>
+<p>绝大多数线上事故，不是模型太笨，是<strong>把一个「不可逆」的动作放在了「无副作用」的策略里</strong>。判据一决定它能不能做，判据四决定它能不能自己做完——在不可逆的场景里，先问后者。</p>
+<h3 id="5-5-判据五：要几步？"><a href="#5-5-判据五：要几步？" class="headerlink" title="5.5 判据五：要几步？"></a>5.5 判据五：要几步？</h3><p>这是最容易被低估的一条。</p>
+<p>单步准确率 95% 听起来很好。但 Agent 是串行的，一步错，后面全错：</p>
+<table>
+<thead>
+<tr>
+<th>步数</th>
+<th>端到端成功率（每步 95%）</th>
+<th>端到端成功率（每步 99%）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>95%</td>
+<td>99%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>86%</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>77%</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>60%</strong></td>
+<td>90%</td>
+</tr>
+<tr>
+<td>20</td>
+<td><strong>36%</strong></td>
+<td>82%</td>
+</tr>
+</tbody></table>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">成功率 ≈ p^n</span><br></pre></td></tr></table></figure>
+
+<p>而且这还是<strong>理想模型</strong>：假设每步独立、错误可恢复。真实的 Agent 里，错误会累积、会互相污染——第一步把「订单 A」认成了「订单 B」，后面所有查询都在为这个错误圆场（上一篇 4.1 ③ 的滚雪球）。实际衰减比这条曲线更快。</p>
+<p>所以「能做」的边界往往不是能力边界，而是<strong>步数边界</strong>：</p>
+<blockquote>
+<p>同一个模型，1 步能做的事，20 步就做不成。不是因为第 20 步更难，是因为前面 19 步总有一次会错。</p>
+</blockquote>
+<p>这也是为什么「拆任务 + 每步验收」在 Agent 里不是架构美学，而是数学要求：<strong>你没法把单步的 0.95 变成 0.99，但可以在每一步之后检查，把错误挡在下一步之前。</strong> 20 步全对是 36%，可如果每步都能验证、失败能重试，端到端成功率就回到可用区间。</p>
+<h3 id="5-6-合成一张评分卡"><a href="#5-6-合成一张评分卡" class="headerlink" title="5.6 合成一张评分卡"></a>5.6 合成一张评分卡</h3><p>把五条判据各打 0&#x2F;1&#x2F;2 分，加起来看结论：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>0 分</th>
+<th>1 分</th>
+<th>2 分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>输出可定形</strong></td>
+<td>开放文本</td>
+<td>半结构（Markdown&#x2F;列表）</td>
+<td>schema 或枚举</td>
+</tr>
+<tr>
+<td><strong>知识可得</strong></td>
+<td>只能靠记忆</td>
+<td>上下文能给全</td>
+<td>工具能现查</td>
+</tr>
+<tr>
+<td><strong>错误可验证</strong></td>
+<td>只能人审</td>
+<td>抽样比对</td>
+<td>自动验证</td>
+</tr>
+<tr>
+<td><strong>错误代价</strong></td>
+<td>不可逆</td>
+<td>可修改</td>
+<td>无副作用</td>
+</tr>
+<tr>
+<td><strong>步数</strong></td>
+<td>&gt; 10 步</td>
+<td>3 ~ 10 步</td>
+<td>1 ~ 2 步</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>总分</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>8 ~ 10</strong></td>
+<td>可以直接做，重点在成本和体验</td>
+</tr>
+<tr>
+<td><strong>5 ~ 7</strong></td>
+<td>可以做，但必须配验证器或人审</td>
+</tr>
+<tr>
+<td><strong>0 ~ 4</strong></td>
+<td>别按原样做。要么缩小任务，要么改成「模型给候选、人来决策」</td>
+</tr>
+</tbody></table>
+<p>注意这里的分数不是「技术难度」，是「<strong>可控性</strong>」。高分不代表简单，代表错了你能兜住。</p>
+<hr>
+<h2 id="6-能力放大器：同一个模型，四种用法"><a href="#6-能力放大器：同一个模型，四种用法" class="headerlink" title="6. 能力放大器：同一个模型，四种用法"></a>6. 能力放大器：同一个模型，四种用法</h2><p>到这里，「模型本身能做什么」其实已经讲完了。但真实项目里，同一个模型能表现出的能力差距是数量级的——因为<strong>能力不全在模型里</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>本质</th>
+<th>补的是哪个缺陷</th>
+<th>不解决什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Prompt</strong></td>
+<td>改变条件分布</td>
+<td>格式、风格、角色</td>
+<td>它不知道的事实</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>往上下文里塞知识</td>
+<td>知识截止、私有知识</td>
+<td>推理能力、执行能力</td>
+</tr>
+<tr>
+<td><strong>Tool</strong></td>
+<td>把执行交给代码</td>
+<td>算不准、做不到</td>
+<td>该不该做（决策）</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>把规划 + 控制流交给模型</td>
+<td>多步任务</td>
+<td>单步可靠性</td>
+</tr>
+</tbody></table>
+<p>记住一句话：</p>
+<blockquote>
+<p><strong>RAG 不会让模型变聪明，它只是把答案放进了上下文；Tool 不会让模型变强，它只是把执行交给了代码；Agent 不会让模型变可靠，它只是把一次调用变成了 N 次调用。</strong></p>
+</blockquote>
+<p>所以每加一层，能力上限提高，<strong>不确定性也被同步放大</strong>。上一篇那句「Agent 工程的大部分设计，都是在给模型的缺陷打补丁」，说的就是这件事。</p>
+<h3 id="6-1-一个例子走完四层"><a href="#6-1-一个例子走完四层" class="headerlink" title="6.1 一个例子走完四层"></a>6.1 一个例子走完四层</h3><p>需求：<strong>「帮我分析这个月退款率为什么上升。」</strong></p>
+<p><strong>Prompt 版</strong>：它能给你一份很专业的原因清单——质量、物流、预期落差、季节性。看起来像模像样，但<strong>没有一个数字</strong>。这段话对任何人都成立，所以对谁都没用。</p>
+<p><strong>RAG 版</strong>：能引用公司的退款政策、历史复盘文档、上一次大促的结论。它会说「上次大促期间退货率上升主要因为尺码问题，参见 6 月复盘」。有依据了，但<strong>它不知道这个月发生了什么</strong>。</p>
+<p><strong>Tool 版</strong>：能真的跑 SQL——查退款率、按品类拆、按渠道拆、按退货原因拆。数字是真的，图表是真的。<strong>但它不知道下一步该查什么。</strong></p>
+<p><strong>Agent 版</strong>：先查总览，发现女装品类异常，自己决定下钻到女装的退货原因，发现集中在某个 SKU，再查这个 SKU 的批次和供应商，最后输出结论。<strong>它自己决定了分析路径</strong>——先规划，再执行，中途还会根据观察结果改计划。</p>
+<p>四层的能力差距是数量级的。但注意，<strong>失败模式也变了</strong>：</p>
+<ul>
+<li>Prompt 版错了，你一眼看得出来（没有数字）；</li>
+<li>Tool 版错了，你看不出来（数字是真的，但 SQL 的 join 写错了）；</li>
+<li>Agent 版错了，你连它错在哪一步都不知道——所以必须有 trace。</li>
+</ul>
+<p>这就是为什么「上 Agent」从来不是一个模型问题，而是一个<strong>可观测性问题</strong>。</p>
+<h3 id="6-2-每层新增的代价"><a href="#6-2-每层新增的代价" class="headerlink" title="6.2 每层新增的代价"></a>6.2 每层新增的代价</h3><table>
+<thead>
+<tr>
+<th>层</th>
+<th>延迟</th>
+<th>成本</th>
+<th>可观测性要求</th>
+<th>失败半径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prompt</td>
+<td>1×</td>
+<td>1×</td>
+<td>看输出即可</td>
+<td>一段话</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>+100~300ms</td>
+<td>+检索</td>
+<td>要看召回了什么</td>
+<td>一个错误引用</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>+工具耗时</td>
+<td>+工具 +多轮 token</td>
+<td>要看参数和返回值</td>
+<td>一次错误写操作</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>+N 轮</td>
+<td><strong>N 倍</strong>（且长尾）</td>
+<td>必须有全链路 trace</td>
+<td>一连串副作用</td>
+</tr>
+</tbody></table>
+<p><strong>成本那一列要特别注意</strong>：Agent 的 token 消耗不是线性的，是长尾的。大部分任务 3 步结束，少数任务 40 步还在转——做预算时按 P95 算，不要按平均值。</p>
+<hr>
+<h2 id="7-模型选型：选够用的，不是选最强的"><a href="#7-模型选型：选够用的，不是选最强的" class="headerlink" title="7. 模型选型：选够用的，不是选最强的"></a>7. 模型选型：选够用的，不是选最强的</h2><h3 id="7-1-三个约束"><a href="#7-1-三个约束" class="headerlink" title="7.1 三个约束"></a>7.1 三个约束</h3><p>能力、成本、延迟，三者不可能同时最优。真实决策的顺序是：<strong>先定约束，再选模型。</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">硬约束：延迟 &lt; 800ms？ → 先排除推理模型和长输出</span><br><span class="line">硬约束：单次成本 &lt; 0.01 元？ → 先排除大模型</span><br><span class="line">硬约束：必须看懂 200 页 PDF？ → 先看上下文窗口和检索方案</span><br></pre></td></tr></table></figure>
+
+<p>先想清楚哪条是硬约束，剩下的空间其实很小。</p>
+<h3 id="7-2-按任务层级选"><a href="#7-2-按任务层级选" class="headerlink" title="7.2 按任务层级选"></a>7.2 按任务层级选</h3><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>建议档位</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分类 &#x2F; 抽取 &#x2F; 改写</td>
+<td><strong>小模型</strong>（mini &#x2F; haiku 级）</td>
+<td>输出空间小，大模型的边际收益很低</td>
+</tr>
+<tr>
+<td>长文摘要 &#x2F; 多文档</td>
+<td>中模型 + 检索</td>
+<td>需要覆盖面，不一定需要深推理</td>
+</tr>
+<tr>
+<td>代码 &#x2F; 多步分析</td>
+<td>大模型或推理模型</td>
+<td>需要中间过程</td>
+</tr>
+<tr>
+<td>高风险判断</td>
+<td>大模型 + 多次采样 + 验证</td>
+<td>用钱换确定性</td>
+</tr>
+</tbody></table>
+<p>这里有个很常见的误区：<strong>用推理模型做分类。</strong></p>
+<p>它会在心里推演两千个 token，然后给你一个和 8B 小模型一样的答案——贵 20 倍，慢 5 倍。推理模型的价值在「需要探索解题路径」，不在于「知道答案」。<strong>分类、抽取、格式转换这类任务，思考过程是纯浪费。</strong></p>
+<p>反过来，让一个小模型去做「重构这个模块，保持所有测试通过」，也是浪费——不是浪费钱，是浪费你的时间。</p>
+<h3 id="7-3-成本结构怎么读"><a href="#7-3-成本结构怎么读" class="headerlink" title="7.3 成本结构怎么读"></a>7.3 成本结构怎么读</h3><p>三条规则，看懂任何一家价目表：</p>
+<ol>
+<li><strong>output 比 input 贵 3~5 倍。</strong> 因为 prefill 能并行，decode 不能（上一篇 2.3）。</li>
+<li><strong>缓存命中的 input 通常只收 10%~25%。</strong> 所以固定的 system prompt + 工具定义值得缓存。</li>
+<li><strong>推理 token 按 output 计费。</strong> 推理模型的账单经常比预估高 3~10 倍，就是这一项。</li>
+</ol>
+<p>由此得到一张很实用的「贵不贵」判断表：</p>
+<table>
+<thead>
+<tr>
+<th>形态</th>
+<th>典型场景</th>
+<th>成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>长输入 + 短输出</td>
+<td>分类、抽取、RAG</td>
+<td><strong>便宜</strong></td>
+</tr>
+<tr>
+<td>短输入 + 长输出</td>
+<td>文案、生成</td>
+<td>中</td>
+</tr>
+<tr>
+<td>长输入 + 长输出</td>
+<td>代码 Agent、长文分析</td>
+<td><strong>最贵</strong></td>
+</tr>
+</tbody></table>
+<h3 id="7-4-分层路由：把便宜的路走完"><a href="#7-4-分层路由：把便宜的路走完" class="headerlink" title="7.4 分层路由：把便宜的路走完"></a>7.4 分层路由：把便宜的路走完</h3><p>级联（cascade）是性价比最高的一招：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">answerWithEscalation</span>(<span class="params"><span class="attr">q</span>: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 第一档：小模型，绝大多数流量在这里结束</span></span><br><span class="line">  <span class="keyword">const</span> first = <span class="keyword">await</span> <span class="title function_">call</span>(<span class="string">&quot;small&quot;</span>, q, &#123; <span class="attr">logprobs</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">confidence</span>(first) &gt;= <span class="number">0.9</span>) <span class="keyword">return</span> first;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第二档：大模型</span></span><br><span class="line">  <span class="keyword">const</span> second = <span class="keyword">await</span> <span class="title function_">call</span>(<span class="string">&quot;large&quot;</span>, q);</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">await</span> <span class="title function_">verify</span>(second)) <span class="keyword">return</span> second;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第三档：推理模型，只给最难的极少数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">call</span>(<span class="string">&quot;reasoning&quot;</span>, q);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经济学很简单：如果 80% 的请求小模型能搞定，平均成本会降到原来的三分之一，而 P95 延迟只涨一点点——因为只有 20% 的请求走了第二档。</p>
+<p>要注意的是：<strong>阈值必须校准过</strong>（上一篇 4.3.3 那张表），不能拍一个 0.9 就用。没校准的级联，要么全走小模型（质量崩），要么全走大模型（省了个寂寞）。</p>
+<h3 id="7-5-上下文不是越长越好"><a href="#7-5-上下文不是越长越好" class="headerlink" title="7.5 上下文不是越长越好"></a>7.5 上下文不是越长越好</h3><p>上一篇算过 KV Cache：8K 上下文差不多 1GB 显存。工程上还有另一个问题——<strong>lost in the middle</strong>：模型对开头和结尾的信息敏感，中间的内容容易被忽略。</p>
+<p>所以「把 200 页文档全塞进去」通常不如「检索出最相关的 5 页」。前者更贵、更慢，而且<strong>准确率往往更低</strong>。</p>
+<hr>
+<h2 id="8-别问「能不能」，问「通过率多少」"><a href="#8-别问「能不能」，问「通过率多少」" class="headerlink" title="8. 别问「能不能」，问「通过率多少」"></a>8. 别问「能不能」，问「通过率多少」</h2><h3 id="8-1-demo-和生产的差距，是一个乘法"><a href="#8-1-demo-和生产的差距，是一个乘法" class="headerlink" title="8.1 demo 和生产的差距，是一个乘法"></a>8.1 demo 和生产的差距，是一个乘法</h3><p>一个任务单步 95%，听起来可以上线。但用户感知的是<strong>整个任务</strong>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户视角的成功率 = 单步准确率 ^ 步数     （没有检查点时）</span><br></pre></td></tr></table></figure>
+
+<p>10 步就是 60%。这意味着 10 个用户里有 4 个失败——而你在 demo 里一次都没见过，因为你只跑了 5 次，5 次都成功。</p>
+<p>这不是模型的问题，是<strong>概率的问题</strong>。要判断能不能做，你必须知道分布，而分布只能靠评测集。</p>
+<p>（这也是规划真正的价值：它不能提高单步准确率，但能在每一步之间插一个检查点，把「一次错到底」变成「错了就停」。代价是更多轮调用、更长延迟，以及一个必须被设计好的重试&#x2F;重规划策略。）</p>
+<h3 id="8-2-最小可用的-eval（50-行就够）"><a href="#8-2-最小可用的-eval（50-行就够）" class="headerlink" title="8.2 最小可用的 eval（50 行就够）"></a>8.2 最小可用的 eval（50 行就够）</h3><p>别一上来就搭评测平台。先做一张表：</p>
+<ol>
+<li><strong>抽 50~100 条真实样本</strong>，覆盖：典型、边界、已知难例、脏数据；</li>
+<li><strong>人工标注正确答案</strong>——这一步不能省，也不能让模型标；</li>
+<li><strong>跑一遍</strong>，记录：对&#x2F;错、失败类型、延迟、token；</li>
+<li><strong>只看两件事</strong>：通过率、失败模式分布。</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Case</span> = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">input</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">expected</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">tags</span>: <span class="built_in">string</span>[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">runEval</span>(<span class="params"></span></span><br><span class="line"><span class="params">  <span class="attr">cases</span>: <span class="title class_">Case</span>[],</span></span><br><span class="line"><span class="params">  <span class="attr">fn</span>: (s: <span class="built_in">string</span>) =&gt; <span class="title class_">Promise</span>&lt;<span class="built_in">string</span>&gt;,</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> rows = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> c <span class="keyword">of</span> cases) &#123;</span><br><span class="line">    <span class="keyword">const</span> t0 = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">    <span class="keyword">const</span> got = <span class="keyword">await</span> <span class="title function_">fn</span>(c.<span class="property">input</span>);</span><br><span class="line">    rows.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">id</span>: c.<span class="property">id</span>,</span><br><span class="line">      <span class="attr">ok</span>: <span class="title function_">normalize</span>(got) === <span class="title function_">normalize</span>(c.<span class="property">expected</span>),</span><br><span class="line">      <span class="attr">tags</span>: c.<span class="property">tags</span>,</span><br><span class="line">      <span class="attr">ms</span>: <span class="title class_">Date</span>.<span class="title function_">now</span>() - t0,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> pass = rows.<span class="title function_">filter</span>(<span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">ok</span>).<span class="property">length</span> / rows.<span class="property">length</span>;</span><br><span class="line">  <span class="keyword">const</span> byTag = <span class="title function_">groupBy</span>(rows, <span class="function">(<span class="params">r</span>) =&gt;</span> r.<span class="property">tags</span>[<span class="number">0</span>]);</span><br><span class="line">  <span class="keyword">return</span> &#123; pass, byTag, rows &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（<code>normalize</code> 要先想清楚：大小写、空格、数字格式、同义词。<strong>归一化写错，评测结果全是噪音。</strong>）</p>
+<h3 id="8-3-看三个数"><a href="#8-3-看三个数" class="headerlink" title="8.3 看三个数"></a>8.3 看三个数</h3><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>回答什么问题</th>
+<th>怎么用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>通过率</strong></td>
+<td>能不能上</td>
+<td>低于业务底线就换方案</td>
+</tr>
+<tr>
+<td><strong>失败模式分布</strong></td>
+<td>该补什么</td>
+<td>决定加规则、加检索还是加人审</td>
+</tr>
+<tr>
+<td><strong>单次成本 &#x2F; P95 延迟</strong></td>
+<td>值不值得上</td>
+<td>决定模型档位和缓存策略</td>
+</tr>
+</tbody></table>
+<p>真实的分桶结果大概长这样：</p>
+<table>
+<thead>
+<tr>
+<th>分桶</th>
+<th>样本</th>
+<th>通过率</th>
+<th>主要失败模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>常规工单</td>
+<td>42</td>
+<td>95%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>含否定句</td>
+<td>18</td>
+<td>61%</td>
+<td>把「不需要退款」抽成「退款」</td>
+</tr>
+<tr>
+<td>多订单</td>
+<td>12</td>
+<td>50%</td>
+<td>只抽到第一个订单号</td>
+</tr>
+<tr>
+<td>中英混合</td>
+<td>8</td>
+<td>88%</td>
+<td>类别返回英文枚举</td>
+</tr>
+</tbody></table>
+<p>这张表比一个总分有用得多。总分 78% 说明不能直接上；但分桶告诉你：<strong>只要加一条「否定词检测 + 多订单拆分」的前处理，最烂的两桶就能拉起来。</strong></p>
+<blockquote>
+<p><strong>评测的价值不在分数，在于告诉你下一步改哪里。</strong></p>
+</blockquote>
+<p>顺带说一句：这也是为什么「感觉这个模型变强了」不可信。模型会静默更新（<code>system_fingerprint</code> 变了），你的 prompt 会改，线上数据分布会漂。没有 eval，你连回归都发现不了。</p>
+<hr>
+<h2 id="9-一次完整判断：把需求拆到子任务"><a href="#9-一次完整判断：把需求拆到子任务" class="headerlink" title="9. 一次完整判断：把需求拆到子任务"></a>9. 一次完整判断：把需求拆到子任务</h2><p>拿一个真实需求走一遍。</p>
+<blockquote>
+<p><strong>需求：客服工单自动处理。</strong></p>
+</blockquote>
+<p>第一步不是选模型，是<strong>拆子任务</strong>。每个子任务单独判级：</p>
+<table>
+<thead>
+<tr>
+<th>子任务</th>
+<th>动作 &#x2F; 层级</th>
+<th>验证方式</th>
+<th>方案</th>
+<th>人审</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>意图分类</td>
+<td>决策 &#x2F; L1</td>
+<td>6 类枚举 + logprob</td>
+<td>小模型 + 阈值</td>
+<td>否</td>
+</tr>
+<tr>
+<td>订单号抽取</td>
+<td>抽取 &#x2F; L1</td>
+<td>schema + 查库存在性</td>
+<td>小模型 + 正则兜底</td>
+<td>否</td>
+</tr>
+<tr>
+<td>紧急度判断</td>
+<td>决策 &#x2F; L1</td>
+<td>3 档枚举，抽样</td>
+<td>小模型</td>
+<td>否</td>
+</tr>
+<tr>
+<td>查订单状态</td>
+<td>工具 &#x2F; L4</td>
+<td>参数 schema + 返回校验</td>
+<td>只读 API</td>
+<td>否</td>
+</tr>
+<tr>
+<td>生成回复草稿</td>
+<td>生成 &#x2F; L2</td>
+<td>只能人审</td>
+<td>大模型填槽</td>
+<td><strong>是</strong></td>
+</tr>
+<tr>
+<td>是否升级人工</td>
+<td>决策 &#x2F; L2</td>
+<td>布尔，规则优先</td>
+<td>规则 + 模型兜底</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>结论很清楚：<strong>6 个子任务里 5 个能自动跑，只有「回复草稿」需要人审——而它恰好是最像「AI」的那个。</strong></p>
+<p>这就是真实项目的样子：<strong>AI 的含量比 demo 低，但可用性比 demo 高得多。</strong></p>
+<p>这里要分清一件事：<strong>上面这张表是我们（工程师）先拆的，不是让模型临场拆的。</strong> 真实运行时有两种做法：</p>
+<ul>
+<li>路径固定的部分（查订单、是否升级）直接固化成 workflow，模型只负责填参数；</li>
+<li>路径不固定的部分（该查哪张表、要不要下钻、异常怎么解释）才交给模型规划。</li>
+</ul>
+<p><strong>能固化的流程不要交给模型规划。</strong> 规划的价值在「不知道该走哪条路」的时候；路径已知还让模型规划，只是多花一次调用，还多一个出错的环节。</p>
+<p>再往前一步。如果需求变成「自动退款」呢？</p>
+<p>多了一条硬约束：<strong>涉及资金、不可逆</strong>。判据四直接否决自动执行，方案改成「模型生成退款单，人点确认」。这不是技术做不到，是风险不接受。</p>
+<p><strong>能区分「技术做不到」和「风险不接受」，基本就具备做 Agent 的判断力了。</strong></p>
+<hr>
+<h2 id="10-小结"><a href="#10-小结" class="headerlink" title="10. 小结"></a>10. 小结</h2><p>如果这篇只记五句话，我希望是这五句：</p>
+<ol>
+<li><strong>它只会生成 token。</strong> 所有「做事」都是你的代码替它做的。所以能力边界 &#x3D; 你能把动作写成函数的边界。</li>
+<li><strong>工程分两层：任务级先规划，步骤级收敛输出。</strong> 复杂任务让模型先出计划、按步执行、随时重规划；每一步再用 schema &#x2F; 枚举把输出锁死。模板承接确定的部分，不是替代生成。</li>
+<li><strong>五个判据：能不能定形、知识在不在、错了能不能发现、代价多大、要几步。</strong> 其中「步数」是指数衰减的——20 步就是 36%，这不是能力问题，是数学。</li>
+<li><strong>RAG &#x2F; Tool &#x2F; Agent 都是放大器，不是聪明药。</strong> 每加一层，能力上限和不确定性一起涨。加之前先问：我补的是哪个缺陷？</li>
+<li><strong>别问「能不能做」，问「在多少条样本上、多少通过率、多少成本、几步以内」。</strong> 没有 eval 的「能做」，本身就是一种幻觉。</li>
+</ol>
+<p>下一篇先插一篇实战：<strong>LLM 的实际使用例子（LangChain）</strong>——从一次最简单的模型调用开始，到 Prompt 模板、结构化输出、工具绑定、链式编排，最后拼出一个能查数据、能调工具的小 Agent。也会顺带看看：哪些事框架替你做了，哪些事它其实没做、还得你自己兜。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>本系列上一篇：<em>LLM 是什么？从预测下一个 token 到 OpenAI &#x2F; Anthropic 协议</em> — <a href="https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/">https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/</a></li>
+<li>Wei et al., <em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</em>, 2022 — <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a></li>
+<li>Yao et al., <em>ReAct: Synergizing Reasoning and Acting in Language Models</em>, 2022 — <a href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a></li>
+<li>Lewis et al., <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em>, 2020 — <a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a></li>
+<li>Liu et al., <em>Lost in the Middle: How Language Models Use Long Contexts</em>, 2023 — <a href="https://arxiv.org/abs/2307.03172">https://arxiv.org/abs/2307.03172</a></li>
+<li>Anthropic, <em>Building Effective Agents</em>, 2024 — <a href="https://www.anthropic.com/engineering/building-effective-agents">https://www.anthropic.com/engineering/building-effective-agents</a></li>
+<li>OpenAI, <em>A Practical Guide to Building Agents</em> — <a href="https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf">https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf</a></li>
+</ul>
+
+  </div>
+
+  
+    <section class="article-reward">
+      
+<figure class="reaction-inline">
+  <figcaption class="reaction-inline__caption">
+    
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 576 512" fill="currentColor" class="lucide lucide-weixin flatpaper-icon flatpaper-icon--fa-brands" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-fa-brands-weixin"></use></svg>
+
+    <span>微信赞赏码</span>
+  </figcaption>
+  <img class="reaction-inline__img no-zoom" src="/img/weixin.jpg" alt="微信赞赏码" loading="lazy">
+</figure>
+
+    </section>
+  
+
+  <footer class="article-reactions">
+    <div class="reaction-group">
+      <button type="button" class="reaction reaction--comment" aria-label="跳转到评论区" data-action="scroll-to-comments">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-message-circle"></use></svg>
+
+      </button>
+      <span class="reaction-label">评论</span>
+      
+    </div>
+    <div class="reaction-group reaction-group--right">
+      
+      <button type="button" class="reaction reaction--share" aria-label="分享" data-action="share">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2 flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-share-2"></use></svg>
+
+      </button>
+      <span class="reaction-label">分享</span>
+    </div>
+  </footer>
+
+  
+
+
+  
+  <nav class="article-actions">
+    
+      <a class="article-action article-action--prev" href="/2026/10/28/llm-essentials-for-agent/">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-left"></use></svg>
+
+        <span class="action-label">上一篇</span>
+        <span class="action-title">Agent 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议</span>
+      </a>
+    
+    
+      <span class="article-action article-action--next is-disabled" aria-disabled="true">
+        <span class="action-label">下一篇</span>
+        <span class="action-title">已经是最新的一篇</span>
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-right"></use></svg>
+
+      </span>
+    
+  </nav>
+</article>
+</div>
+
+<button type="button" class="back-to-top" data-action="scroll-to-top" aria-label="返回顶部" hidden>
+  
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-up"></use></svg>
+
+</button>
+
+
+  <section class="related-paper">
+    <header class="related-paper__head">
+      <h2>
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-link"></use></svg>
+相关文章</h2>
+      <a class="related-paper__more" href="/archives/">
+        <span>查看更多</span>
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-arrow-right"></use></svg>
+
+      </a>
+    </header>
+    <div class="related-paper__grid">
+      
+        <a class="related-card" href="/2026/10/28/llm-essentials-for-agent/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-0 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="/img/covers/llm-basics-cover.png" alt="Agent 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">Agent 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议</strong>
+            <em class="related-card__date">2026-10-28</em>
+          </span>
+        </a>
+      
+        <a class="related-card" href="/2026/10/27/ai-agent-learning-path/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-1 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="/img/covers/agent-learning-path-wide.png" alt="Agent 开发到底该学什么？我整理了一条学习路线" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">Agent 开发到底该学什么？我整理了一条学习路线</strong>
+            <em class="related-card__date">2026-10-27</em>
+          </span>
+        </a>
+      
+        <a class="related-card" href="/2026/10/27/pi-agent-codemode-refund-case/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-2 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="/img/covers/codemode-cover.jpg" alt="Pi Agent 的 CodeMode：让 Agent 写代码，而不是刷 600 次工具调用" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">Pi Agent 的 CodeMode：让 Agent 写代码，而不是刷 600 次工具调用</strong>
+            <em class="related-card__date">2026-10-27</em>
+          </span>
+        </a>
+      
+        <a class="related-card" href="/2026/10/21/jev-why-it-went-viral-and-open-alternatives/">
+          <span class="related-card__thumb">
+            
+<div class="paper-thumb paper-thumb-0 paper-thumb--cover">
+  
+    <img class="paper-thumb__img" src="/images/cover/port.webp" alt="" loading="lazy" referrerpolicy="no-referrer">
+  
+</div>
+
+          </span>
+          <span class="related-card__body">
+            <strong class="related-card__title">Jev 爆火：一个不说话的 AI 模型，为什么成了 2026 年的现象级玩家</strong>
+            <em class="related-card__date">2026-10-21</em>
+          </span>
+        </a>
+      
+    </div>
+  </section>
+
+
+      
+
+
+    </section>
+    
+  </main>
+
+  <div class="sidebar-backdrop js-sidebar-close" aria-hidden="true"></div>
+
+  
+<footer class="site-footer">
+  <span class="site-footer__left">© 2026 By fengyua5</span>
+  
+    <span class="site-footer__right">
+      
+        <span class="site-footer__row"><span class="site-footer__powered-prefix">Powered by Theme</span> <a href="https://github.com/Homulilly/hexo-theme-flatpaper" target="_blank" rel="noopener">FlatPaper</a></span>
+      
+    </span>
+  
+</footer>
+
+  
+<div class="search-panel" aria-hidden="true" data-index-url="/flatpaper-search.json">
+  <div class="search-backdrop js-search-close"></div>
+  <section class="search-dialog" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <span class="tape tape--top-left" aria-hidden="true"></span>
+    <header class="search-head">
+      <h2><span class="green-dot"></span>搜索文章</h2>
+      <button class="icon-button js-search-close" type="button" aria-label="关闭搜索">
+        
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-x"></use></svg>
+
+      </button>
+    </header>
+    <label class="search-field">
+      
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search flatpaper-icon flatpaper-icon--lucide" aria-hidden="true"><use href="/icons.svg#flatpaper-icon-lucide-search"></use></svg>
+
+      <input id="flatpaper-search" class="search-input" type="search" placeholder="输入关键词，按 Esc 关闭" autocomplete="off">
+    </label>
+    <div class="search-results" data-empty="输入关键词后显示匹配的文章">
+      <p class="search-empty">输入关键词后显示匹配的文章</p>
+    </div>
+  </section>
+</div>
+
+  <script>
+  window.FLATPAPER_I18N = {"language":"zh-CN","common.posts":"文章","common.categories":"分类","common.tags":"标签","common.comments":"评论","common.share":"分享","common.page":"页面","common.archive":"归档","common.post_list":"文章列表","common.search_posts":"搜索文章","common.random_posts":"随机文章","common.reward":"赞赏","common.view_all":"查看全部","pagination.prev":"上一页","pagination.next":"下一页","pagination.post_pager":"文章分页","pagination.archive_pager":"归档分页","index.featured":"精选文章","index.pinned":"置顶","index.read_more":"阅读全文","index.previous_slide":"上一张","index.next_slide":"下一张","index.carousel_pagination":"轮播页码","index.carousel_slide":"第 %d 张","index.latest_posts":"最新文章","index.empty_posts":"还没有文章。创建第一篇文章后，这里会显示最新内容。","archive.title":"归档","archive.post_list":"文章列表","taxonomy.category_count":"%d 篇","taxonomy.empty_categories":"暂时还没有分类。","taxonomy.empty_tags":"暂时还没有标签。","links.label":"友链","links.title":"友情链接","links.empty_data":"暂未加载到友链数据。请确认 source/_data/links.yml 存在并已 hexo clean。","links.rss_label":"%s 的 RSS","friends_feed.label":"朋友圈","friends_feed.title":"友链朋友圈","friends_feed.loading":"正在加载友链动态…","friends_feed.missing_url":"暂未配置 all.json 地址。","friends_feed.load_failed":"友链动态加载失败，请稍后再试。","friends_feed.empty":"暂时没有抓取到友链文章。","friends_feed.load_more":"加载更多","friends_feed.updated_at":"更新于 %s","friends_feed.friend_count":"%d 位友邻","friends_feed.active_count":"%d 位活跃","friends_feed.article_count":"%d 篇文章","friends_feed.unknown_author":"未知站点","friends_feed.date_unknown":"时间未知","guestbook.label":"留言板","guestbook.title":"留言板","guestbook.loading":"正在铺开留言墙…","guestbook.missing_config":"留言墙需要评论系统：请在主题配置中设置 comments: twikoo（并填写 envId）或 comments: artalk（并填写 server）。","guestbook.load_failed":"留言加载失败，请稍后再试。","guestbook.empty":"墙上还空着，来贴第一张留言吧！","guestbook.load_more":"展开更多留言","guestbook.total_count":"共 %d 条留言","guestbook.latest_note":"墙上展示最新 %d 条","guestbook.jump_to_comment":"查看留言","guestbook.sort_time":"查看最新","guestbook.sort_random":"随机排序","guestbook.anonymous":"匿名访客","guestbook.write_hint":"在下方留言，刷新后就会贴到墙上","post.scroll_to_comments":"跳转到评论区","post.previous":"上一篇","post.next":"下一篇","post.no_previous":"没有更早的文章了","post.no_next":"已经是最新的一篇","post.back_to_top":"返回顶部","post.related_posts":"相关文章","post.view_more":"查看更多","not_found.label":"页面走丢了","not_found.title":"找不到这个页面","not_found.text":"这个地址可能已经移动、删除，或者从未存在。","not_found.home":"返回首页","not_found.search":"搜索文章","search.placeholder":"输入关键词，按 Esc 关闭","search.empty":"输入关键词后显示匹配的文章","search.loading":"正在加载搜索索引…","search.load_failed":"搜索索引加载失败，请重新打开搜索重试","search.no_result":"没有找到与 \"%s\" 相关的文章","search.close":"关闭搜索","code.copy":"复制代码","code.collapse":"折叠代码","code.expand":"展开代码","heading.anchor":"链接到此节: %s","head.tag":"标签：%s","head.category":"分类：%s","head.archive":"归档","head.archive_with_date":"归档：%s","head.page_number":"第 %d 页","navigation.primary":"主导航","navigation.mobile":"移动端导航","navigation.brand_home":"FlatPaper 首页","navigation.brand_menu":"打开站点导航","navigation.open_sidebar":"打开侧边栏","navigation.close_sidebar":"关闭侧边栏","navigation.sidebar":"侧边栏","navigation.sidebar_tools":"侧边栏工具","navigation.site_links":"站点链接","navigation.site_info":"站点信息","colors.choose_theme_color":"选择主题色","colors.theme_color":"主题色","colors.toggle_color_mode":"切换颜色模式","colors.green":"绿色","colors.purple":"紫色","colors.pink":"粉色","colors.sakura":"樱花粉","colors.blue":"蓝色","colors.orange":"橙色","colors.black":"黑色","profile.default_bio":"热爱生活，热爱代码，喜欢分享技术与生活中的点滴。","welcome.cta":"开始阅读","welcome.title":"欢迎来到 FlatPaper","welcome.text":"一个专注于内容与阅读体验的博客主题。","home_hero.label":"首页开屏","home_hero.enter":"开始阅读","home_hero.note":"今日","home_hero.default_subtitle":"日常记录","home_hero.nav_links":"开屏导航","home_hero.profile_links":"个人链接","home_hero.tools":"开屏工具","home_hero.shuffle_stickers":"打乱贴纸位置","home_hero.link":"链接","home_hero.sticker_image":"贴纸图片","home_hero.visit_confirm":"要访问 %s 吗？","home_hero.visit":"访问","home_hero.cancel":"取消","toc.title":"文章目录","toc.empty":"目录会根据文章标题自动生成。","toc.expand_all":"展开全部目录","toc.collapse_all":"收起全部目录","sidebar.hot_tags":"热门标签","sidebar.latest_posts":"最新文章"};
+  </script>
+  
+<script src="/js/main.js"></script>
+
+  
+  <style>.socials a[data-tooltip="小红书"] svg { fill: #FF244D !important; stroke: #FF244D !important; transform: scale(1.2); transform-origin: center; }</style>
+  
+</body>
+</html>
