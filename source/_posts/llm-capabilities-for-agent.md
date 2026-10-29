@@ -8,7 +8,7 @@ cover: /img/covers/llm-capabilities-cover.png
 
 <p style="text-align:center"><img src="/img/covers/llm-capabilities-cover.png" alt="LLM 基础（二）：LLM 能做什么"></p>
 
-上一篇 [LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议](https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/) 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 `POST /v1/chat/completions` 里每个字段在干什么。
+上一篇 [LLM 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议](https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/) 把模型拆成了一个函数：给定上下文，输出词表上的概率分布。也讲了它为什么会一本正经地胡说，以及那个 `POST /v1/chat/completions` 里每个字段在干什么。
 
 这一篇回答下一个问题：**那它到底能干什么？**
 
@@ -649,7 +649,7 @@ async function runEval(
 
 ## 参考资料
 
-- 本系列上一篇：*LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议* — https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/
+- 本系列上一篇：*LLM 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议* — https://fengyua5.github.io/2026/10/28/llm-essentials-for-agent/
 - Wei et al., *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models*, 2022 — https://arxiv.org/abs/2201.11903
 - Yao et al., *ReAct: Synergizing Reasoning and Acting in Language Models*, 2022 — https://arxiv.org/abs/2210.03629
 - Lewis et al., *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*, 2020 — https://arxiv.org/abs/2005.11401

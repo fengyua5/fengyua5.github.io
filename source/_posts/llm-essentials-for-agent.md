@@ -1,12 +1,12 @@
 ---
-title: Agent 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议
+title: LLM 开发（一）：LLM 是什么？从预测下一个 token 到 OpenAI / Anthropic 协议
 date: 2026-10-28 10:00:00
 tags: [Agent, LLM, token, OpenAI, Anthropic, 协议]
 categories: AI
 cover: /img/covers/llm-basics-cover.png
 ---
 
-<p style="text-align:center"><img src="/img/covers/llm-basics-cover.png" alt="Agent 开发（一）：LLM 是什么"></p>
+<p style="text-align:center"><img src="/img/covers/llm-basics-cover.png" alt="LLM 开发（一）：LLM 是什么"></p>
 
 上一篇 [Agent 开发到底该学什么](https://fengyua5.github.io/2026/10/27/ai-agent-learning-path/) 里，我把学习路线拆成了十块，第二块是「LLM 基础认知」。
 
